@@ -58,6 +58,7 @@ Plugin 'Shougo/neocomplcache.vim'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'boucherm/ShowMotion'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'myusuf3/numbers.vim'
 "}}}
 call vundle#end()            " required
 " GLOBAL SETTINGS (sets)"{{{
@@ -306,6 +307,12 @@ autocmd BufWinEnter *.* silent loadview
 " SHOWMOTION"{{{
 
 " }}}
+" NUMBERS.VIM"{{{
+
+nnoremap <F3> :NumbersToggle<CR>
+nnoremap <F4> :NumbersOnOff<CR>
+
+"}}}
 " WILDIGNORES"{{{
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
