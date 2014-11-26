@@ -56,6 +56,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'edkolev/tmuxline.vim'
 Plugin 'Shougo/neocomplcache.vim'
 Plugin 'Lokaltog/vim-easymotion'
+Plugin 'boucherm/ShowMotion'
 
 "}}}
 call vundle#end()            " required
@@ -302,6 +303,24 @@ autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview 
 
 "}}}
+" SHOWMOTION
+
+"Show motion for words:  
+" nnoremap <silent> w w:call g:Highw()<CR>:call g:HighW()<CR>  
+" nnoremap <silent> W W:call g:Highw()<CR>:call g:HighW()<CR>  
+" nnoremap <silent> b b:call g:Highb()<CR>:call g:HighB()<CR>  
+" nnoremap <silent> B B:call g:Highb()<CR>:call g:HighB()<CR>  
+" nnoremap <silent> e e:call g:Highe()<CR>:call g:HighE()<CR>  
+" nnoremap <silent> E E:call g:Highe()<CR>:call g:HighE()<CR>  
+
+" ""Show motion for chars:  
+" nnoremap f :call g:FindChar( 'f', "forward" )<CR>  
+" nnoremap t :call g:FindChar( 't', "forward" )<CR>  
+" nnoremap F :call g:FindChar( 'F', "backward" )<CR>  
+" nnoremap T :call g:FindChar( 'T', "backward" )<CR>  
+" nnoremap ; :call g:SeekRepeat()<CR>:call g:HighRepeat()<CR>
+" nnoremap , :call g:SeekReverse()<CR>:call g:HighReverse()<CR>))))
+
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
@@ -310,6 +329,7 @@ set wildignore+=*\\bower_components\\**
 set wildignore+=*\\node_modules\\**
 
 " Finally the color scheme. Choose whichever you want from the list in the
+set t_Co=256
 colorscheme mustang
 
 
