@@ -24,7 +24,7 @@ echo "...done"
 
 # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks 
 for file in $files; do
-    echo "Moving any existing dotfiles from ~ to $dotfilesOld"
+    echo "Moving $file from ~ to $dotfilesOld"
     mv ~/.$file ~/dotfiles_old/
     echo "Creating symlink to $file in home directory."
     ln -s $dotfiles/$file ~/.$file
@@ -32,7 +32,7 @@ done
 
 # vim vundle
 echo "VIM: Checking if Vundle is installed"
-if [ ! -d $dotfiles/vim/bundle ]; then
+if [ ! -d ~/.vim/bundle ]; then
     mkdir -p ~/.vim/bundle
 fi
 
@@ -41,4 +41,4 @@ if [ ! -e ~/.vim/bundle/Vundle.vim ]; then
     git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 echo "Update/Install plugins using vundle"
-vim +PluginInstall +qall 2&> /dev/null
+vim +PluginInstall +qall 

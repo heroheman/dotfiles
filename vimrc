@@ -58,7 +58,7 @@ Plugin 'Shougo/neocomplcache.vim'
 Plugin 'Lokaltog/vim-easymotion'
 
 "}}}
-
+call vundle#end()            " required
 " GLOBAL SETTINGS (sets)"{{{
 " We have to turn this stuff back on if we want all of our features.
 filetype plugin indent on " Filetype auto-detection
