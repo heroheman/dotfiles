@@ -3,3 +3,7 @@ zshrc~
 .zshrc.swp
 vim/bundle
 vim/view
+vim/.netrwhist
+*.un~
+Session.vim
+.netrwhist
