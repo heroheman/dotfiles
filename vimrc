@@ -33,6 +33,10 @@ Plugin 'scrooloose/syntastic'
 Plugin 'edkolev/tmuxline.vim'
 Plugin 'Shougo/neocomplcache.vim'
 Plugin 'Lokaltog/vim-easymotion'
+Plugin 'boucherm/ShowMotion'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'myusuf3/numbers.vim'
+
 call vundle#end()            " required
 filetype plugin indent on " Filetype auto-detection
 
@@ -293,7 +297,8 @@ autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview 
 
 "}}}
-" WILD IGNORES STUFF"{{{
+
+" SHOWMOTION"{{{
 nnoremap <silent> w w:call g:Highw()<CR>
 nnoremap <silent> W W:call g:HighW()<CR>
 nnoremap <silent> b b:call g:Highb()<CR>
@@ -301,6 +306,15 @@ nnoremap <silent> B B:call g:HighB()<CR>
 nnoremap <silent> e e:call g:Highe()<CR>
 nnoremap <silent> E E:call g:HighE()<CR>
 
+
+" }}}
+" NUMBERS.VIM"{{{
+
+nnoremap <F3> :NumbersToggle<CR>
+nnoremap <F4> :NumbersOnOff<CR>
+
+"}}}
+" WILDIGNORES"{{{
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
@@ -310,6 +324,9 @@ set wildignore+=*\\node_modules\\**
 
 "}}}
 " COLORSCHEME"{{{
+"}}}
+" Theme"{{{
+" Finally the color scheme. Choose whichever you want from the list in the
+set t_Co=256
 colorscheme Zenburn
-
 "}}}
