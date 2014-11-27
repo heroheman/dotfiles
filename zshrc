@@ -5,7 +5,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="cloud"
+ZSH_THEME="mortalscumbag"
 
 
 ###########
@@ -23,6 +23,8 @@ setopt inc_append_history
 plugins=(git bower brew git-flow node npm osx rvm screen tmux vagrant)
 
 source $ZSH/oh-my-zsh.sh
+source ~/.bash_alias
+source ~/.bash_profile
 
 # User configuration
 
