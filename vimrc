@@ -1,70 +1,44 @@
 " vim:fdm=marker
 " .vimrc
-" v.0.2.0 - 28.10.2014 by Florenz Heldermann
-" Based on the beginners vimrc by Philip Trasher
-" 
+" v.0.2.1 - by Florenz Heldermann
 
+" VUNDLE PLUGINs"{{{
 set nocompatible " Fuck VI... That's for grandpas.
 filetype off
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" VUNDLE PLUGINs"{{{
-
-" Let vundle manage itself:
-Bundle 'gmarik/vundle'
-
-" Just a shitload of color schemes.
-" https://github.com/flazz/vim-colorschemes#current-colorschemes
-Bundle 'flazz/vim-colorschemes'
-
-" Fuzzy finder -- absolutely must have.
-" no, not anymore, unite ftw
-" Bundle 'kien/ctrlp.vim'
-
-" Support for easily toggling comments.
-Bundle 'tpope/vim-commentary'
-" better html indenting
-Bundle 'indenthtml.vim'  
-" Syntax Plugins 
-
-Bundle 'pangloss/vim-javascript' 
-Bundle 'tpope/vim-markdown' 
-Bundle 'groenewege/vim-less' 
-Bundle 'JulesWang/css.vim' 
-Bundle 'cakebaker/scss-syntax.vim'
-Bundle 'kchmck/vim-coffee-script' 
-" Bundle 'leshill/vim-json' 
-Bundle 'elzr/vim-json'
-Plugin 'mustache/vim-mustache-handlebars'
-
-Plugin 'Shougo/unite.vim'
-Plugin 'mattn/emmet-vim'
-Plugin 'tpope/vim-surround'
-Plugin 'Townk/vim-autoclose' 
-
-Plugin 'moll/vim-bbye'
-
-" Powerline
-Plugin 'bling/vim-airline'
-Plugin 'scrooloose/nerdtree'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'tpope/vim-repeat' 
-
-Plugin 'scrooloose/syntastic'
-Plugin 'edkolev/tmuxline.vim'
-Plugin 'Shougo/neocomplcache.vim'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'boucherm/ShowMotion'
-Plugin 'airblade/vim-gitgutter'
-"}}}
-call vundle#end()            " required
-" GLOBAL SETTINGS (sets)"{{{
-" We have to turn this stuff back on if we want all of our features.
+call plug#begin('~/.vim/plugged')
+Plug 'flazz/vim-colorschemes'
+Plug 'tpope/vim-commentary'
+Plug 'indenthtml.vim'  
+Plug 'pangloss/vim-javascript' 
+Plug 'tpope/vim-markdown' 
+Plug 'groenewege/vim-less' 
+Plug 'JulesWang/css.vim' 
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'kchmck/vim-coffee-script' 
+Plug 'elzr/vim-json'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'Shougo/unite.vim'
+Plug 'mattn/emmet-vim'
+Plug 'tpope/vim-surround'
+Plug 'Townk/vim-autoclose' 
+Plug 'moll/vim-bbye'
+Plug 'bling/vim-airline'
+Plug 'gmarik/vundle'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } 
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-repeat' 
+Plug 'scrooloose/syntastic'
+Plug 'edkolev/tmuxline.vim'
+Plug 'Shougo/neocomplcache.vim'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'airblade/vim-gitgutter'
+call plug#end()
 filetype plugin indent on " Filetype auto-detection
-syntax on " Syntax highlighting
 
+"}}}
+" GLOBAL SETTINGS (sets)"{{{
+syntax on " Syntax highlighting
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
@@ -179,6 +153,22 @@ noremap <leader><space> :noh<cr>:call clearmatches()<cr>
 nnoremap <leader><leader> <c-^>
 
 
+"}}}
+" UNITE "{{{
+let g:unite_source_history_yank_enable=1
+let g:unite_source_history_yank_limit=1000
+
+if executable('ag')
+    let g:unite_source_rec_async_command= 'ag --nocolor --nogroup --hidden -g
+""'
+endif
+
+call unite#custom#source('file_rec', 'ignore_pattern', 'bower_components/\|node_modules/\|\.git')
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#custom#profile('files', 'filters', ['sorter_rank'])
+
+noremap <leader>f :Unite -start-insert file_rec<CR>
+nnoremap <leader>b :Unite buffer<CR>'
 "}}}
 " NEOCOMPLETE {{{
 let g:neocomplete#enable_at_startup = 1
@@ -303,9 +293,23 @@ autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview 
 
 "}}}
+
 " SHOWMOTION"{{{
+nnoremap <silent> w w:call g:Highw()<CR>
+nnoremap <silent> W W:call g:HighW()<CR>
+nnoremap <silent> b b:call g:Highb()<CR>
+nnoremap <silent> B B:call g:HighB()<CR>
+nnoremap <silent> e e:call g:Highe()<CR>
+nnoremap <silent> E E:call g:HighE()<CR>
+
 
 " }}}
+" NUMBERS.VIM"{{{
+
+nnoremap <F3> :NumbersToggle<CR>
+nnoremap <F4> :NumbersOnOff<CR>
+
+"}}}
 " WILDIGNORES"{{{
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
@@ -313,10 +317,12 @@ set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 set wildignore+=*\\public\\**
 set wildignore+=*\\bower_components\\**
 set wildignore+=*\\node_modules\\**
+
+"}}}
+" COLORSCHEME"{{{
 "}}}
 " Theme"{{{
 " Finally the color scheme. Choose whichever you want from the list in the
 set t_Co=256
-colorscheme mustang
-
+colorscheme zenburn
 "}}}

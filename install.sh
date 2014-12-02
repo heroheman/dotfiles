@@ -47,6 +47,26 @@ install_vundle(){
     vim +PluginInstall +qall 
 }
 
+get_vimplug(){
+    echo "VIM: Checking if VimPlug is installed"
+    if [ ! -d ~/.vim/autoload ]; then
+        mkdir -p ~/.vim/bundle
+    fi
+
+    if [ ! -e ~/.vim/autoload/plug.vim ]; then
+        echo "Installing vim-plug"
+        curl -fLo ~/.vim/autoload/plug.vim \
+                https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    fi
+}
+# Install Vundle Plugins
+install_plug(){
+    echo "Update/Install plugins using Vim-Plug"
+    vim +PlugInstall +qall 
+}
+
+
 install_dotfiles || exit 1
-get_vundle || exit 1
-install_vundle || exit 1
+get_vimplug || exit 1
+install_plug || exit 1
+# install_vundle || exit 1
