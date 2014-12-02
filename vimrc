@@ -33,9 +33,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'edkolev/tmuxline.vim'
 Plugin 'Shougo/neocomplcache.vim'
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'boucherm/ShowMotion'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'myusuf3/numbers.vim'
 
 call vundle#end()            " required
 filetype plugin indent on " Filetype auto-detection
