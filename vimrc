@@ -328,5 +328,5 @@ set wildignore+=*\\node_modules\\**
 " Theme"{{{
 " Finally the color scheme. Choose whichever you want from the list in the
 set t_Co=256
-colorscheme Zenburn
+colorscheme zenburn
 "}}}
