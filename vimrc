@@ -1,41 +1,39 @@
 " vim:fdm=marker
 " .vimrc
-" v.0.2.1 - 28.10.2014 by Florenz Heldermann
+" v.0.2.1 - by Florenz Heldermann
 
 " VUNDLE PLUGINs"{{{
 set nocompatible " Fuck VI... That's for grandpas.
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
 
-Plugin 'gmarik/vundle'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'tpope/vim-commentary'
-Plugin 'indenthtml.vim'  
-Plugin 'pangloss/vim-javascript' 
-Plugin 'tpope/vim-markdown' 
-Plugin 'groenewege/vim-less' 
-Plugin 'JulesWang/css.vim' 
-Plugin 'cakebaker/scss-syntax.vim'
-Plugin 'kchmck/vim-coffee-script' 
-Plugin 'elzr/vim-json'
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'Shougo/unite.vim'
-Plugin 'mattn/emmet-vim'
-Plugin 'tpope/vim-surround'
-Plugin 'Townk/vim-autoclose' 
-Plugin 'moll/vim-bbye'
-Plugin 'bling/vim-airline'
-Plugin 'scrooloose/nerdtree'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'tpope/vim-repeat' 
-Plugin 'scrooloose/syntastic'
-Plugin 'edkolev/tmuxline.vim'
-Plugin 'Shougo/neocomplcache.vim'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'airblade/vim-gitgutter'
-
-call vundle#end()            " required
+call plug#begin('~/.vim/plugged')
+Plug 'flazz/vim-colorschemes'
+Plug 'tpope/vim-commentary'
+Plug 'indenthtml.vim'  
+Plug 'pangloss/vim-javascript' 
+Plug 'tpope/vim-markdown' 
+Plug 'groenewege/vim-less' 
+Plug 'JulesWang/css.vim' 
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'kchmck/vim-coffee-script' 
+Plug 'elzr/vim-json'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'Shougo/unite.vim'
+Plug 'mattn/emmet-vim'
+Plug 'tpope/vim-surround'
+Plug 'Townk/vim-autoclose' 
+Plug 'moll/vim-bbye'
+Plug 'bling/vim-airline'
+Plug 'gmarik/vundle'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } 
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-repeat' 
+Plug 'scrooloose/syntastic'
+Plug 'edkolev/tmuxline.vim'
+Plug 'Shougo/neocomplcache.vim'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'airblade/vim-gitgutter'
+call plug#end()
 filetype plugin indent on " Filetype auto-detection
 
 "}}}
