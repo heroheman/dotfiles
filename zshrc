@@ -6,7 +6,7 @@ export ZSH=$HOME/dotfiles/.oh-my-zsh
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="fino"
-
+export TERM=xterm-256color
 
 ###########
 ## History #
