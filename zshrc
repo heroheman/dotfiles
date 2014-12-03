@@ -1,12 +1,12 @@
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+export ZSH=$HOME/dotfiles/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="mortalscumbag"
-
+ZSH_THEME="fino"
+export TERM=xterm-256color
 
 ###########
 ## History #
@@ -24,7 +24,7 @@ plugins=(git bower brew git-flow node npm osx rvm screen tmux vagrant)
 
 source $ZSH/oh-my-zsh.sh
 source ~/.bash_aliases
-source ~/.bash_profile
+# source ~/.bash_profile
 
 # User configuration
 

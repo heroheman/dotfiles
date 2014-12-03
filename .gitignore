@@ -4,6 +4,8 @@ zshrc~
 vim/bundle
 vim/view
 vim/.netrwhist
+vim/autoload
+vim/plugged
 *.un~
 Session.vim
 .netrwhist

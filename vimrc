@@ -1,44 +1,40 @@
 " vim:fdm=marker
 " .vimrc
-" v.0.2.1 - 28.10.2014 by Florenz Heldermann
+" v.0.2.1 - by Florenz Heldermann
 
 " VUNDLE PLUGINs"{{{
 set nocompatible " Fuck VI... That's for grandpas.
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'gmarik/vundle'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'tpope/vim-commentary'
-Plugin 'indenthtml.vim'  
-Plugin 'pangloss/vim-javascript' 
-Plugin 'tpope/vim-markdown' 
-Plugin 'groenewege/vim-less' 
-Plugin 'JulesWang/css.vim' 
-Plugin 'cakebaker/scss-syntax.vim'
-Plugin 'kchmck/vim-coffee-script' 
-Plugin 'elzr/vim-json'
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'Shougo/unite.vim'
-Plugin 'mattn/emmet-vim'
-Plugin 'tpope/vim-surround'
-Plugin 'Townk/vim-autoclose' 
-Plugin 'moll/vim-bbye'
-Plugin 'bling/vim-airline'
-Plugin 'scrooloose/nerdtree'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'tpope/vim-repeat' 
-Plugin 'scrooloose/syntastic'
-Plugin 'edkolev/tmuxline.vim'
-" Plugin 'Shougo/neocomplcache.vim'
-Plugin 'Lokaltog/vim-easymotion'
-" Plugin 'boucherm/ShowMotion'
-Plugin 'airblade/vim-gitgutter'
-" Plugin 'myusuf3/numbers.vim'
-Plugin 'ryanoasis/vim-webdevicons'
-" Plugin 'Valloric/YouCompleteMe'
-call vundle#end()            " required
+call plug#begin('~/.vim/plugged')
+Plug 'airblade/vim-gitgutter'
+Plug 'bling/vim-airline'
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'edkolev/tmuxline.vim'
+Plug 'elzr/vim-json'
+Plug 'flazz/vim-colorschemes'
+Plug 'groenewege/vim-less' 
+Plug 'indenthtml.vim'  
+Plug 'JulesWang/css.vim' 
+Plug 'junegunn/goyo.vim'
+Plug 'kchmck/vim-coffee-script' 
+Plug 'Lokaltog/vim-easymotion'
+Plug 'mattn/emmet-vim'
+Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'moll/vim-bbye'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'pangloss/vim-javascript' 
+" Plug 'rking/ag.vim'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } 
+Plug 'scrooloose/syntastic'
+Plug 'Shougo/neocomplcache.vim'
+Plug 'Shougo/unite.vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'Townk/vim-autoclose' 
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-markdown' 
+Plug 'tpope/vim-repeat' 
+Plug 'tpope/vim-surround'
+call plug#end()
 filetype plugin indent on " Filetype auto-detection
 
 "}}}
@@ -172,42 +168,71 @@ nnoremap <leader><leader> <c-^>
 let g:unite_source_history_yank_enable=1
 let g:unite_source_history_yank_limit=1000
 
-if executable('ag')
-    let g:unite_source_rec_async_command= 'ag --nocolor --nogroup --hidden -g
-""'
-endif
 
 call unite#custom#source('file_rec', 'ignore_pattern', 'bower_components/\|node_modules/\|\.git')
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#custom#profile('files', 'filters', ['sorter_rank'])
+if executable('ag')
+    let g:unite_source_grep_command='ag'
+    let g:unite_source_grep_default_opts='--nocolor --line-numbers --nogroup -S -C4'
+    let g:unite_source_grep_recursive_opt=''
+endif
 
-noremap <leader>f :Unite -start-insert file_rec<CR>
+nnoremap <leader>y :Unite history/yank<cr>
+nnoremap <leader>f :Unite -start-insert file_rec<CR>
 nnoremap <leader>b :Unite buffer<CR>'
+" nnoremap <leader>/ :Unite -start-insert grep:. -buffer-name=search-buffer<<cr>
+nnoremap <leader>/ :Unite -no-quit -buffer-name=search grep:.<cr>
 "}}}
 " NEOCOMPLETE {{{
-let g:neocomplete#enable_at_startup = 1
-" let g:neocomplete#sources#dictionary#dictionaries = {
-"             \ 'default' : '',
-"             \ 'vimshell' : $HOME.'/.vimshell_hist'
-"             \ }
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_smart_case = 1
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplcache.
+let g:neocomplcache_enable_at_startup = 1
+" Use smartcase.
+let g:neocomplcache_enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
-" if !exists('g:neocomplete#sources')
-"     let g:neocomplete#sources = {}
-" endif
+" Define dictionary.
+let g:neocomplcache_dictionary_filetype_lists = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
 
-" if !exists('g:neocomplete#sources#omni#input_patterns')
-"     let g:neocomplete#sources#omni#input_patterns = {}
-" endif
+" Define keyword.
+if !exists('g:neocomplcache_keyword_patterns')
+    let g:neocomplcache_keyword_patterns = {}
+endif
+let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
-" inoremap <expr><C-g>     neocomplete#undo_completion()
-" inoremap <expr><C-l>     neocomplete#complete_common_string()
-" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplcache#undo_completion()
+inoremap <expr><C-l>     neocomplcache#complete_common_string()
 
-" let g:neocomplete#sources#omni#input_patterns.cs = '.*[^=\);]'
-" let g:neocomplete#sources.cs = ['omni']
-" let g:neocomplete#enable_refresh_always = 0
-" let g:echodoc_enable_at_startup = 1
-" let g:neocomplete#enable_insert_char_pre = 1
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+    return neocomplcache#smart_close_popup() . "\<CR>"
+    " For no inserting <CR> key.
+    "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplcache#close_popup()
+inoremap <expr><C-e>  neocomplcache#cancel_popup()
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() :
+""\<Space>"
+
 " }}}
 " AIRLINE"{{{
 
@@ -307,23 +332,6 @@ autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview 
 
 "}}}
-
-" SHOWMOTION"{{{
-nnoremap <silent> w w:call g:Highw()<CR>
-nnoremap <silent> W W:call g:HighW()<CR>
-nnoremap <silent> b b:call g:Highb()<CR>
-nnoremap <silent> B B:call g:HighB()<CR>
-nnoremap <silent> e e:call g:Highe()<CR>
-nnoremap <silent> E E:call g:HighE()<CR>
-
-nnoremap f :call g:FindChar( 'f', "forward" )<CR>  
-nnoremap t :call g:FindChar( 't', "forward" )<CR>  
-nnoremap F :call g:FindChar( 'F', "backward" )<CR>  
-nnoremap T :call g:FindChar( 'T', "backward" )<CR>  
-nnoremap ; :call g:SeekRepeat()<CR>:call g:HighRepeat()<CR>
-nnoremap , :call g:SeekReverse()<CR>:call g:HighReverse()<CR>))))
-
-" }}}
 " NUMBERS.VIM"{{{
 
 nnoremap <F3> :NumbersToggle<CR>
@@ -344,6 +352,6 @@ set wildignore+=*\\node_modules\\**
 " Theme"{{{
 " Finally the color scheme. Choose whichever you want from the list in the
 set t_Co=256
-colorscheme Zenburn
 set gfn=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
+colorscheme zenburn
 "}}}
