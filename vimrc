@@ -31,12 +31,13 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-repeat' 
 Plugin 'scrooloose/syntastic'
 Plugin 'edkolev/tmuxline.vim'
-Plugin 'Shougo/neocomplcache.vim'
+" Plugin 'Shougo/neocomplcache.vim'
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'boucherm/ShowMotion'
+" Plugin 'boucherm/ShowMotion'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'myusuf3/numbers.vim'
-
+" Plugin 'myusuf3/numbers.vim'
+Plugin 'ryanoasis/vim-webdevicons'
+" Plugin 'Valloric/YouCompleteMe'
 call vundle#end()            " required
 filetype plugin indent on " Filetype auto-detection
 
@@ -83,13 +84,22 @@ set breakindent
 set showbreak=..
 
 " MacVim FontSize
-set gfn=Monaco:h14
+" set gfn=Monaco:h14
 
 " allow the cursor to go anywhere in visual block mode.
 set virtualedit+=block
 set linespace=10 
+
+set wildmenu
+set wildmode=longest:full,full
+
+" Resize splits when the window is resized
+augroup global_autocommands
+    au VimResized * exe "normal! \<c-w>="
+augroup END
 "}}}
 " SHORTCUTS"{{{
+
 " the godlike leader key
 let mapleader = ","
 
@@ -306,6 +316,12 @@ nnoremap <silent> B B:call g:HighB()<CR>
 nnoremap <silent> e e:call g:Highe()<CR>
 nnoremap <silent> E E:call g:HighE()<CR>
 
+nnoremap f :call g:FindChar( 'f', "forward" )<CR>  
+nnoremap t :call g:FindChar( 't', "forward" )<CR>  
+nnoremap F :call g:FindChar( 'F', "backward" )<CR>  
+nnoremap T :call g:FindChar( 'T', "backward" )<CR>  
+nnoremap ; :call g:SeekRepeat()<CR>:call g:HighRepeat()<CR>
+nnoremap , :call g:SeekReverse()<CR>:call g:HighReverse()<CR>))))
 
 " }}}
 " NUMBERS.VIM"{{{
@@ -329,4 +345,5 @@ set wildignore+=*\\node_modules\\**
 " Finally the color scheme. Choose whichever you want from the list in the
 set t_Co=256
 colorscheme Zenburn
+set gfn=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 "}}}

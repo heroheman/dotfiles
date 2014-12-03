@@ -23,7 +23,7 @@ setopt inc_append_history
 plugins=(git bower brew git-flow node npm osx rvm screen tmux vagrant)
 
 source $ZSH/oh-my-zsh.sh
-source ~/.bash_alias
+source ~/.bash_aliases
 source ~/.bash_profile
 
 # User configuration
