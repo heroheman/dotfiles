@@ -3,9 +3,8 @@
 " v.0.2.1 - by Florenz Heldermann
 
 " VUNDLE PLUGINs"{{{
-set nocompatible " Fuck VI... That's for grandpas.
+set nocompatible 
 filetype off
-
 call plug#begin('~/.vim/plugged')
 Plug 'airblade/vim-gitgutter'
 Plug 'bling/vim-airline'
@@ -81,13 +80,22 @@ set breakindent
 set showbreak=..
 
 " MacVim FontSize
-set gfn=Monaco:h14
+" set gfn=Monaco:h14
 
 " allow the cursor to go anywhere in visual block mode.
 set virtualedit+=block
 set linespace=10 
+
+set wildmenu
+set wildmode=longest:full,full
+
+" Resize splits when the window is resized
+augroup global_autocommands
+    au VimResized * exe "normal! \<c-w>="
+augroup END
 "}}}
 " SHORTCUTS"{{{
+
 " the godlike leader key
 let mapleader = ","
 
@@ -344,5 +352,6 @@ set wildignore+=*\\node_modules\\**
 " Theme"{{{
 " Finally the color scheme. Choose whichever you want from the list in the
 set t_Co=256
+set gfn=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 colorscheme zenburn
 "}}}
