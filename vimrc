@@ -2,7 +2,7 @@
 " .vimrc
 " v.0.2.1 - by Florenz Heldermann
 
-" VUNDLE PLUGINs"{{{
+" VIM-PLUG PLUGINs"{{{
 set nocompatible 
 filetype off
 call plug#begin('~/.vim/plugged')
@@ -115,8 +115,8 @@ nnoremap <silent> <Leader>+ :vertical resize +10<CR>
 nnoremap <silent> <Leader>- :vertical resize -10<CR>
 
 " inc / dec value
-nnoremap <A-a> <C-a>
-nnoremap <A-x> <C-x>
+" remapped because of tmux
+nnoremap <C-a> <C-a>
 
 " Circling buffers
 nnoremap <leader>m :bnext<CR>
