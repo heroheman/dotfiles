@@ -7,6 +7,7 @@ set nocompatible
 filetype off
 call plug#begin('~/.vim/plugged')
 Plug 'airblade/vim-gitgutter'
+Plug 'ap/vim-css-color'
 Plug 'bling/vim-airline'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'edkolev/tmuxline.vim'
