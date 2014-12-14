@@ -134,10 +134,11 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 " because of clumsy fingers and too fast typing, this is life-saving (for me)
-" command WQ wq
-" command Wq wq
-" command W w
-" command Q q
+" makes only sense on qwertz keyboards / if you need to press shift
+command! WQ wq
+command! Wq wq
+command! W w
+command! Q q
 
 " bindings for easy split nav {{{
 nnoremap <C-h> <C-w>h
