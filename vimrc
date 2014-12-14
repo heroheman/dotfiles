@@ -24,6 +24,7 @@ Plug 'moll/vim-bbye'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'pangloss/vim-javascript' 
 " Plug 'rking/ag.vim'
+Plug 'ryanoasis/vim-webdevicons'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } 
 Plug 'scrooloose/syntastic'
 Plug 'Shougo/neocomplcache.vim'
@@ -50,7 +51,6 @@ set autoindent " Match indents on new lines.
 set smartindent " Intellegently dedent / indent new lines based on rules.
 set number
 
-" We have VCS -- we don't need this stuff.
 set nobackup " We have vcs, we don't need backups.
 set nowritebackup " We have vcs, we don't need backups.
 set noswapfile " They're just annoying. Who likes them?
@@ -79,9 +79,6 @@ set backspace=2
 set breakindent
 set showbreak=..
 
-" MacVim FontSize
-" set gfn=Monaco:h14
-
 " allow the cursor to go anywhere in visual block mode.
 set virtualedit+=block
 set linespace=10 
@@ -93,6 +90,12 @@ set wildmode=longest:full,full
 augroup global_autocommands
     au VimResized * exe "normal! \<c-w>="
 augroup END
+
+" Return to last edit position when opening files 
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif"
 "}}}
 " SHORTCUTS"{{{
 
@@ -333,12 +336,6 @@ autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview 
 
 "}}}
-" NUMBERS.VIM"{{{
-
-nnoremap <F3> :NumbersToggle<CR>
-nnoremap <F4> :NumbersOnOff<CR>
-
-"}}}
 " WILDIGNORES"{{{
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
@@ -349,10 +346,9 @@ set wildignore+=*\\node_modules\\**
 
 "}}}
 " COLORSCHEME"{{{
-"}}}
-" Theme"{{{
 " Finally the color scheme. Choose whichever you want from the list in the
 set t_Co=256
 set gfn=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 colorscheme zenburn
 "}}}
+
