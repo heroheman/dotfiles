@@ -81,6 +81,7 @@ select yn in "Yes" "No"; do
     esac
 done
 echo "You might want to install the patched font for webdevIcons and arrows";
+echo "Also, what about ctags? brew install ctags?"
 
 
 
