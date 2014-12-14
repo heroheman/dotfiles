@@ -66,7 +66,7 @@ install_plug(){
 }
 
 
-install_dotfiles || exit 1
+# install_dotfiles || exit 1
 get_vimplug || exit 1
 install_plug || exit 1
 # install_vundle || exit 1

@@ -3,7 +3,7 @@
 " v.0.2.1 - by Florenz Heldermann
 
 " VUNDLE PLUGINs"{{{
-set nocompatible " Fuck VI... That's for grandpas.
+set nocompatible 
 filetype off
 call plug#begin('~/.vim/plugged')
 Plug 'airblade/vim-gitgutter'
