@@ -29,6 +29,7 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/syntastic'
 Plug 'Shougo/neocomplcache.vim'
 Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimproc.vim', { 'do' : 'make'}
 Plug 'terryma/vim-multiple-cursors'
 Plug 'Townk/vim-autoclose' 
 Plug 'tpope/vim-commentary'
@@ -186,7 +187,9 @@ nnoremap <leader>y :Unite history/yank<cr>
 nnoremap <leader>f :Unite -start-insert file_rec<CR>
 nnoremap <leader>b :Unite buffer<CR>'
 " nnoremap <leader>/ :Unite -start-insert grep:. -buffer-name=search-buffer<<cr>
-nnoremap <leader>/ :Unite -no-quit -buffer-name=search grep:.<cr>
+" nnoremap <leader>/ :Unite -no-quit -buffer-name=search grep:.<cr>
+" nnoremap <Leader>/ :Unite -no-split -silent -buffer-name=ag grep<CR>
+nnoremap <Leader>/ :Unite -buffer-name=ag grep:.<CR>
 "}}}
 " NEOCOMPLETE {{{
 let g:neocomplcache_enable_at_startup = 1

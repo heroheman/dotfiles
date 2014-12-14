@@ -80,6 +80,10 @@ select yn in "Yes" "No"; do
         No ) echo "okay - thats ok, I guess"; break; 
     esac
 done
+echo "You might want to install the patched font for webdevIcons and arrows";
+
+
+
 # install_dotfiles || exit 1
 # get_vimplug || exit 1
 # install_plug || exit 1
