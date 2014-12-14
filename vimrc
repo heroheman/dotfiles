@@ -3,7 +3,7 @@
 " v.0.2.1 - by Florenz Heldermann
 
 " VIM-PLUG PLUGINs"{{{
-set nocompatible 
+set nocompatible
 filetype off
 call plug#begin('~/.vim/plugged')
 Plug 'airblade/vim-gitgutter'
@@ -12,29 +12,29 @@ Plug 'cakebaker/scss-syntax.vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'elzr/vim-json'
 Plug 'flazz/vim-colorschemes'
-Plug 'groenewege/vim-less' 
-Plug 'indenthtml.vim'  
-Plug 'JulesWang/css.vim' 
+Plug 'groenewege/vim-less'
+Plug 'indenthtml.vim'
+Plug 'JulesWang/css.vim'
 Plug 'junegunn/goyo.vim'
-Plug 'kchmck/vim-coffee-script' 
+Plug 'kchmck/vim-coffee-script'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'mattn/emmet-vim'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'moll/vim-bbye'
 Plug 'mustache/vim-mustache-handlebars'
-Plug 'pangloss/vim-javascript' 
+Plug 'pangloss/vim-javascript'
 " Plug 'rking/ag.vim'
 Plug 'ryanoasis/vim-webdevicons'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } 
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/syntastic'
 Plug 'Shougo/neocomplcache.vim'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make'}
 Plug 'terryma/vim-multiple-cursors'
-Plug 'Townk/vim-autoclose' 
+Plug 'Townk/vim-autoclose'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-markdown' 
-Plug 'tpope/vim-repeat' 
+Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 call plug#end()
 filetype plugin indent on " Filetype auto-detection
@@ -82,7 +82,7 @@ set showbreak=..
 
 " allow the cursor to go anywhere in visual block mode.
 set virtualedit+=block
-set linespace=10 
+set linespace=10
 
 set wildmenu
 set wildmode=longest:full,full
@@ -92,7 +92,7 @@ augroup global_autocommands
     au VimResized * exe "normal! \<c-w>="
 augroup END
 
-" Return to last edit position when opening files 
+" Return to last edit position when opening files
 autocmd BufReadPost *
      \ if line("'\"") > 0 && line("'\"") <= line("$") |
      \   exe "normal! g`\"" |
@@ -144,20 +144,19 @@ command! Wq wq
 command! W w
 command! Q q
 
-" bindings for easy split nav {{{
+" bindings for easy split nav
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 map <leader>w <C-w>v<C-w>l
 map <C-t> <esc>:tabnew<CR>
-" }}}
 
 " Use sane regex's when searching
 nnoremap / /\v
 vnoremap / /\v
 
-" Quick Word replacement - see: http://vimrcfu.com/snippet/30 
+" Quick Word replacement - see: http://vimrcfu.com/snippet/30
 nnoremap <leader>r :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
 nnoremap <leader>R :%s/\<<C-r>=expand('<cword>')<CR>\>/'
 
@@ -167,7 +166,8 @@ noremap <leader><space> :noh<cr>:call clearmatches()<cr>
 " Quick buffer switching - like cmd-tab'ing
 nnoremap <leader><leader> <c-^>
 
-
+" remove unwanted trailing whitespaces in the whole file
+nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 "}}}
 " UNITE "{{{
 let g:unite_source_history_yank_enable=1
@@ -318,7 +318,7 @@ set fdm=indent
 set fdc=4
 set fdl=1
 
-" Folding: Toggle with F9 
+" Folding: Toggle with F9
 inoremap <F9> <C-O>za
 nnoremap <F9> za
 onoremap <F9> <C-C>za
@@ -336,7 +336,7 @@ autocmd BufRead,BufEnter .vimrc setlocal foldmethod=marker
 
 " autosaves and loads folding info
 autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview 
+autocmd BufWinEnter *.* silent loadview
 
 "}}}
 " WILDIGNORES"{{{
