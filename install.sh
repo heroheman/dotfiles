@@ -65,8 +65,26 @@ install_plug(){
     vim +PlugInstall +qall 
 }
 
+echo "Backup existing Aliases (in $dotfilesOld) and create aliases?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) install_dotfiles; break;;
+        No ) echo "okay - thats ok, I guess"; break;; 
+    esac
+done
+
+echo "Install Vim-Plug and get Plugins?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) get_vimplug; install_plug; break;;
+        No ) echo "okay - thats ok, I guess"; break; 
+    esac
+done
+echo "You might want to install the patched font for webdevIcons and arrows";
+
+
 
 # install_dotfiles || exit 1
-get_vimplug || exit 1
-install_plug || exit 1
+# get_vimplug || exit 1
+# install_plug || exit 1
 # install_vundle || exit 1
