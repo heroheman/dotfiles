@@ -4,7 +4,7 @@
 ########## Variables
 dotfiles=~/dotfiles                    # dotfiles directory
 dotfilesOld=~/dotfiles_old             # old dotfiles backup directory
-files="bashrc bash_aliases vimrc vim zshrc tmux.conf"    # list of files/folders to symlink in homedir
+files="bashrc bash_aliases vimrc vim nvimrc nvim zshrc tmux.conf"    # list of files/folders to symlink in homedir
 
 ##########
 
