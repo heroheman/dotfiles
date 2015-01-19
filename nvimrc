@@ -39,7 +39,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
 call plug#end()
 filetype plugin indent on " Filetype auto-detection
@@ -319,7 +318,7 @@ map <C-e> :NERDTreeToggle<CR>
 
 "close vim if nerdtree is the last remaining window
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-let NERDTreeHijackNetrw = 1
+
 "}}}
 " TAGBAR "{{{
 map <leader>t :TagbarToggle<CR>
