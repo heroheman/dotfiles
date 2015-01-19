@@ -4,7 +4,7 @@
 ########## Variables
 dotfiles=~/dotfiles                    # dotfiles directory
 dotfilesOld=~/dotfiles_old             # old dotfiles backup directory
-files="bashrc bash_aliases vimrc vim nvimrc nvim zshrc tmux.conf"    # list of files/folders to symlink in homedir
+files="bashrc bash_aliases vimrc nvimrc zshrc tmux.conf"    # list of files/folders to symlink in homedir
 
 ##########
 
@@ -12,20 +12,25 @@ install_dotfiles(){
     # create dotfiles_old in homedir
     echo "Creating $dotfilesOld for backup of any existing dotfiles in ~"
     mkdir -p $dotfilesOld
-    echo "...done"
+    echo "...done " \n
 
     # change to the dotfiles directory
-    echo "Changing to the $dotfiles directory"
     cd $dotfiles
-    echo "...done"
-
+    create_nvimrc
     # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks 
     for file in $files; do
         echo "Moving $file from ~ to $dotfilesOld"
         mv ~/.$file ~/dotfiles_old/
-        echo "Creating symlink to $file in home directory."
+        echo "Creating symlink to $file in home directory. \n"
         ln -s $dotfiles/$file ~/.$file
     done
+}
+
+
+create_nvimrc(){
+    echo "symlink vimrc to nvimrc"
+    ln -s ~/.vimrc ~/.nvimrc
+    ln -s $dotfiles/vim $dotfiles/nvim
 }
 
 # vim vundle
@@ -45,21 +50,26 @@ get_vundle(){
 install_vundle(){
     echo "Update/Install plugins using vundle"
     vim +PluginInstall +qall 
-}
 
+}
+# vim-plug
 get_vimplug(){
     echo "VIM: Checking if VimPlug is installed"
-    if [ ! -d ~/.vim/autoload ]; then
-        mkdir -p ~/.vim/bundle
+
+    if [ ! -d ~/.vim ]; then
+        mkdir -p ~/.vim
     fi
 
+    if [ ! -d ~/.vim/autoload ]; then
+        mkdir -p ~/.vim/autoload
+    fi
+    echo "Installing vim-plug"
     if [ ! -e ~/.vim/autoload/plug.vim ]; then
-        echo "Installing vim-plug"
         curl -fLo ~/.vim/autoload/plug.vim \
                 https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     fi
 }
-# Install Vundle Plugins
+# Install vim-plug Plugins
 install_plug(){
     echo "Update/Install plugins using Vim-Plug"
     vim +PlugInstall +qall 
