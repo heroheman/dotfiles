@@ -1,6 +1,5 @@
 " vim:fdm=marker
 " .vimrc
-" v.0.3.1 - by Florenz Heldermann
 
 " VIM-PLUG PLUGINs"{{{
 set nocompatible
@@ -16,7 +15,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'groenewege/vim-less'
 Plug 'vim-scripts/indenthtml.vim'
 Plug 'JulesWang/css.vim'
-Plug 'junegunn/goyo.vim'
+Plug 'junegunn/goyo.vim', {'on': 'Gundo'}
 Plug 'kchmck/vim-coffee-script'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'majutsushi/tagbar'
@@ -26,13 +25,13 @@ Plug 'moll/vim-bbye'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
-" Plug 'rking/ag.vim'
 Plug 'ryanoasis/vim-webdevicons'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/syntastic'
 Plug 'Shougo/neocomplcache.vim'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make'}
+Plug 'sjl/gundo.vim', {'on': 'GundoToggle'}
 Plug 'terryma/vim-multiple-cursors'
 Plug 'Townk/vim-autoclose'
 Plug 'tpope/vim-commentary'
@@ -206,6 +205,7 @@ nnoremap <Leader>/ :Unite -buffer-name=ag grep:.<CR>
 " NEOCOMPLETE {{{
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
+inoremap jj <C-Y>
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplcache.
@@ -300,10 +300,15 @@ map <Leader>p <Plug>(easymotion-prefix)
 
 
 "}}}
+" GUNDO
+let g:gundo_width = 60
+let g:gundo_preview_height = 40
+nnoremap <leader>g :GundoToggle<CR>
+
 " EMMET"{{{
 
 " Remap the key to TAB
-imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+imap hh <C-y>,
 
 "}}}
 " NERDTREE "{{{
@@ -351,8 +356,8 @@ autocmd BufRead,BufEnter .vimrc setlocal foldmethod=marker
 
 
 " autosaves and loads folding info
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
+" autocmd BufWinLeave *.* mkview
+" autocmd BufWinEnter *.* silent loadview
 
 "}}}
 " WILDIGNORES"{{{
@@ -368,6 +373,7 @@ set wildignore+=*\\node_modules\\**
 " if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnome-terminal"
     set t_Co=256
 " endif
+set term=screen-256color
 set background=dark
 set gfn=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 colorscheme zenburn

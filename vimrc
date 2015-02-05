@@ -1,6 +1,6 @@
 " vim:fdm=marker
-" .vimrc
-" v.0.3.1 - by Florenz Heldermann
+" .vimrc / .nvimrc
+" by Florenz Heldermann - florenz.heldermann@gmail.com
 
 " VIM-PLUG PLUGINs"{{{
 set nocompatible
@@ -368,6 +368,7 @@ set wildignore+=*\\node_modules\\**
 " if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnome-terminal"
     set t_Co=256
 " endif
+set term=screen-256color
 set background=dark
 set gfn=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 colorscheme zenburn
