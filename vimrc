@@ -33,6 +33,8 @@ Plug 'scrooloose/syntastic'
 Plug 'Shougo/neocomplcache.vim'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make'}
+Plug 'sjl/gundo.vim',
+Plug 'sjl/vitality.vim',
 Plug 'terryma/vim-multiple-cursors'
 Plug 'Townk/vim-autoclose'
 Plug 'tpope/vim-commentary'
@@ -42,8 +44,9 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
 call plug#end()
-filetype plugin indent on " Filetype auto-detection
+filetype plugin indent on 
 
+let g:plug_threads=1
 "}}}
 " GLOBAL SETTINGS (sets)"{{{
 syntax on " Syntax highlighting
