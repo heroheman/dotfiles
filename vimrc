@@ -18,7 +18,7 @@ Plug 'vim-scripts/indenthtml.vim'
 Plug 'JulesWang/css.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'kchmck/vim-coffee-script'
-Plug 'Lokaltog/vim-easymotion'
+" Plug 'Lokaltog/vim-easymotion'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
 Plug 'maxbrunsfeld/vim-yankstack'
@@ -26,13 +26,14 @@ Plug 'moll/vim-bbye'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
-" Plug 'rking/ag.vim'
+Plug 'rking/ag.vim'
 Plug 'ryanoasis/vim-webdevicons'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/syntastic'
 Plug 'Shougo/neocomplcache.vim'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make'}
+Plug 'Shougo/neomru.vim',
 Plug 'sjl/gundo.vim',
 Plug 'sjl/vitality.vim',
 Plug 'terryma/vim-multiple-cursors'
@@ -41,7 +42,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-vinegar'
+" Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
 call plug#end()
 filetype plugin indent on 
@@ -102,9 +103,18 @@ augroup END
 
 " Return to last edit position when opening files
 autocmd BufReadPost *
-     \ if line("'\"") > 0 && line("'\"") <= line("$") |
-     \   exe "normal! g`\"" |
-     \ endif"
+            \ if line("'\"") > 0 && line("'\"") <= line("$") |
+            \   exe "normal! g`\"" |
+            \ endif"
+
+" Persistent Undo
+if exists("&undodir")
+    set undofile          "Persistent undo! Pure money.
+    let &undodir=&directory
+    set undolevels=500
+    set undoreload=500
+endif
+
 "}}}
 " SHORTCUTS"{{{
 
@@ -152,6 +162,12 @@ command! Wq wq
 command! W w
 command! Q q
 
+" jump to end of line - easier to reach / only useful on qwertz
+nnoremap ß $
+
+" qwerty map 
+noremap ; :
+
 " bindings for easy split nav
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
@@ -181,19 +197,38 @@ nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 let g:unite_source_history_yank_enable=1
 let g:unite_source_history_yank_limit=1000
 
-
-call unite#custom#source('file_rec', 'ignore_pattern', 'bower_components/\|node_modules/\|\.git')
+call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', join([
+    \ '\.\(git\|svn\|vagrant\)\/', 
+    \ 'tmp\/',
+    \ 'app\/storage\/',
+    \ 'bower_components\/',
+    \ 'fonts\/',
+    \ 'sass-cache\/',
+    \ 'node_modules\/',
+    \ '\.\(jpe?g\|gif\|png\)$',
+    \ ], 
+    \ '\|'))
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#custom#profile('files', 'filters', ['sorter_rank'])
+
 if executable('ag')
     let g:unite_source_grep_command='ag'
     let g:unite_source_grep_default_opts='--nocolor --line-numbers --nogroup -S -C4'
     let g:unite_source_grep_recursive_opt=''
 endif
 
-nnoremap <leader>y :Unite history/yank<cr>
-nnoremap <leader>f :Unite -start-insert file_rec<CR>
-nnoremap <leader>b :Unite buffer<CR>'
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+  " Enable navigation with control-j and control-k in insert mode
+  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+endfunction
+
+
+nnoremap <leader>y :Unite -no-split -buffer-name=YANK history/yank<cr>
+" nnoremap <leader>f :Unite -start-insert file_rec<CR>
+nnoremap <leader>f :Unite -no-split -buffer-name=FILES -start-insert file_rec/async:!<CR>
+nnoremap <leader>b :Unite -no-split -buffer-name=BUFFERS buffer<CR>'
 
 let g:unite_source_grep_default_opts = "-iRHn"
             \ . " --exclude='*.svn*'"
@@ -205,7 +240,14 @@ let g:unite_source_grep_default_opts = "-iRHn"
             \ . " --exclude-dir='.svn'"
             \ . " --exclude-dir='.git'"
             \ . " --exclude-dir='node_modules'"
+            \ . " --exclude-dir='bower_components'"
+            \ . " --exclude-dir='.sass-cache'"
 nnoremap <Leader>/ :Unite -buffer-name=ag grep:.<CR>
+" nnoremap <F6> :Unite -start-insert -auto-resize file file_rec/async file_mru everything<CR>
+
+"}}}
+" GUNDO"{{{
+nnoremap <F6> :GundoToggle<CR>
 "}}}
 " NEOCOMPLETE {{{
 let g:neocomplcache_enable_at_startup = 1
@@ -222,10 +264,10 @@ let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
 " Define dictionary.
 let g:neocomplcache_dictionary_filetype_lists = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
+            \ 'default' : '',
+            \ 'vimshell' : $HOME.'/.vimshell_hist',
+            \ 'scheme' : $HOME.'/.gosh_completions'
+            \ }
 
 " Define keyword.
 if !exists('g:neocomplcache_keyword_patterns')
@@ -277,8 +319,8 @@ endif"
 " iTerm2"{{{
 
 " Change Cursor in insert Mode
-let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+" let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+" let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 
 " If you wrap lines, vim by default won't let you move down one line to the
 " wrapped portion. This fixes that.  noremap j gj
@@ -297,17 +339,10 @@ nnoremap <leader>c <Plug>CommentaryLine
 " let g:ctrlp_max_height = 30
 
 "}}}
-" EASYMOTION {{{
-
-" set em prefix
-map <Leader>p <Plug>(easymotion-prefix)
-
-
-"}}}
 " EMMET"{{{
 
 " Remap the key to TAB
-imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+imap hh <C-y>, 
 
 "}}}
 " NERDTREE "{{{
@@ -366,11 +401,12 @@ set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 set wildignore+=*\\public\\**
 set wildignore+=*\\bower_components\\**
 set wildignore+=*\\node_modules\\**
+set wildignore+=*\\.sass-cache\\**
 
 "}}}
 " COLORSCHEME"{{{
 " if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnome-terminal"
-    set t_Co=256
+set t_Co=256
 " endif
 set term=screen-256color
 set background=dark
