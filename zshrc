@@ -38,3 +38,4 @@ LC_ALL=en_US.UTF-8
 
 export EDITOR='vim'
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

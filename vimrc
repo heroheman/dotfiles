@@ -6,21 +6,21 @@
 set nocompatible
 filetype off
 call plug#begin('~/.vim/plugged')
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
 Plug 'bling/vim-airline'
+Plug 'burnettk/vim-angular'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'elzr/vim-json'
 Plug 'flazz/vim-colorschemes'
 Plug 'groenewege/vim-less'
-Plug 'vim-scripts/indenthtml.vim'
-Plug 'JulesWang/css.vim'
-Plug 'junegunn/goyo.vim'
-Plug 'kchmck/vim-coffee-script'
-" Plug 'Lokaltog/vim-easymotion'
-Plug 'majutsushi/tagbar'
-Plug 'mattn/emmet-vim'
+Plug 'godlygeek/tabular', { 'on': 'Tab' }
+Plug 'JulesWang/css.vim', {'for': ['scss','less','css']}
+Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
+Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' } 
+Plug 'mattn/emmet-vim', {'for': ['html','mustache','scss','less','css','javascript','django']}
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'moll/vim-bbye'
 Plug 'mustache/vim-mustache-handlebars'
@@ -40,14 +40,14 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'Townk/vim-autoclose'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-repeat'
-" Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
 call plug#end()
 filetype plugin indent on 
 
-let g:plug_threads=1
+" let g:plug_threads=1
 "}}}
 " GLOBAL SETTINGS (sets)"{{{
 syntax on " Syntax highlighting
@@ -98,21 +98,21 @@ set wildmode=longest:full,full
 
 " Resize splits when the window is resized
 augroup global_autocommands
-    au VimResized * exe "normal! \<c-w>="
+au VimResized * exe "normal! \<c-w>="
 augroup END
 
 " Return to last edit position when opening files
 autocmd BufReadPost *
-            \ if line("'\"") > 0 && line("'\"") <= line("$") |
-            \   exe "normal! g`\"" |
-            \ endif"
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \   exe "normal! g`\"" |
+        \ endif"
 
 " Persistent Undo
 if exists("&undodir")
-    set undofile          "Persistent undo! Pure money.
-    let &undodir=&directory
-    set undolevels=500
-    set undoreload=500
+set undofile          "Persistent undo! Pure money.
+let &undodir=&directory
+set undolevels=500
+set undoreload=500
 endif
 
 "}}}
@@ -200,6 +200,8 @@ let g:unite_source_history_yank_limit=1000
 call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', join([
     \ '\.\(git\|svn\|vagrant\)\/', 
     \ 'tmp\/',
+    \ 'dist\/',
+    \ 'public\/',
     \ 'app\/storage\/',
     \ 'bower_components\/',
     \ 'fonts\/',
@@ -213,7 +215,7 @@ call unite#custom#profile('files', 'filters', ['sorter_rank'])
 
 if executable('ag')
     let g:unite_source_grep_command='ag'
-    let g:unite_source_grep_default_opts='--nocolor --line-numbers --nogroup -S -C4'
+    let g:unite_source_grep_default_opts='--nocolor --line-numbers --nogroup -S'
     let g:unite_source_grep_recursive_opt=''
 endif
 
@@ -227,23 +229,23 @@ endfunction
 
 nnoremap <leader>y :Unite -no-split -buffer-name=YANK history/yank<cr>
 " nnoremap <leader>f :Unite -start-insert file_rec<CR>
-nnoremap <leader>f :Unite -no-split -buffer-name=FILES -start-insert file_rec/async:!<CR>
+nnoremap <leader>f :Unite -no-split -buffer-name=FILES -start-insert file_rec/async:<CR>
 nnoremap <leader>b :Unite -no-split -buffer-name=BUFFERS buffer<CR>'
+nnoremap <leader>a :UniteResume<CR>
+nnoremap <leader>an :UnitePrevious<CR>
+nnoremap <leader>am :UniteNext<CR>
 
-let g:unite_source_grep_default_opts = "-iRHn"
-            \ . " --exclude='*.svn*'"
-            \ . " --exclude='*.svn*'"
-            \ . " --exclude='*.log*'"
-            \ . " --exclude='*tmp*'"
-            \ . " --exclude-dir='**/tmp'"
-            \ . " --exclude-dir='CVS'"
-            \ . " --exclude-dir='.svn'"
-            \ . " --exclude-dir='.git'"
-            \ . " --exclude-dir='node_modules'"
-            \ . " --exclude-dir='bower_components'"
-            \ . " --exclude-dir='.sass-cache'"
 nnoremap <Leader>/ :Unite -buffer-name=ag grep:.<CR>
 " nnoremap <F6> :Unite -start-insert -auto-resize file file_rec/async file_mru everything<CR>
+
+"}}}
+" GOYO & LIMELIGHT"{{{
+
+autocmd User GoyoEnter Limelight
+autocmd User GoyoLeave Limelight!
+let g:limelight_conceal_ctermfg = 'gray'
+let g:limelight_conceal_guifg = '#777777'
+let g:limelight_default_coefficient = 0.7
 
 "}}}
 " GUNDO"{{{
@@ -299,6 +301,24 @@ inoremap <expr><C-e>  neocomplcache#cancel_popup()
 ""\<Space>"
 
 " }}}
+" SYNTASTIC "{{{
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" let g:syntastic_html_checkers = ['validator']
+let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_html_tidy_ignore_errors = ['proprietary attribute "ng-']
+
+"}}}
+" ANGULAR VIM"{{{
+let g:angular_filename_convention = 'camelcased'
+"}}}
 " AIRLINE"{{{
 
 " Vim Airline on single view
@@ -316,6 +336,16 @@ if !exists('g:airline_powerline_fonts')
     let g:airline_right_sep='â€¹'
 endif"
 "}}}
+" TMUXLINE"{{{
+let g:tmuxline_preset = {
+      \'a'    : '#S',
+      \'c'    : ['#(whoami)', '#(uptime | cud -d " " -f 1,2,3)'],
+      \'win'  : ['#I', '#W'],
+      \'cwin' : ['#I', '#W', '#F'],
+      \'x'    : '#(date)',
+      \'y'    : ['%R', '%a', '%Y'],
+      \'z'    : '#H'}
+"}}}
 " iTerm2"{{{
 
 " Change Cursor in insert Mode
@@ -331,6 +361,13 @@ noremap k gk
 
 " Map the key for toggling comments with vim-commentary
 nnoremap <leader>c <Plug>CommentaryLine
+
+" Use gcc to comment out a line (takes a count), 
+" gc to comment out the target of a motion (for example, gcap to comment out a paragraph), 
+" gc in visual mode to comment out the selection, 
+" and gc in operator pending mode to target a comment. 
+" You can also use it as a command, either with a range like :7,17Commentary, or as part of a :global invocation like with :g/TODO/Commentary. That's it.
+" Oh, and it uncomments, too. The above maps actually toggle, and gcgc uncomments a set of adjacent commented lines.
 
 "}}}
 " CTRL-P"{{{
@@ -358,10 +395,6 @@ map <C-e> :NERDTreeToggle<CR>
 "close vim if nerdtree is the last remaining window
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 let NERDTreeHijackNetrw = 1
-"}}}
-" TAGBAR "{{{
-map <leader>t :TagbarToggle<CR>
-map <C-t> :TagbarToggle<CR>
 "}}}
 " VIM-REPEAT"{{{
 
@@ -394,6 +427,24 @@ autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview
 
 "}}}
+" TABULAR"{{{
+
+if exists(":Tabularize")
+    nmap <Leader>t= :Tabularize /=<CR>
+    vmap <Leader>t= :Tabularize /=<CR>
+    nmap <Leader>t: :Tabularize /:\zs<CR>
+    vmap <Leader>t: :Tabularize /:\zs<CR>
+endif
+
+"}}}
+" Multiple Cursors"{{{
+
+" Default mapping
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+"}}}
 " WILDIGNORES"{{{
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
@@ -411,6 +462,7 @@ set t_Co=256
 set term=screen-256color
 set background=dark
 set gfn=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
+" colorscheme zenburn
 colorscheme zenburn
 "}}}
 
