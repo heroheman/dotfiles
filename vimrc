@@ -80,19 +80,17 @@ set noswapfile " They're just annoying. Who likes them?
 set splitbelow        " new hoz splits go below
 set splitright        " new vert splits go right
 
-" don't nag me when hiding buffers"{{{
+" don't nag me when hiding buffers"
 set hidden " allow me to have buffers with unsaved changes.
 set autoread " when a file has changed on disk, just load it. Don't ask.
-"}}}
 
-" Make search more sane"{{{
+" Make search more sane"
 set ignorecase " case insensitive search
 set smartcase " If there are uppercase letters, become case-sensitive.
 set incsearch " live incremental searching
 set showmatch " live match highlighting
 set hlsearch " highlight matches
 set gdefault " use the `g` flag by default.
-"}}}
 
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
@@ -102,41 +100,34 @@ set visualbell           " don't beep
 set noerrorbells         " don't beep
 set backspace=2
 
-" comment so that the whitespace works >.> ""{{{
+" comment so that the whitespace works >.> 
 set breakindent
 set showbreak=..
-"}}}
 
-" allow the cursor to go anywhere in visual block mode."{{{
+" allow the cursor to go anywhere in visual block mode."
 set virtualedit+=block
 set linespace=10
-"}}}
 
-" Wildmenu"{{{
-set wildmenu
-set wildmode=longest:full,full
-"}}}
 
-" Resize splits when the window is resized"{{{
+" Resize splits when the window is resized
 augroup global_autocommands
-au VimResized * exe "normal! \<c-w>="
+    au VimResized * exe "normal! \<c-w>="
 augroup END
-"}}}
 
-" Return to last edit position when opening files"{{{
+" Return to last edit position when opening files"
 autocmd BufReadPost *
-        \ if line("'\"") > 0 && line("'\"") <= line("$") |
-        \   exe "normal! g`\"" |
-        \ endif"
-"}}}
-" Persistent Undo"{{{
+            \ if line("'\"") > 0 && line("'\"") <= line("$") |
+            \   exe "normal! g`\"" |
+            \ endif"
+
+" Persistent Undo"
 if exists("&undodir")
-set undofile          "Persistent undo! Pure money.
-let &undodir=&directory
-set undolevels=500
-set undoreload=500
+    set undofile          "Persistent undo! Pure money.
+    let &undodir=&directory
+    set undolevels=500
+    set undoreload=500
 endif
-"}}}
+
 "}}}
 " SHORTCUTS"{{{
 
@@ -147,11 +138,35 @@ let mapleader = ","
 nnoremap ; :
 vnoremap ; :
 
-
 " So we don't have to reach for escape to leave insert mode.
 inoremap jf <esc>
+inoremap fj <esc>
 
-" SPLITS
+" inc / dec value
+" remapped because of tmux
+nnoremap <C-y> <C-a>
+
+
+" Move visual block
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
+" Use sane regex's when searching
+nnoremap / /\v
+vnoremap / /\v
+" Clear match highlighting
+noremap <leader><space> :noh<cr>:call clearmatches()<cr>
+
+" Quick Word replacement - see: http://vimrcfu.com/snippet/30
+nnoremap <leader>r :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
+nnoremap <leader>R :%s/\<<C-r>=expand('<cword>')<CR>\>/'
+
+" remove unwanted trailing whitespaces in the whole file
+nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+
+"}}}
+" SPLITS"{{{
 " Quick Split View Sizing
 nnoremap <silent> <Leader>+ :vertical resize +10<CR>
 nnoremap <silent> <Leader>- :vertical resize -10<CR>
@@ -172,12 +187,37 @@ map <C-t> <esc>:tabnew<CR>
 
 " create new vsplit, and switch to it.
 noremap <leader>v <C-w>v
+"}}}
+" FOLDING "{{{
+set fdm=indent
+set fdc=4
+set fdl=1
+
+" Folding: Toggle with F9
+inoremap <F9> <C-O>za
+nnoremap <F9> za
+onoremap <F9> <C-C>za
+vnoremap <F9> zf
+
+nnoremap <F10> zM
+
+" Folding: Toggle with SPACE (in normal mode)
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
+
+" Folding: Filetype Settings
+" autocmd BufRead,BufEnter *.css setlocal foldmethod=marker
+" autocmd BufRead,BufEnter *.scss setlocal foldmethod=marker
+autocmd BufRead,BufNewFile,BufEnter *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
+autocmd BufRead,BufEnter .vimrc setlocal foldmethod=marker
 
 
-" inc / dec value
-" remapped because of tmux
-nnoremap <C-y> <C-a>
+" autosaves and loads folding info
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
 
+"}}}
+" BUFFERS"{{{
 " Circling buffers
 nnoremap <leader>m :bnext<CR>
 nnoremap <leader>n :bprevious<CR>
@@ -186,12 +226,10 @@ nnoremap <leader>n :bprevious<CR>
 " maps it to leader-q" maps it to leader-q
 nnoremap <Leader>q :Bdelete<CR>
 
-
-" Move visual block
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-
-" KEYBOARD LAYOUT SPECIFIC
+" Quick buffer switching - like cmd-tab'ing
+nnoremap <leader><leader> <c-^>
+"}}}
+" KEYBOARD LAYOUT SPECIFIC"{{{
 " because of clumsy fingers and too fast typing, this is life-saving (for me)
 " makes only sense on qwertz keyboards / if you need to press shift
 " command! WQ wq
@@ -204,26 +242,21 @@ vnoremap K :m '<-2<CR>gv=gv
 
 " qwerty map 
 noremap ; :
+"}}}
+" WILDIGNORES {{{
+set wildmenu
+set wildmode=longest:full,full
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
-" Use sane regex's when searching
-nnoremap / /\v
-vnoremap / /\v
+set wildignore+=*\\public\\**
+set wildignore+=*\\bower_components\\**
+set wildignore+=*\\node_modules\\**
+set wildignore+=*\\.sass-cache\\**
 
-" Quick Word replacement - see: http://vimrcfu.com/snippet/30
-nnoremap <leader>r :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
-nnoremap <leader>R :%s/\<<C-r>=expand('<cword>')<CR>\>/'
-
-" Clear match highlighting
-noremap <leader><space> :noh<cr>:call clearmatches()<cr>
-
-" Quick buffer switching - like cmd-tab'ing
-nnoremap <leader><leader> <c-^>
-
-" remove unwanted trailing whitespaces in the whole file
-nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
-
+"}}}
+" RELATIVENUMBER"{{{
 set relativenumber
-
 " toggle line numbering mode
 if exists("+relativenumber")
     if v:version >= 400
@@ -261,31 +294,29 @@ if exists("+relativenumber")
     endif
     nnoremap <silent> <leader>z :call RelativeNumberToggle()<CR>
 else                  " fallback
-   set number          " show line numbers
+    set number          " show line numbers
     " inverts numbering
     nnoremap <silent> <leader>z :set number! number?<CR>
 endif
-
-
 "}}}
 " UNITE "{{{
 let g:unite_source_history_yank_enable=1
 let g:unite_source_history_yank_limit=1000
 
 call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', join([
-    \ '\.\(git\|svn\|vagrant\)\/', 
-    \ 'tmp\/',
-    \ 'dist\/',
-    \ 'public\/',
-    \ 'core\/',
-    \ 'app\/storage\/',
-    \ 'bower_components\/',
-    \ 'fonts\/',
-    \ 'sass-cache\/',
-    \ 'node_modules\/',
-    \ '\.\(jpe?g\|gif\|png\)$',
-    \ ], 
-    \ '\|'))
+            \ '\.\(git\|svn\|vagrant\)\/', 
+            \ 'tmp\/',
+            \ 'dist\/',
+            \ 'public\/',
+            \ 'core\/',
+            \ 'app\/storage\/',
+            \ 'bower_components\/',
+            \ 'fonts\/',
+            \ 'sass-cache\/',
+            \ 'node_modules\/',
+            \ '\.\(jpe?g\|gif\|png\)$',
+            \ ], 
+            \ '\|'))
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#custom#profile('files', 'filters', ['sorter_rank'])
 
@@ -297,9 +328,9 @@ endif
 
 autocmd FileType unite call s:unite_settings()
 function! s:unite_settings()
-  " Enable navigation with control-j and control-k in insert mode
-  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+    " Enable navigation with control-j and control-k in insert mode
+    imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+    imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
 endfunction
 
 
@@ -315,12 +346,6 @@ nnoremap <Leader>/ :Unite -buffer-name=ag grep:.<CR>
 " nnoremap <F6> :Unite -start-insert -auto-resize file file_rec/async file_mru everything<CR>
 
 
-"}}}
-" WEBDEV ICONS"{{{
-let g:webdevicons_enable_unite = 1
-let g:webdevicons_enable_airline_statusline = 1
-let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
-let g:webdevicons_conceal_nerdtree_brackets = 0
 "}}}
 " FZF"{{{
 nnoremap <leader>e :FZF<cr>
@@ -439,11 +464,11 @@ endif"
 "}}}
 " TMUXLINE"{{{
 let g:tmuxline_preset = {
-      \'a'    : '#S',
-      \'win'  : ['#I', '#W'],
-      \'cwin' : ['#I', '#W', '#F'],
-      \'y'    : ['%R', '%a', '%Y'],
-      \'z'    : '#H'}
+            \'a'    : '#S',
+            \'win'  : ['#I', '#W'],
+            \'cwin' : ['#I', '#W', '#F'],
+            \'y'    : ['%R', '%a', '%Y'],
+            \'z'    : '#H'}
 "}}}
 " iTerm2"{{{
 
@@ -503,33 +528,6 @@ nmap <F8> :TagbarToggle<CR>
 silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
 "}}}
-" FOLDING "{{{
-set fdm=indent
-set fdc=4
-set fdl=1
-
-" Folding: Toggle with F9
-inoremap <F9> <C-O>za
-nnoremap <F9> za
-onoremap <F9> <C-C>za
-vnoremap <F9> zf
-
-" Folding: Toggle with SPACE (in normal mode)
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-vnoremap <Space> zf
-
-" Folding: Filetype Settings
-" autocmd BufRead,BufEnter *.css setlocal foldmethod=marker
-" autocmd BufRead,BufEnter *.scss setlocal foldmethod=marker
-autocmd BufRead,BufNewFile,BufEnter *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
-autocmd BufRead,BufEnter .vimrc setlocal foldmethod=marker
-
-
-" autosaves and loads folding info
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
-
-"}}}
 " TABULAR"{{{
 
 if exists(":Tabularize")
@@ -548,15 +546,11 @@ let g:multi_cursor_prev_key='<C-p>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
 "}}}
-" WILDIGNORES"{{{
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
-set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
-
-set wildignore+=*\\public\\**
-set wildignore+=*\\bower_components\\**
-set wildignore+=*\\node_modules\\**
-set wildignore+=*\\.sass-cache\\**
-
+" WEBDEV ICONS"{{{
+let g:webdevicons_enable_unite = 1
+let g:webdevicons_enable_airline_statusline = 1
+let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
+let g:webdevicons_conceal_nerdtree_brackets = 0
 "}}}
 " COLORSCHEME"{{{
 " if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnome-terminal"
