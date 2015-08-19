@@ -20,7 +20,8 @@ Plug 'JulesWang/css.vim', {'for': ['scss','less','css']}
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' } 
-Plug 'mattn/emmet-vim', {'for': ['html','mustache','scss','less','css','javascript','django']}
+Plug 'mattn/emmet-vim'
+Plug 'majutsushi/tagbar'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'moll/vim-bbye'
 Plug 'mustache/vim-mustache-handlebars'
@@ -44,10 +45,20 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'wincent/terminus'
 call plug#end()
 filetype plugin indent on 
 
 " let g:plug_threads=1
+
+" Source vimrc on saving
+autocmd! bufwritepost $MYVIMRC source $MYVIMRC
+
+" Quickly edit/reload the vimrc file
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+" no longer necessary
+" nmap <silent> <leader>sv :so $MYVIMRC<CR>
+
 "}}}
 " GLOBAL SETTINGS (sets)"{{{
 syntax on " Syntax highlighting
@@ -59,23 +70,29 @@ set smarttab " let's tab key insert 'tab stops', and bksp deletes tabs.
 set shiftround " tab / shifting moves to closest tabstop.
 set autoindent " Match indents on new lines.
 set smartindent " Intellegently dedent / indent new lines based on rules.
+set relativenumber
 set number
 
 set nobackup " We have vcs, we don't need backups.
 set nowritebackup " We have vcs, we don't need backups.
 set noswapfile " They're just annoying. Who likes them?
 
-" don't nag me when hiding buffers
+set splitbelow        " new hoz splits go below
+set splitright        " new vert splits go right
+
+" don't nag me when hiding buffers"{{{
 set hidden " allow me to have buffers with unsaved changes.
 set autoread " when a file has changed on disk, just load it. Don't ask.
+"}}}
 
-" Make search more sane
+" Make search more sane"{{{
 set ignorecase " case insensitive search
 set smartcase " If there are uppercase letters, become case-sensitive.
 set incsearch " live incremental searching
 set showmatch " live match highlighting
 set hlsearch " highlight matches
 set gdefault " use the `g` flag by default.
+"}}}
 
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
@@ -85,36 +102,41 @@ set visualbell           " don't beep
 set noerrorbells         " don't beep
 set backspace=2
 
-" comment so that the whitespace works >.> "
+" comment so that the whitespace works >.> ""{{{
 set breakindent
 set showbreak=..
+"}}}
 
-" allow the cursor to go anywhere in visual block mode.
+" allow the cursor to go anywhere in visual block mode."{{{
 set virtualedit+=block
 set linespace=10
+"}}}
 
+" Wildmenu"{{{
 set wildmenu
 set wildmode=longest:full,full
+"}}}
 
-" Resize splits when the window is resized
+" Resize splits when the window is resized"{{{
 augroup global_autocommands
 au VimResized * exe "normal! \<c-w>="
 augroup END
+"}}}
 
-" Return to last edit position when opening files
+" Return to last edit position when opening files"{{{
 autocmd BufReadPost *
         \ if line("'\"") > 0 && line("'\"") <= line("$") |
         \   exe "normal! g`\"" |
         \ endif"
-
-" Persistent Undo
+"}}}
+" Persistent Undo"{{{
 if exists("&undodir")
 set undofile          "Persistent undo! Pure money.
 let &undodir=&directory
 set undolevels=500
 set undoreload=500
 endif
-
+"}}}
 "}}}
 " SHORTCUTS"{{{
 
@@ -125,16 +147,32 @@ let mapleader = ","
 nnoremap ; :
 vnoremap ; :
 
-" Quickly edit/reload the vimrc file
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 " So we don't have to reach for escape to leave insert mode.
 inoremap jf <esc>
 
+" SPLITS
 " Quick Split View Sizing
 nnoremap <silent> <Leader>+ :vertical resize +10<CR>
 nnoremap <silent> <Leader>- :vertical resize -10<CR>
+
+" Use Arrow Keyz to resize window
+noremap <up>    <C-W>+
+noremap <down>  <C-W>-
+noremap <left>  3<C-W><
+noremap <right> 3<C-W>>
+
+" bindings for easy split nav
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+map <leader>w <C-w>v<C-w>l
+map <C-t> <esc>:tabnew<CR>
+
+" create new vsplit, and switch to it.
+noremap <leader>v <C-w>v
+
 
 " inc / dec value
 " remapped because of tmux
@@ -148,33 +186,24 @@ nnoremap <leader>n :bprevious<CR>
 " maps it to leader-q" maps it to leader-q
 nnoremap <Leader>q :Bdelete<CR>
 
-" create new vsplit, and switch to it.
-noremap <leader>v <C-w>v
 
 " Move visual block
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
+" KEYBOARD LAYOUT SPECIFIC
 " because of clumsy fingers and too fast typing, this is life-saving (for me)
 " makes only sense on qwertz keyboards / if you need to press shift
-command! WQ wq
-command! Wq wq
-command! W w
-command! Q q
+" command! WQ wq
+" command! Wq wq
+" command! W w
+" command! Q q
 
 " jump to end of line - easier to reach / only useful on qwertz
-nnoremap ß $
+" nnoremap ß $
 
 " qwerty map 
 noremap ; :
-
-" bindings for easy split nav
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-map <leader>w <C-w>v<C-w>l
-map <C-t> <esc>:tabnew<CR>
 
 " Use sane regex's when searching
 nnoremap / /\v
@@ -192,6 +221,52 @@ nnoremap <leader><leader> <c-^>
 
 " remove unwanted trailing whitespaces in the whole file
 nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+set relativenumber
+
+" toggle line numbering mode
+if exists("+relativenumber")
+    if v:version >= 400
+        set number
+    endif
+    set relativenumber  " show relative line numbers
+    set numberwidth=3   " narrow number column
+    " cycles between relative / absolute / no numbering
+    if v:version >= 400
+        function! RelativeNumberToggle()
+            if (&number == 1 && &relativenumber == 1)
+                set nonumber
+                set relativenumber relativenumber?
+            elseif (&number == 0 && &relativenumber == 1)
+                set norelativenumber
+                set number number?
+            elseif (&number == 1 && &relativenumber == 0)
+                set norelativenumber
+                set nonumber number?
+            else
+                set number
+                set relativenumber relativenumber?
+            endif
+        endfunc
+    else
+        function! RelativeNumberToggle()
+            if (&relativenumber == 1)
+                set number number?
+            elseif (&number == 1)
+                set nonumber number?
+            else
+                set relativenumber relativenumber?
+            endif
+        endfunc
+    endif
+    nnoremap <silent> <leader>z :call RelativeNumberToggle()<CR>
+else                  " fallback
+   set number          " show line numbers
+    " inverts numbering
+    nnoremap <silent> <leader>z :set number! number?<CR>
+endif
+
+
 "}}}
 " UNITE "{{{
 let g:unite_source_history_yank_enable=1
@@ -202,6 +277,7 @@ call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', join([
     \ 'tmp\/',
     \ 'dist\/',
     \ 'public\/',
+    \ 'core\/',
     \ 'app\/storage\/',
     \ 'bower_components\/',
     \ 'fonts\/',
@@ -238,6 +314,16 @@ nnoremap <leader>am :UniteNext<CR>
 nnoremap <Leader>/ :Unite -buffer-name=ag grep:.<CR>
 " nnoremap <F6> :Unite -start-insert -auto-resize file file_rec/async file_mru everything<CR>
 
+
+"}}}
+" WEBDEV ICONS"{{{
+let g:webdevicons_enable_unite = 1
+let g:webdevicons_enable_airline_statusline = 1
+let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
+let g:webdevicons_conceal_nerdtree_brackets = 0
+"}}}
+" FZF"{{{
+nnoremap <leader>e :FZF<cr>
 "}}}
 " GOYO & LIMELIGHT"{{{
 
@@ -313,7 +399,22 @@ let g:syntastic_check_on_wq = 0
 
 " let g:syntastic_html_checkers = ['validator']
 let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_html_tidy_ignore_errors = ['proprietary attribute "ng-']
+let g:syntastic_html_tidy_ignore_errors = [
+            \ 'trimming empty <i>',
+            \ 'trimming empty <span>',
+            \ '<input> proprietary attribute \"autocomplete\"',
+            \ 'proprietary attribute \"role\"',
+            \ 'proprietary attribute \"hidden\"',
+            \ 'proprietary attribute \"ng-',
+            \ '<svg> is not recognized!',
+            \ '<use> is not recognized!',
+            \ 'discarding unexpected <use>',
+            \ 'discarding unexpected </use>',
+            \ 'discarding unexpected <svg>',
+            \ 'discarding unexpected </svg>',
+            \ '<rect> is not recognized!',
+            \ 'discarding unexpected <rect>'
+            \ ]
 
 "}}}
 " ANGULAR VIM"{{{
@@ -328,7 +429,7 @@ set laststatus=2
 let g:airline#extensions#tabline#enabled = 1
 
 if !exists('g:airline_theme')
-    let g:airline_theme = 'wombat'
+    let g:airline_theme = 'zenburn'
 endif
 let g:airline_powerline_fonts=1
 if !exists('g:airline_powerline_fonts')
@@ -339,10 +440,8 @@ endif"
 " TMUXLINE"{{{
 let g:tmuxline_preset = {
       \'a'    : '#S',
-      \'c'    : ['#(whoami)', '#(uptime | cud -d " " -f 1,2,3)'],
       \'win'  : ['#I', '#W'],
       \'cwin' : ['#I', '#W', '#F'],
-      \'x'    : '#(date)',
       \'y'    : ['%R', '%a', '%Y'],
       \'z'    : '#H'}
 "}}}
@@ -389,12 +488,15 @@ imap hh <C-y>,
 " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " Map :NERDTreeToggle to CTRL + T
-map <leader>e :NERDTreeToggle<CR>
+" map <leader>e :NERDTreeToggle<CR>
 map <C-e> :NERDTreeToggle<CR>
 
 "close vim if nerdtree is the last remaining window
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 let NERDTreeHijackNetrw = 1
+"}}}
+" TAGBAR "{{{
+nmap <F8> :TagbarToggle<CR>
 "}}}
 " VIM-REPEAT"{{{
 
@@ -417,8 +519,9 @@ nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
 
 " Folding: Filetype Settings
-autocmd BufRead,BufEnter *.css setlocal foldmethod=marker
-autocmd BufRead,BufEnter *.scss setlocal foldmethod=marker
+" autocmd BufRead,BufEnter *.css setlocal foldmethod=marker
+" autocmd BufRead,BufEnter *.scss setlocal foldmethod=marker
+autocmd BufRead,BufNewFile,BufEnter *.css,*.scss,*.less setlocal foldmethod=marker foldmarker={,}
 autocmd BufRead,BufEnter .vimrc setlocal foldmethod=marker
 
 
@@ -462,7 +565,6 @@ set t_Co=256
 set term=screen-256color
 set background=dark
 set gfn=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
-" colorscheme zenburn
 colorscheme zenburn
 "}}}
 

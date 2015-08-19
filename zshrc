@@ -37,5 +37,6 @@ LC_CTYPE=en_US.UTF-8
 LC_ALL=en_US.UTF-8
 
 export EDITOR='vim'
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.0.0_51.jdk/Contents/Home/
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
