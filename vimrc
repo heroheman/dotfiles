@@ -13,9 +13,10 @@ Plug 'burnettk/vim-angular'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'elzr/vim-json'
-Plug 'flazz/vim-colorschemes'
+" Plug 'flazz/vim-colorschemes'
 Plug 'groenewege/vim-less'
 Plug 'godlygeek/tabular', { 'on': 'Tab' }
+" Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'JulesWang/css.vim', {'for': ['scss','less','css']}
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
@@ -23,8 +24,10 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 Plug 'mattn/emmet-vim'
 Plug 'majutsushi/tagbar'
 Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'mhinz/vim-startify'
 Plug 'moll/vim-bbye'
 Plug 'mustache/vim-mustache-handlebars'
+Plug 'NLKNguyen/papercolor-theme'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'rking/ag.vim'
@@ -41,7 +44,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'Townk/vim-autoclose'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-vinegar'
+" Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
@@ -55,7 +58,7 @@ filetype plugin indent on
 autocmd! bufwritepost $MYVIMRC source $MYVIMRC
 
 " Quickly edit/reload the vimrc file
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
+nnoremap <leader>ev :e $MYVIMRC<CR>
 " no longer necessary
 " nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
@@ -302,6 +305,7 @@ endif
 " UNITE "{{{
 let g:unite_source_history_yank_enable=1
 let g:unite_source_history_yank_limit=1000
+let g:unite_source_grep_max_candidates = 200
 
 call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', join([
             \ '\.\(git\|svn\|vagrant\)\/', 
@@ -317,13 +321,36 @@ call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', join([
             \ '\.\(jpe?g\|gif\|png\)$',
             \ ], 
             \ '\|'))
+
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#custom#profile('files', 'filters', ['sorter_rank'])
 
+
 if executable('ag')
-    let g:unite_source_grep_command='ag'
-    let g:unite_source_grep_default_opts='--nocolor --line-numbers --nogroup -S'
-    let g:unite_source_grep_recursive_opt=''
+    " Use ag in unite grep source.
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts =
+    \ '-i --vimgrep --hidden --ignore ' .
+    \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+    let g:unite_source_grep_recursive_opt = ''
+elseif executable('pt')
+    " Use pt in unite grep source.
+    " https://github.com/monochromegane/the_platinum_searcher
+    let g:unite_source_grep_command = 'pt'
+    let g:unite_source_grep_default_opts = '--nogroup --nocolor'
+    let g:unite_source_grep_recursive_opt = ''
+elseif executable('ack-grep')
+    " Use ack in unite grep source.
+    let g:unite_source_grep_command = 'ack-grep'
+    let g:unite_source_grep_default_opts =
+    \ '-i --no-heading --no-color -k -H'
+    let g:unite_source_grep_recursive_opt = ''
+elseif executable('jvgrep')
+    " For jvgrep.
+    let g:unite_source_grep_command = 'jvgrep'
+    let g:unite_source_grep_default_opts =
+    \ '-i --exclude ''\.(git|svn|hg|bzr)'''
+    let g:unite_source_grep_recursive_opt = '-R'
 endif
 
 autocmd FileType unite call s:unite_settings()
@@ -336,7 +363,7 @@ endfunction
 
 nnoremap <leader>y :Unite -no-split -buffer-name=YANK history/yank<cr>
 " nnoremap <leader>f :Unite -start-insert file_rec<CR>
-nnoremap <leader>f :Unite -no-split -buffer-name=FILES -start-insert file_rec/async:<CR>
+nnoremap <leader>g :Unite -auto-preview -buffer-name=FILES -start-insert file_rec/async:<CR>
 nnoremap <leader>b :Unite -no-split -buffer-name=BUFFERS buffer<CR>'
 nnoremap <leader>a :UniteResume<CR>
 nnoremap <leader>an :UnitePrevious<CR>
@@ -348,7 +375,7 @@ nnoremap <Leader>/ :Unite -buffer-name=ag grep:.<CR>
 
 "}}}
 " FZF"{{{
-nnoremap <leader>e :FZF<cr>
+nmap <leader>f :FZF<cr>
 "}}}
 " GOYO & LIMELIGHT"{{{
 
@@ -454,7 +481,7 @@ set laststatus=2
 let g:airline#extensions#tabline#enabled = 1
 
 if !exists('g:airline_theme')
-    let g:airline_theme = 'zenburn'
+    let g:airline_theme = 'papercolor'
 endif
 let g:airline_powerline_fonts=1
 if !exists('g:airline_powerline_fonts')
@@ -506,26 +533,33 @@ nnoremap <leader>c <Plug>CommentaryLine
 imap hh <C-y>, 
 
 "}}}
-" NERDTREE "{{{
+ " NERDTREE "{{{
 
-" Open Nerdtree on Startup if no file is open
-" autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+ " Open Nerdtree on Startup if no file is open
+ " Incompatible with Startify
+ " autocmd StdinReadPre * let s:std_in=1
+ " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-" Map :NERDTreeToggle to CTRL + T
-" map <leader>e :NERDTreeToggle<CR>
-map <C-e> :NERDTreeToggle<CR>
+ " Map :NERDTreeToggle to CTRL + T
+ " map <leader>e :NERDTreeToggle<CR>
+ map <C-e> :NERDTreeToggle<CR>
 
-"close vim if nerdtree is the last remaining window
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-let NERDTreeHijackNetrw = 1
+ "close vim if nerdtree is the last remaining window
+ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+ let NERDTreeHijackNetrw = 0
+" "}}}
+" FILEBEAGLE"{{{
+" map <C-e> :FileBeagle<CR>
+" o - direct editing
+" CTRL V - new veritcal split
+" CTRL S - new Horizontal split
 "}}}
 " TAGBAR "{{{
 nmap <F8> :TagbarToggle<CR>
 "}}}
 " VIM-REPEAT"{{{
 
-silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
+" silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
 
 "}}}
 " TABULAR"{{{
@@ -550,15 +584,16 @@ let g:multi_cursor_quit_key='<Esc>'
 let g:webdevicons_enable_unite = 1
 let g:webdevicons_enable_airline_statusline = 1
 let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
+let g:webdevicons_enable_unite = 1
 let g:webdevicons_conceal_nerdtree_brackets = 0
 "}}}
 " COLORSCHEME"{{{
 " if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnome-terminal"
-set t_Co=256
+    set t_Co=256
 " endif
 set term=screen-256color
-set background=dark
 set gfn=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
-colorscheme zenburn
+set background=dark
+colorscheme papercolor
 "}}}
 
