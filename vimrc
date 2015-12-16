@@ -6,17 +6,15 @@
 set nocompatible
 filetype off
 call plug#begin('~/.vim/plugged')
-" Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
 Plug 'bling/vim-airline'
 Plug 'burnettk/vim-angular'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'elzr/vim-json'
-" Plug 'flazz/vim-colorschemes'
+Plug 'editorconfig/editorconfig-vim'
 Plug 'groenewege/vim-less'
 Plug 'godlygeek/tabular', { 'on': 'Tab' }
-" Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'JulesWang/css.vim', {'for': ['scss','less','css']}
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
@@ -31,7 +29,6 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'rking/ag.vim'
-Plug 'ryanoasis/vim-webdevicons'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/syntastic'
 Plug 'Shougo/neocomplcache.vim'
@@ -44,11 +41,12 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'Townk/vim-autoclose'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
-" Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-markdown', {'for': ['md','mdown']}
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'wincent/terminus'
+Plug 'ryanoasis/vim-devicons'
+Plug 'morhetz/gruvbox'
 call plug#end()
 filetype plugin indent on 
 
@@ -72,7 +70,7 @@ set expandtab " use spaces instead of tabs.
 set smarttab " let's tab key insert 'tab stops', and bksp deletes tabs.
 set shiftround " tab / shifting moves to closest tabstop.
 set autoindent " Match indents on new lines.
-set smartindent " Intellegently dedent / indent new lines based on rules.
+" set smartindent " Intellegently dedent / indent new lines based on rules.
 set relativenumber
 set number
 
@@ -307,6 +305,15 @@ let g:unite_source_history_yank_enable=1
 let g:unite_source_history_yank_limit=1000
 let g:unite_source_grep_max_candidates = 200
 
+if executable('ag')
+    " Use ag in unite grep source.
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts =
+    \ '-i --vimgrep --hidden --ignore ' .
+    \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+    let g:unite_source_grep_recursive_opt = ''
+endif
+
 call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', join([
             \ '\.\(git\|svn\|vagrant\)\/', 
             \ 'tmp\/',
@@ -325,34 +332,6 @@ call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', join([
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#custom#profile('files', 'filters', ['sorter_rank'])
 
-
-if executable('ag')
-    " Use ag in unite grep source.
-    let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts =
-    \ '-i --vimgrep --hidden --ignore ' .
-    \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-    let g:unite_source_grep_recursive_opt = ''
-elseif executable('pt')
-    " Use pt in unite grep source.
-    " https://github.com/monochromegane/the_platinum_searcher
-    let g:unite_source_grep_command = 'pt'
-    let g:unite_source_grep_default_opts = '--nogroup --nocolor'
-    let g:unite_source_grep_recursive_opt = ''
-elseif executable('ack-grep')
-    " Use ack in unite grep source.
-    let g:unite_source_grep_command = 'ack-grep'
-    let g:unite_source_grep_default_opts =
-    \ '-i --no-heading --no-color -k -H'
-    let g:unite_source_grep_recursive_opt = ''
-elseif executable('jvgrep')
-    " For jvgrep.
-    let g:unite_source_grep_command = 'jvgrep'
-    let g:unite_source_grep_default_opts =
-    \ '-i --exclude ''\.(git|svn|hg|bzr)'''
-    let g:unite_source_grep_recursive_opt = '-R'
-endif
-
 autocmd FileType unite call s:unite_settings()
 function! s:unite_settings()
     " Enable navigation with control-j and control-k in insert mode
@@ -363,7 +342,7 @@ endfunction
 
 nnoremap <leader>y :Unite -no-split -buffer-name=YANK history/yank<cr>
 " nnoremap <leader>f :Unite -start-insert file_rec<CR>
-nnoremap <leader>g :Unite -auto-preview -buffer-name=FILES -start-insert file_rec/async:<CR>
+nnoremap <leader>g :Unite -buffer-name=FILES -start-insert file_rec/async<CR>
 nnoremap <leader>b :Unite -no-split -buffer-name=BUFFERS buffer<CR>'
 nnoremap <leader>a :UniteResume<CR>
 nnoremap <leader>an :UnitePrevious<CR>
@@ -588,12 +567,12 @@ let g:webdevicons_enable_unite = 1
 let g:webdevicons_conceal_nerdtree_brackets = 0
 "}}}
 " COLORSCHEME"{{{
-" if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnome-terminal"
+if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnome-terminal"
     set t_Co=256
-" endif
+endif
 set term=screen-256color
 set gfn=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 set background=dark
-colorscheme papercolor
+colorscheme gruvbox
 "}}}
 

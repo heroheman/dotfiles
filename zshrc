@@ -37,6 +37,10 @@ LC_CTYPE=en_US.UTF-8
 LC_ALL=en_US.UTF-8
 
 export EDITOR='vim'
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.0.0_51.jdk/Contents/Home/
+# export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk3.0.0_51.jdk/Contents/Home/
+export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+ag -l -g "" | fzf
+export FZF_DEFAULT_COMMAND='ag -l -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
