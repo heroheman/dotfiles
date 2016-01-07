@@ -10,6 +10,7 @@ Plug 'ap/vim-css-color'
 Plug 'bling/vim-airline'
 Plug 'burnettk/vim-angular'
 Plug 'cakebaker/scss-syntax.vim'
+Plug 'csscomb/vim-csscomb'
 Plug 'edkolev/tmuxline.vim'
 Plug 'elzr/vim-json'
 Plug 'editorconfig/editorconfig-vim'
@@ -29,12 +30,14 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'rking/ag.vim'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/syntastic'
+Plug 'shime/vim-livedown'
 Plug 'Shougo/neocomplcache.vim'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make'}
 Plug 'Shougo/neomru.vim',
+Plug 'Shougo/vimfiler.vim',
 Plug 'sjl/gundo.vim',
 Plug 'sjl/vitality.vim',
 Plug 'terryma/vim-multiple-cursors'
@@ -55,10 +58,6 @@ filetype plugin indent on
 " Source vimrc on saving
 autocmd! bufwritepost $MYVIMRC source $MYVIMRC
 
-" Quickly edit/reload the vimrc file
-nnoremap <leader>ev :e $MYVIMRC<CR>
-" no longer necessary
-" nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
 "}}}
 " GLOBAL SETTINGS (sets)"{{{
@@ -95,7 +94,7 @@ set gdefault " use the `g` flag by default.
 
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
-set wildignore=*.swp,*.bak,*.pyc,*.class
+set wildignore=*.swp,*.bak,*.pyc,*.class,*.un~
 set title                " change the terminal's title
 set visualbell           " don't beep
 set noerrorbells         " don't beep
@@ -135,7 +134,12 @@ endif
 " the godlike leader key
 let mapleader = ","
 
+" Quickly edit/reload the vimrc file
+nnoremap <leader>ev :e $MYVIMRC<CR>
+" no longer necessary
+" nmap <silent> <leader>sv :so $MYVIMRC<CR>
 " So we don't have to press shift when we want to get into command mode.
+
 nnoremap ; :
 vnoremap ; :
 
@@ -512,6 +516,10 @@ nnoremap <leader>c <Plug>CommentaryLine
 imap hh <C-y>, 
 
 "}}}
+" NETRW"{{{
+let g:netrw_list_hide= '.*\.swp$,.*\.pyc,*\.un~'
+
+"}}}
  " NERDTREE "{{{
 
  " Open Nerdtree on Startup if no file is open
@@ -521,12 +529,43 @@ imap hh <C-y>,
 
  " Map :NERDTreeToggle to CTRL + T
  " map <leader>e :NERDTreeToggle<CR>
- map <C-e> :NERDTreeToggle<CR>
+ " map <C-e> :NERDTreeToggle<CR>
 
  "close vim if nerdtree is the last remaining window
- autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
- let NERDTreeHijackNetrw = 0
+ " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+ " let NERDTreeHijackNetrw = 0
 " "}}}
+" VIMFILER
+
+" nmap - :VimFiler -toggle<CR>
+" nmap <leader>vf :VimFilerSplit -toggle -no-quit<CR>
+
+let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_safe_mode_by_default = 0
+let g:vimfiler_tree_leaf_icon = " "
+let g:vimfiler_tree_opened_icon = '▾'
+let g:vimfiler_tree_closed_icon = '▸'
+let g:vimfiler_file_icon = '-'
+let g:vimfiler_marked_file_icon = '✓'
+let g:vimfiler_readonly_file_icon = '✗'
+let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
+let g:vimfiler_expand_jump_to_first_child = 0
+let g:vimfiler_ignore_pattern = '\.git\|\.DS_Store\|\.pyc'
+
+nnoremap <Leader>e :<C-u>VimFilerExplorer -split -simple -parent -winwidth=55 -toggle -no-quit<CR>
+nnoremap <C-e> :<C-u>VimFilerExplorer -split -simple -parent -winwidth=55 -toggle -no-quit<CR>
+nnoremap <Leader>jf :<C-u>VimFilerExplorer -split -simple -parent -winwidth=55 -no-quit -find<CR>
+autocmd FileType vimfiler nunmap <buffer> x
+autocmd FileType vimfiler nmap <buffer> x <Plug>(vimfiler_toggle_mark_current_line)
+autocmd FileType vimfiler vmap <buffer> x <Plug>(vimfiler_toggle_mark_selected_lines)
+autocmd FileType vimfiler nunmap <buffer> l
+autocmd FileType vimfiler nmap <buffer> l <Plug>(vimfiler_cd_or_edit)
+autocmd FileType vimfiler nmap <buffer> h <Plug>(vimfiler_switch_to_parent_directory)
+autocmd FileType vimfiler nmap <buffer> <C-r>  <Plug>(vimfiler_redraw_screen)
+autocmd FileType vimfiler nmap <silent><buffer><expr> <CR> vimfiler#smart_cursor_map(
+\ "\<Plug>(vimfiler_expand_tree)",
+\ "\<Plug>(vimfiler_edit_file)")
+
 " FILEBEAGLE"{{{
 " map <C-e> :FileBeagle<CR>
 " o - direct editing
@@ -569,8 +608,8 @@ let g:webdevicons_conceal_nerdtree_brackets = 0
 " COLORSCHEME"{{{
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnome-terminal"
     set t_Co=256
+    set term=screen-256color
 endif
-set term=screen-256color
 set gfn=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 set background=dark
 colorscheme gruvbox

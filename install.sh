@@ -1,10 +1,11 @@
 #!/bin/bash
 # This script is my personal setup file - use at own risk
+# only tested on mac osx
 
 ########## Variables
 dotfiles=~/dotfiles                    # dotfiles directory
 dotfilesOld=~/dotfiles_old             # old dotfiles backup directory
-files="bashrc bash_aliases vimrc nvimrc zshrc tmux.conf"    # list of files/folders to symlink in homedir
+files="bashrc bash_aliases vimrc zshrc tmux.conf"    # list of files/folders to symlink in homedir
 
 ##########
 
@@ -28,9 +29,13 @@ install_dotfiles(){
 
 
 create_nvimrc(){
-    echo "symlink vimrc to nvimrc"
-    ln -s ~/.vimrc ~/.nvimrc
-    ln -s $dotfiles/vim $dotfiles/nvim
+    echo "CREATE XDG Config Home for Neovim"
+    if [ ! -d ${XDG_CONFIG_HOME:=$HOME/.config} ]; then
+        mkdir -p ${XDG_CONFIG_HOME:=$HOME/.config}
+        echo "symlink .vim folder to the neovim xdg home folder"
+    fi
+    ln -s ~/.vim $XDG_CONFIG_HOME/nvim
+    ln -s ~/.vimrc $XDG_CONFIG_HOME/nvim/init.vim
 }
 
 # vim vundle
