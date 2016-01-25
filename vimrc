@@ -20,6 +20,7 @@ Plug 'JulesWang/css.vim', {'for': ['scss','less','css']}
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' } 
+Plug 'junegunn/fzf.vim'
 Plug 'mattn/emmet-vim'
 Plug 'majutsushi/tagbar'
 Plug 'maxbrunsfeld/vim-yankstack'
@@ -127,6 +128,8 @@ if exists("&undodir")
     set undolevels=500
     set undoreload=500
 endif
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swp//
 
 "}}}
 " SHORTCUTS"{{{
@@ -553,7 +556,7 @@ let g:vimfiler_expand_jump_to_first_child = 0
 let g:vimfiler_ignore_pattern = '\.git\|\.DS_Store\|\.pyc'
 
 nnoremap <Leader>e :<C-u>VimFilerExplorer -split -simple -parent -winwidth=55 -toggle -no-quit<CR>
-nnoremap <C-e> :<C-u>VimFilerExplorer -split -simple -parent -winwidth=55 -toggle -no-quit<CR>
+nnoremap <C-e> :<C-u>VimFilerExplorer -split -simple -parent -winwidth=45 -toggle -no-quit<CR>
 nnoremap <Leader>jf :<C-u>VimFilerExplorer -split -simple -parent -winwidth=55 -no-quit -find<CR>
 autocmd FileType vimfiler nunmap <buffer> x
 autocmd FileType vimfiler nmap <buffer> x <Plug>(vimfiler_toggle_mark_current_line)
@@ -562,6 +565,9 @@ autocmd FileType vimfiler nunmap <buffer> l
 autocmd FileType vimfiler nmap <buffer> l <Plug>(vimfiler_cd_or_edit)
 autocmd FileType vimfiler nmap <buffer> h <Plug>(vimfiler_switch_to_parent_directory)
 autocmd FileType vimfiler nmap <buffer> <C-r>  <Plug>(vimfiler_redraw_screen)
+autocmd FileType vimfiler nmap <buffer> x <Plug>(vimfiler_toggle_mark_current_line)
+autocmd FileType vimfiler nunmap <buffer> g
+autocmd FileType vimfiler nmap <buffer> g  <Plug>(vimfiler_grep)
 autocmd FileType vimfiler nmap <silent><buffer><expr> <CR> vimfiler#smart_cursor_map(
 \ "\<Plug>(vimfiler_expand_tree)",
 \ "\<Plug>(vimfiler_edit_file)")
@@ -613,5 +619,8 @@ endif
 set gfn=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
 set background=dark
 colorscheme gruvbox
+let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_contrast_light = 'hard'
+let g:gruvbox_invert_signs = 1
 "}}}
 
