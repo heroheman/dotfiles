@@ -1,46 +1,13 @@
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="fino"
-export TERM=xterm-256color
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
 
-###########
-## History #
-############
-
-# number of lines kept in history
-export HISTSIZE=1000
-# number of lines saved in the history after logout
-export SAVEHIST=1000
-# location of history
-export HISTFILE=~/.zsh_history
-# append command to history file once executed
-setopt inc_append_history
-plugins=(git bower brew git-flow node npm osx rvm screen tmux vagrant)
-
-source $ZSH/oh-my-zsh.sh
-source ~/.bash_aliases
-# source ~/.bash_profile
-
-# User configuration
-
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-LC_CTYPE=en_US.UTF-8
-LC_ALL=en_US.UTF-8
-
-export EDITOR='vim'
-# export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk3.0.0_51.jdk/Contents/Home/
-export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-ag -l -g "" | fzf
-export FZF_DEFAULT_COMMAND='ag -l -g ""'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# Customize to your needs...
