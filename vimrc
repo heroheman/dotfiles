@@ -362,6 +362,14 @@ nnoremap <Leader>/ :Unite -buffer-name=ag grep:.<CR>
 "}}}
 " FZF"{{{
 nmap <leader>f :FZF<cr>
+nnoremap <silent> <Leader>C :call fzf#run({
+\   'source':
+\     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
+\         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
+\   'sink':    'colo',
+\   'options': '+m',
+\   'right':    30
+\ })<CR>
 "}}}
 " GOYO & LIMELIGHT"{{{
 
@@ -538,7 +546,7 @@ let g:netrw_list_hide= '.*\.swp$,.*\.pyc,*\.un~'
  " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
  " let NERDTreeHijackNetrw = 0
 " "}}}
-" VIMFILER
+" VIMFILER"{{{
 
 " nmap - :VimFiler -toggle<CR>
 " nmap <leader>vf :VimFilerSplit -toggle -no-quit<CR>
@@ -571,7 +579,7 @@ autocmd FileType vimfiler nmap <buffer> g  <Plug>(vimfiler_grep)
 autocmd FileType vimfiler nmap <silent><buffer><expr> <CR> vimfiler#smart_cursor_map(
 \ "\<Plug>(vimfiler_expand_tree)",
 \ "\<Plug>(vimfiler_edit_file)")
-
+"}}}
 " FILEBEAGLE"{{{
 " map <C-e> :FileBeagle<CR>
 " o - direct editing
