@@ -11,3 +11,20 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+export TERM=xterm-256color
+# number of lines kept in history
+export HISTSIZE=1000
+# number of lines saved in the history after logout
+export SAVEHIST=1000
+# location of history
+export HISTFILE=~/.zsh_history
+# append command to history file once executed
+setopt inc_append_history
+
+source ~/.bash_aliases
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+ag -l -g "" | fzf
+export FZF_DEFAULT_COMMAND='ag -l -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
