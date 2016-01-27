@@ -25,6 +25,11 @@ source ~/.bash_aliases
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-ag -l -g "" | fzf
-export FZF_DEFAULT_COMMAND='ag -l -g ""'
+# ag -l -g "" | fzf
+# export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+export FZF_DEFAULT_OPTS='
+--color fg:102,bg:233,hl:65,fg+:15,bg+:234,hl+:108
+--color info:108,prompt:109,spinner:108,pointer:168,marker:168
+'

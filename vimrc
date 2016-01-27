@@ -24,7 +24,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'mattn/emmet-vim'
 Plug 'majutsushi/tagbar'
 Plug 'maxbrunsfeld/vim-yankstack'
-Plug 'mhinz/vim-startify'
 Plug 'moll/vim-bbye'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'NLKNguyen/papercolor-theme'
@@ -81,6 +80,8 @@ set noswapfile " They're just annoying. Who likes them?
 set splitbelow        " new hoz splits go below
 set splitright        " new vert splits go right
 
+set path=$PWD/**
+
 " don't nag me when hiding buffers"
 set hidden " allow me to have buffers with unsaved changes.
 set autoread " when a file has changed on disk, just load it. Don't ask.
@@ -123,8 +124,8 @@ autocmd BufReadPost *
 
 " Persistent Undo"
 if exists("&undodir")
+    set undodir=$HOME/.vim/undo
     set undofile          "Persistent undo! Pure money.
-    let &undodir=&directory
     set undolevels=500
     set undoreload=500
 endif
@@ -136,6 +137,7 @@ set directory=~/.vim/swp//
 
 " the godlike leader key
 let mapleader = ","
+" let mapleader = "\<Space>"
 
 " Quickly edit/reload the vimrc file
 nnoremap <leader>ev :e $MYVIMRC<CR>
@@ -361,7 +363,7 @@ nnoremap <Leader>/ :Unite -buffer-name=ag grep:.<CR>
 
 "}}}
 " FZF"{{{
-nmap <leader>f :FZF<cr>
+nmap <leader>f :Files<cr>
 nnoremap <silent> <Leader>C :call fzf#run({
 \   'source':
 \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
@@ -370,6 +372,11 @@ nnoremap <silent> <Leader>C :call fzf#run({
 \   'options': '+m',
 \   'right':    30
 \ })<CR>
+
+fun! s:fzf_root()
+    let path = finddir(".git", expand("%:p:h").";")
+    return fnamemodify(substitute(path, ".git", "", ""), ":p:h")
+endfun
 "}}}
 " GOYO & LIMELIGHT"{{{
 
@@ -579,6 +586,24 @@ autocmd FileType vimfiler nmap <buffer> g  <Plug>(vimfiler_grep)
 autocmd FileType vimfiler nmap <silent><buffer><expr> <CR> vimfiler#smart_cursor_map(
 \ "\<Plug>(vimfiler_expand_tree)",
 \ "\<Plug>(vimfiler_edit_file)")
+
+function! s:buflist()
+    redir => ls
+    silent ls
+    redir END
+    return split(ls, '\n')
+endfunction
+
+function! s:bufopen(e)
+    execute 'buffer' matchstr(a:e, '^[ 0-9]*')
+endfunction
+
+nnoremap <silent> <C-b> :call fzf#run({
+\   'source':  reverse(<sid>buflist()),
+\   'sink':    function('<sid>bufopen'),
+\   'options': '+m',
+\   'down':    len(<sid>buflist()) + 2
+\ })<CR>
 "}}}
 " FILEBEAGLE"{{{
 " map <C-e> :FileBeagle<CR>
@@ -632,3 +657,33 @@ let g:gruvbox_contrast_light = 'hard'
 let g:gruvbox_invert_signs = 1
 "}}}
 
+" follow symlinked file
+function! FollowSymlink()
+  let current_file = expand('%:p')
+  " check if file type is a symlink
+  if getftype(current_file) == 'link'
+    " if it is a symlink resolve to the actual file path
+    "   and open the actual file
+    let actual_file = resolve(current_file)
+    silent! execute 'file ' . actual_file
+  end
+endfunction
+
+" set working directory to git project root
+" or directory of current file if not git project
+function! SetProjectRoot()
+  " default to the current file's directory
+  lcd %:p:h
+  let git_dir = system("git rev-parse --show-toplevel")
+  " See if the command output starts with 'fatal' (if it does, not in a git repo)
+  let is_not_git_dir = matchstr(git_dir, '^fatal:.*')
+  " if git project, change local directory to git project root
+  if empty(is_not_git_dir)
+    lcd `=git_dir`
+  endif
+endfunction
+
+" follow symlink and set working directory
+autocmd BufRead *
+  \ call FollowSymlink() |
+  \ call SetProjectRoot()
