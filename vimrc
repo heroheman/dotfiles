@@ -168,11 +168,11 @@ vnoremap / /\v
 noremap <leader><space> :noh<cr>:call clearmatches()<cr>
 
 " Quick Word replacement - see: http://vimrcfu.com/snippet/30
-nnoremap <leader>r :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
-nnoremap <leader>R :%s/\<<C-r>=expand('<cword>')<CR>\>/'
+" nnoremap <leader>r :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
+" nnoremap <leader>R :%s/\<<C-r>=expand('<cword>')<CR>\>/'
 
 " remove unwanted trailing whitespaces in the whole file
-nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+" nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
 
 "}}}
