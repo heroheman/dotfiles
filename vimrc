@@ -11,47 +11,37 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'burnettk/vim-angular'
 Plug 'cakebaker/scss-syntax.vim'
-Plug 'csscomb/vim-csscomb'
 Plug 'edkolev/tmuxline.vim'
 Plug 'elzr/vim-json'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'groenewege/vim-less'
-Plug 'godlygeek/tabular', { 'on': 'Tab' }
 Plug 'JulesWang/css.vim', {'for': ['scss','less','css']}
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' } 
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 Plug 'junegunn/fzf.vim'
 Plug 'mattn/emmet-vim'
-Plug 'majutsushi/tagbar'
-Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'moll/vim-bbye'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'rking/ag.vim'
-" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'scrooloose/syntastic'
-Plug 'shime/vim-livedown'
+Plug 'shime/vim-livedown', { 'on': 'LivedownToggle' }
 Plug 'Shougo/neocomplcache.vim'
-Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim', { 'do' : 'make'}
 Plug 'Shougo/neomru.vim',
 Plug 'Shougo/vimfiler.vim',
 Plug 'sjl/gundo.vim',
 Plug 'sjl/vitality.vim',
-Plug 'terryma/vim-multiple-cursors'
 Plug 'Townk/vim-autoclose'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-markdown', {'for': ['md','mdown']}
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'wincent/terminus'
-Plug 'ryanoasis/vim-devicons'
 Plug 'morhetz/gruvbox'
 call plug#end()
-filetype plugin indent on 
+filetype plugin indent on
 
 " let g:plug_threads=1
 
@@ -102,7 +92,7 @@ set visualbell           " don't beep
 set noerrorbells         " don't beep
 set backspace=2
 
-" comment so that the whitespace works >.> 
+" comment so that the whitespace works >.>
 set breakindent
 set showbreak=..
 
@@ -141,10 +131,10 @@ let mapleader = ","
 
 " Quickly edit/reload the vimrc file
 nnoremap <leader>ev :e $MYVIMRC<CR>
-" no longer necessary
+" Source this vimrc
 " nmap <silent> <leader>sv :so $MYVIMRC<CR>
-" So we don't have to press shift when we want to get into command mode.
 
+" So we don't have to press shift when we want to get into command mode.
 nnoremap ; :
 vnoremap ; :
 
@@ -164,15 +154,16 @@ vnoremap K :m '<-2<CR>gv=gv
 " Use sane regex's when searching
 nnoremap / /\v
 vnoremap / /\v
+
 " Clear match highlighting
 noremap <leader><space> :noh<cr>:call clearmatches()<cr>
 
-" Quick Word replacement - see: http://vimrcfu.com/snippet/30
-" nnoremap <leader>r :'{,'}s/\<<C-r>=expand('<cword>')<CR>\>/
-" nnoremap <leader>R :%s/\<<C-r>=expand('<cword>')<CR>\>/'
-
 " remove unwanted trailing whitespaces in the whole file
-" nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+" If you wrap lines, vim by default won't let you move down one line to the
+" wrapped portion. This fixes that.  noremap j gj
+noremap k gk
 
 
 "}}}
@@ -239,33 +230,7 @@ nnoremap <Leader>q :Bdelete<CR>
 " Quick buffer switching - like cmd-tab'ing
 nnoremap <leader><leader> <c-^>
 "}}}
-" KEYBOARD LAYOUT SPECIFIC"{{{
-" because of clumsy fingers and too fast typing, this is life-saving (for me)
-" makes only sense on qwertz keyboards / if you need to press shift
-" command! WQ wq
-" command! Wq wq
-" command! W w
-" command! Q q
-
-" jump to end of line - easier to reach / only useful on qwertz
-" nnoremap ß $
-
-" qwerty map 
-noremap ; :
-"}}}
-" WILDIGNORES {{{
-set wildmenu
-set wildmode=longest:full,full
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
-set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
-
-set wildignore+=*\\public\\**
-set wildignore+=*\\bower_components\\**
-set wildignore+=*\\node_modules\\**
-set wildignore+=*\\.sass-cache\\**
-
-"}}}
-" RELATIVENUMBER"{{{
+" Function: RELATIVENUMBER"{{{
 set relativenumber
 " toggle line numbering mode
 if exists("+relativenumber")
@@ -309,60 +274,19 @@ else                  " fallback
     nnoremap <silent> <leader>z :set number! number?<CR>
 endif
 "}}}
-" UNITE "{{{
-let g:unite_source_history_yank_enable=1
-let g:unite_source_history_yank_limit=1000
-let g:unite_source_grep_max_candidates = 200
+" Plugin: WILDIGNORES {{{
+set wildmenu
+set wildmode=longest:full,full
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
-if executable('ag')
-    " Use ag in unite grep source.
-    let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts =
-    \ '-i --vimgrep --hidden --ignore ' .
-    \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-    let g:unite_source_grep_recursive_opt = ''
-endif
-
-call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', join([
-            \ '\.\(git\|svn\|vagrant\)\/', 
-            \ 'tmp\/',
-            \ 'dist\/',
-            \ 'public\/',
-            \ 'core\/',
-            \ 'app\/storage\/',
-            \ 'bower_components\/',
-            \ 'fonts\/',
-            \ 'sass-cache\/',
-            \ 'node_modules\/',
-            \ '\.\(jpe?g\|gif\|png\)$',
-            \ ], 
-            \ '\|'))
-
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#custom#profile('files', 'filters', ['sorter_rank'])
-
-autocmd FileType unite call s:unite_settings()
-function! s:unite_settings()
-    " Enable navigation with control-j and control-k in insert mode
-    imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-    imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-endfunction
-
-
-nnoremap <leader>y :Unite -no-split -buffer-name=YANK history/yank<cr>
-" nnoremap <leader>f :Unite -start-insert file_rec<CR>
-" nnoremap <leader>g :Unite -buffer-name=FILES -start-insert file_rec/async<CR>
-" nnoremap <leader>b :Unite -no-split -buffer-name=BUFFERS buffer<CR>'
-" nnoremap <leader>a :UniteResume<CR>
-" nnoremap <leader>an :UnitePrevious<CR>
-" nnoremap <leader>am :UniteNext<CR>
-
-nnoremap <Leader>/ :Unite -buffer-name=ag grep:.<CR>
-" nnoremap <F6> :Unite -start-insert -auto-resize file file_rec/async file_mru everything<CR>
-
+set wildignore+=*\\public\\**
+set wildignore+=*\\bower_components\\**
+set wildignore+=*\\node_modules\\**
+set wildignore+=*\\.sass-cache\\**
 
 "}}}
-" FZF"{{{
+" Plugin: FZF"{{{
 nmap <leader>f :Files<cr>
 nmap <leader>g :GitFiles<cr>
 nmap <leader>h :History<cr>
@@ -381,7 +305,7 @@ fun! s:fzf_root()
     return fnamemodify(substitute(path, ".git", "", ""), ":p:h")
 endfun
 "}}}
-" GOYO & LIMELIGHT"{{{
+" Plugin: GOYO & LIMELIGHT"{{{
 
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
@@ -390,10 +314,11 @@ let g:limelight_conceal_guifg = '#777777'
 let g:limelight_default_coefficient = 0.7
 
 "}}}
-" GUNDO"{{{
+" Plugin: GUNDO"{{{
 nnoremap <F6> :GundoToggle<CR>
 "}}}
-" NEOCOMPLETE {{{
+" Plugin: NEOCOMPLETE {{{
+
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
 " Disable AutoComplPop.
@@ -443,7 +368,7 @@ inoremap <expr><C-e>  neocomplcache#cancel_popup()
 ""\<Space>"
 
 " }}}
-" SYNTASTIC "{{{
+" Plugin: SYNTASTIC "{{{
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -473,10 +398,12 @@ let g:syntastic_html_tidy_ignore_errors = [
             \ ]
 
 "}}}
-" ANGULAR VIM"{{{
+" Plugin: ANGULAR VIM"{{{
+
 let g:angular_filename_convention = 'camelcased'
+
 "}}}
-" AIRLINE"{{{
+" Plugin: AIRLINE"{{{
 
 " Vim Airline on single view
 set laststatus=2
@@ -485,63 +412,49 @@ set laststatus=2
 let g:airline#extensions#tabline#enabled = 1
 
 if !exists('g:airline_theme')
-    let g:airline_theme = 'molokai'
+    let g:airline_theme = 'bubblegum'
 endif
-let g:airline_powerline_fonts=1
-if !exists('g:airline_powerline_fonts')
-    let g:airline_left_sep='â€º'
-    let g:airline_right_sep='â€¹'
-endif"
+
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+
 "}}}
-" TMUXLINE"{{{
+" Plugin: TMUXLINE"{{{
 let g:tmuxline_preset = {
             \'a'    : '#S',
             \'win'  : ['#I', '#W'],
             \'cwin' : ['#I', '#W', '#F'],
             \'y'    : ['%R', '%a', '%Y'],
             \'z'    : '#H'}
+
+let g:tmuxline_powerline_separators = 0
 "}}}
-" iTerm2"{{{
-
-" Change Cursor in insert Mode
-" let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-" let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-
-" If you wrap lines, vim by default won't let you move down one line to the
-" wrapped portion. This fixes that.  noremap j gj
-noremap k gk
-
-"}}}
-" VIM-COMMENTARY:"{{{
+" Plugin: VIM-COMMENTARY:"{{{
 
 " Map the key for toggling comments with vim-commentary
 nnoremap <leader>c <Plug>CommentaryLine
 
-" Use gcc to comment out a line (takes a count), 
-" gc to comment out the target of a motion (for example, gcap to comment out a paragraph), 
-" gc in visual mode to comment out the selection, 
-" and gc in operator pending mode to target a comment. 
+" Use gcc to comment out a line (takes a count),
+" gc to comment out the target of a motion (for example, gcap to comment out a paragraph),
+" gc in visual mode to comment out the selection,
+" and gc in operator pending mode to target a comment.
 " You can also use it as a command, either with a range like :7,17Commentary, or as part of a :global invocation like with :g/TODO/Commentary. That's it.
 " Oh, and it uncomments, too. The above maps actually toggle, and gcgc uncomments a set of adjacent commented lines.
 
 "}}}
-" CTRL-P"{{{
-
-" Let ctrlp have up to 30 results.
-" let g:ctrlp_max_height = 30
-
-"}}}
-" EMMET"{{{
+" Plugin: EMMET"{{{
 
 " Remap the key to TAB
-imap hh <C-y>, 
+imap hh <C-y>,
 
 "}}}
-" NETRW"{{{
+" Plugin: NETRW"{{{
 let g:netrw_list_hide= '.*\.swp$,.*\.pyc,*\.un~'
-
 "}}}
- " NERDTREE "{{{
+ " Plugin: NERDTREE "{{{
+ " #deprecated
 
  " Open Nerdtree on Startup if no file is open
  " Incompatible with Startify
@@ -556,7 +469,7 @@ let g:netrw_list_hide= '.*\.swp$,.*\.pyc,*\.un~'
  " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
  " let NERDTreeHijackNetrw = 0
 " "}}}
-" VIMFILER"{{{
+" Plugin: VIMFILER"{{{
 
 " nmap - :VimFiler -toggle<CR>
 " nmap <leader>vf :VimFilerSplit -toggle -no-quit<CR>
@@ -608,51 +521,17 @@ nnoremap <silent> <C-b> :call fzf#run({
 \   'down':    len(<sid>buflist()) + 2
 \ })<CR>
 "}}}
-" FILEBEAGLE"{{{
-" map <C-e> :FileBeagle<CR>
-" o - direct editing
-" CTRL V - new veritcal split
-" CTRL S - new Horizontal split
-"}}}
-" TAGBAR "{{{
-nmap <F8> :TagbarToggle<CR>
-"}}}
-" VIM-REPEAT"{{{
+" Plugin: VIM-REPEAT"{{{
 
-" silent! call repeat#set("\<Plug>MyWonderfulMap", v:count)
+" something to repeat... some day
 
 "}}}
-" TABULAR"{{{
-
-if exists(":Tabularize")
-    nmap <Leader>t= :Tabularize /=<CR>
-    vmap <Leader>t= :Tabularize /=<CR>
-    nmap <Leader>t: :Tabularize /:\zs<CR>
-    vmap <Leader>t: :Tabularize /:\zs<CR>
-endif
-
-"}}}
-" Multiple Cursors"{{{
-
-" Default mapping
-let g:multi_cursor_next_key='<C-n>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
-"}}}
-" WEBDEV ICONS"{{{
-let g:webdevicons_enable_unite = 1
-let g:webdevicons_enable_airline_statusline = 1
-let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
-let g:webdevicons_enable_unite = 1
-let g:webdevicons_conceal_nerdtree_brackets = 0
-"}}}
-" COLORSCHEME"{{{
+" Layout: COLORSCHEME"{{{
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnome-terminal"
     set t_Co=256
     set term=screen-256color
 endif
-set gfn=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
+set gfn=FiraMono
 set background=dark
 colorscheme gruvbox
 let g:gruvbox_contrast_dark = 'hard'

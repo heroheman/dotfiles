@@ -182,3 +182,6 @@ e_arrow "Also, what about ctags? brew install ctags?"
 # get_vimplug || exit 1
 # install_plug || exit 1
 # install_vundle || exit 1
+
+#todo
+# git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
