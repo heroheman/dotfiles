@@ -7,7 +7,8 @@ set nocompatible
 filetype off
 call plug#begin('~/.vim/plugged')
 Plug 'ap/vim-css-color'
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'burnettk/vim-angular'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'csscomb/vim-csscomb'
@@ -26,7 +27,6 @@ Plug 'majutsushi/tagbar'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'moll/vim-bbye'
 Plug 'mustache/vim-mustache-handlebars'
-Plug 'NLKNguyen/papercolor-theme'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'rking/ag.vim'
@@ -351,11 +351,11 @@ endfunction
 
 nnoremap <leader>y :Unite -no-split -buffer-name=YANK history/yank<cr>
 " nnoremap <leader>f :Unite -start-insert file_rec<CR>
-nnoremap <leader>g :Unite -buffer-name=FILES -start-insert file_rec/async<CR>
-nnoremap <leader>b :Unite -no-split -buffer-name=BUFFERS buffer<CR>'
-nnoremap <leader>a :UniteResume<CR>
-nnoremap <leader>an :UnitePrevious<CR>
-nnoremap <leader>am :UniteNext<CR>
+" nnoremap <leader>g :Unite -buffer-name=FILES -start-insert file_rec/async<CR>
+" nnoremap <leader>b :Unite -no-split -buffer-name=BUFFERS buffer<CR>'
+" nnoremap <leader>a :UniteResume<CR>
+" nnoremap <leader>an :UnitePrevious<CR>
+" nnoremap <leader>am :UniteNext<CR>
 
 nnoremap <Leader>/ :Unite -buffer-name=ag grep:.<CR>
 " nnoremap <F6> :Unite -start-insert -auto-resize file file_rec/async file_mru everything<CR>
@@ -364,6 +364,9 @@ nnoremap <Leader>/ :Unite -buffer-name=ag grep:.<CR>
 "}}}
 " FZF"{{{
 nmap <leader>f :Files<cr>
+nmap <leader>g :GitFiles<cr>
+nmap <leader>h :History<cr>
+nmap <leader>b :Buffer<cr>
 nnoremap <silent> <Leader>C :call fzf#run({
 \   'source':
 \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
@@ -482,7 +485,7 @@ set laststatus=2
 let g:airline#extensions#tabline#enabled = 1
 
 if !exists('g:airline_theme')
-    let g:airline_theme = 'papercolor'
+    let g:airline_theme = 'molokai'
 endif
 let g:airline_powerline_fonts=1
 if !exists('g:airline_powerline_fonts')
@@ -657,33 +660,3 @@ let g:gruvbox_contrast_light = 'hard'
 let g:gruvbox_invert_signs = 1
 "}}}
 
-" follow symlinked file
-function! FollowSymlink()
-  let current_file = expand('%:p')
-  " check if file type is a symlink
-  if getftype(current_file) == 'link'
-    " if it is a symlink resolve to the actual file path
-    "   and open the actual file
-    let actual_file = resolve(current_file)
-    silent! execute 'file ' . actual_file
-  end
-endfunction
-
-" set working directory to git project root
-" or directory of current file if not git project
-function! SetProjectRoot()
-  " default to the current file's directory
-  lcd %:p:h
-  let git_dir = system("git rev-parse --show-toplevel")
-  " See if the command output starts with 'fatal' (if it does, not in a git repo)
-  let is_not_git_dir = matchstr(git_dir, '^fatal:.*')
-  " if git project, change local directory to git project root
-  if empty(is_not_git_dir)
-    lcd `=git_dir`
-  endif
-endfunction
-
-" follow symlink and set working directory
-autocmd BufRead *
-  \ call FollowSymlink() |
-  \ call SetProjectRoot()
