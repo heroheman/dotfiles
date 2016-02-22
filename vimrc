@@ -39,6 +39,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-markdown', {'for': ['md','mdown']}
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-vinegar'
 Plug 'morhetz/gruvbox'
 call plug#end()
 filetype plugin indent on
@@ -469,58 +470,6 @@ let g:netrw_list_hide= '.*\.swp$,.*\.pyc,*\.un~'
  " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
  " let NERDTreeHijackNetrw = 0
 " "}}}
-" Plugin: VIMFILER"{{{
-
-" nmap - :VimFiler -toggle<CR>
-" nmap <leader>vf :VimFilerSplit -toggle -no-quit<CR>
-
-let g:vimfiler_as_default_explorer = 1
-let g:vimfiler_safe_mode_by_default = 0
-let g:vimfiler_tree_leaf_icon = " "
-let g:vimfiler_tree_opened_icon = '▾'
-let g:vimfiler_tree_closed_icon = '▸'
-let g:vimfiler_file_icon = '-'
-let g:vimfiler_marked_file_icon = '✓'
-let g:vimfiler_readonly_file_icon = '✗'
-let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
-let g:vimfiler_expand_jump_to_first_child = 0
-let g:vimfiler_ignore_pattern = '\.git\|\.DS_Store\|\.pyc'
-
-nnoremap <Leader>e :<C-u>VimFilerExplorer -split -simple -parent -winwidth=55 -toggle -no-quit<CR>
-nnoremap <C-e> :<C-u>VimFilerExplorer -split -simple -parent -winwidth=45 -toggle -no-quit<CR>
-nnoremap <Leader>jf :<C-u>VimFilerExplorer -split -simple -parent -winwidth=55 -no-quit -find<CR>
-autocmd FileType vimfiler nunmap <buffer> x
-autocmd FileType vimfiler nmap <buffer> x <Plug>(vimfiler_toggle_mark_current_line)
-autocmd FileType vimfiler vmap <buffer> x <Plug>(vimfiler_toggle_mark_selected_lines)
-autocmd FileType vimfiler nunmap <buffer> l
-autocmd FileType vimfiler nmap <buffer> l <Plug>(vimfiler_cd_or_edit)
-autocmd FileType vimfiler nmap <buffer> h <Plug>(vimfiler_switch_to_parent_directory)
-autocmd FileType vimfiler nmap <buffer> <C-r>  <Plug>(vimfiler_redraw_screen)
-autocmd FileType vimfiler nmap <buffer> x <Plug>(vimfiler_toggle_mark_current_line)
-autocmd FileType vimfiler nunmap <buffer> g
-autocmd FileType vimfiler nmap <buffer> g  <Plug>(vimfiler_grep)
-autocmd FileType vimfiler nmap <silent><buffer><expr> <CR> vimfiler#smart_cursor_map(
-\ "\<Plug>(vimfiler_expand_tree)",
-\ "\<Plug>(vimfiler_edit_file)")
-
-function! s:buflist()
-    redir => ls
-    silent ls
-    redir END
-    return split(ls, '\n')
-endfunction
-
-function! s:bufopen(e)
-    execute 'buffer' matchstr(a:e, '^[ 0-9]*')
-endfunction
-
-nnoremap <silent> <C-b> :call fzf#run({
-\   'source':  reverse(<sid>buflist()),
-\   'sink':    function('<sid>bufopen'),
-\   'options': '+m',
-\   'down':    len(<sid>buflist()) + 2
-\ })<CR>
-"}}}
 " Plugin: VIM-REPEAT"{{{
 
 " something to repeat... some day
