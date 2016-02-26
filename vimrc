@@ -14,6 +14,7 @@ Plug 'cakebaker/scss-syntax.vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'elzr/vim-json'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'rking/ag.vim'
 Plug 'JulesWang/css.vim', {'for': ['scss','less','css']}
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
@@ -24,7 +25,6 @@ Plug 'moll/vim-bbye'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
-Plug 'rking/ag.vim'
 Plug 'scrooloose/syntastic'
 Plug 'shime/vim-livedown', { 'on': 'LivedownToggle' }
 Plug 'Shougo/neocomplcache.vim'
@@ -40,6 +40,8 @@ Plug 'tpope/vim-markdown', {'for': ['md','mdown']}
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
+Plug 'SirVer/ultisnips'  " Reference: https://github.com/honza/vim-snippets/tree/master/snippets
+Plug 'honza/vim-snippets'
 Plug 'morhetz/gruvbox'
 call plug#end()
 filetype plugin indent on
@@ -398,6 +400,11 @@ let g:syntastic_html_tidy_ignore_errors = [
             \ 'discarding unexpected <rect>'
             \ ]
 
+"}}}
+" Plugin: UltiSnips"{{{
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 "}}}
 " Plugin: ANGULAR VIM"{{{
 
