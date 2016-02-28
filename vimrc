@@ -40,6 +40,8 @@ Plug 'tpope/vim-markdown', {'for': ['md','mdown']}
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
+Plug 'SirVer/ultisnips'  " Reference: https://github.com/honza/vim-snippets/tree/master/snippets
+Plug 'honza/vim-snippets'
 Plug 'morhetz/gruvbox'
 call plug#end()
 filetype plugin indent on
@@ -398,6 +400,11 @@ let g:syntastic_html_tidy_ignore_errors = [
             \ 'discarding unexpected <rect>'
             \ ]
 
+"}}}
+" Plugin: UltiSnips"{{{
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 "}}}
 " Plugin: ANGULAR VIM"{{{
 
