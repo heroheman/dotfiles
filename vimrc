@@ -14,6 +14,7 @@ Plug 'cakebaker/scss-syntax.vim'
 Plug 'edkolev/tmuxline.vim'
 Plug 'elzr/vim-json'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'rking/ag.vim'
 Plug 'JulesWang/css.vim', {'for': ['scss','less','css']}
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
@@ -24,7 +25,6 @@ Plug 'moll/vim-bbye'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
-Plug 'rking/ag.vim'
 Plug 'scrooloose/syntastic'
 Plug 'shime/vim-livedown', { 'on': 'LivedownToggle' }
 Plug 'Shougo/neocomplcache.vim'
@@ -453,6 +453,9 @@ imap hh <C-y>,
 "}}}
 " Plugin: NETRW"{{{
 let g:netrw_list_hide= '.*\.swp$,.*\.pyc,*\.un~'
+
+autocmd FileType netrw setl bufhidden=wipe
+
 "}}}
  " Plugin: NERDTREE "{{{
  " #deprecated
