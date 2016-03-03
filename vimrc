@@ -168,6 +168,7 @@ nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 " wrapped portion. This fixes that.  noremap j gj
 noremap k gk
 
+inoremap {<Tab> {<CR>}<Esc>O<Tab>}
 
 "}}}
 " SPLITS"{{{
@@ -402,7 +403,7 @@ let g:syntastic_html_tidy_ignore_errors = [
 
 "}}}
 " Plugin: UltiSnips"{{{
-let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 "}}}
