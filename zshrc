@@ -33,3 +33,11 @@ export FZF_DEFAULT_OPTS='
 --color fg:102,bg:233,hl:65,fg+:15,bg+:234,hl+:108
 --color info:108,prompt:109,spinner:108,pointer:168,marker:168
 '
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    export PATH="$HOME/.linuxbrew/bin:$PATH"
+    export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
+    export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
+fi
