@@ -20,17 +20,17 @@ Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/vim-peekaboo'
 Plug 'mattn/emmet-vim'
 Plug 'moll/vim-bbye'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'scrooloose/syntastic'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'shime/vim-livedown', { 'on': 'LivedownToggle' }
 Plug 'Shougo/neocomplcache.vim'
-Plug 'Shougo/vimproc.vim', { 'do' : 'make'}
 Plug 'Shougo/neomru.vim',
-Plug 'Shougo/vimfiler.vim',
 Plug 'sjl/gundo.vim',
 Plug 'sjl/vitality.vim',
 Plug 'Townk/vim-autoclose'
@@ -40,8 +40,10 @@ Plug 'tpope/vim-markdown', {'for': ['md','mdown']}
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
-Plug 'SirVer/ultisnips'  " Reference: https://github.com/honza/vim-snippets/tree/master/snippets
-Plug 'honza/vim-snippets'
+Plug 'justinmk/vim-dirvish'
+" Plug 'dhruvasagar/vim-vinegar'
+" Plug 'SirVer/ultisnips'  " Reference: https://github.com/honza/vim-snippets/tree/master/snippets
+" Plug 'honza/vim-snippets'
 Plug 'morhetz/gruvbox'
 call plug#end()
 filetype plugin indent on
@@ -187,11 +189,10 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-map <leader>w <C-w>v<C-w>l
-map <C-t> <esc>:tabnew<CR>
 
 " create new vsplit, and switch to it.
 noremap <leader>v <C-w>v
+
 "}}}
 " FOLDING "{{{
 set fdm=indent
@@ -295,6 +296,7 @@ nmap <leader>f :Files<cr>
 nmap <leader>g :GitFiles<cr>
 nmap <leader>h :History<cr>
 nmap <leader>b :Buffer<cr>
+
 nnoremap <silent> <Leader>C :call fzf#run({
 \   'source':
 \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
@@ -321,6 +323,8 @@ let g:limelight_default_coefficient = 0.7
 " Plugin: GUNDO"{{{
 nnoremap <F6> :GundoToggle<CR>
 "}}}
+" Plugin: PEEKABOO
+let g:peekaboo_window = 'vertical botright 50new'
 " Plugin: NEOCOMPLETE {{{
 
 let g:neocomplcache_enable_at_startup = 1
@@ -403,7 +407,7 @@ let g:syntastic_html_tidy_ignore_errors = [
 
 "}}}
 " Plugin: UltiSnips"{{{
-" let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<c-g>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 "}}}
@@ -461,9 +465,13 @@ imap hh <C-y>,
 "}}}
 " Plugin: NETRW"{{{
 let g:netrw_list_hide= '.*\.swp$,.*\.pyc,*\.un~'
+let g:netrw_liststyle=1
 
 autocmd FileType netrw setl bufhidden=wipe
 
+"}}}
+" Plugin: DIRVISH"{{{
+autocmd FileType dirvish call fugitive#detect(@%)
 "}}}
  " Plugin: NERDTREE "{{{
  " #deprecated
@@ -473,14 +481,14 @@ autocmd FileType netrw setl bufhidden=wipe
  " autocmd StdinReadPre * let s:std_in=1
  " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
- " Map :NERDTreeToggle to CTRL + T
+ " Map :NERDTreeToggle to CTRL + E
  " map <leader>e :NERDTreeToggle<CR>
- " map <C-e> :NERDTreeToggle<CR>
+ map <C-e> :NERDTreeToggle<CR>
 
  "close vim if nerdtree is the last remaining window
- " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
  " let NERDTreeHijackNetrw = 0
-" "}}}
+"}}}
 " Plugin: VIM-REPEAT"{{{
 
 " something to repeat... some day

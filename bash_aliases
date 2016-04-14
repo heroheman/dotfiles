@@ -1,3 +1,13 @@
+# fbr - checkout git branch (including remote branches)
+# fbr - checkout git branch (including remote branches)
+fbr() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD) &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
 csscount() {
     cnt=0
         depth=0
@@ -108,24 +118,6 @@ fo() {
     [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
   fi
 }
-
-# cf - fuzzy cd from anywhere
-# ex: cf word1 word2 ... (even part of a file name)
-# zsh autoload function
-local file
-
-file="$(locate -Ai -0 $@ | grep -z -vE '~$' | fzf --read0 -0 -1)"
-
-if [[ -n $file ]]
-then
-   if [[ -d $file ]]
-   then
-      cd -- $file
-   else;
-      cd -- ${file:h}
-   fi
-fi
-
 
 # fkill - kill process
 fkill() {
