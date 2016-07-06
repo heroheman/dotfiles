@@ -11,6 +11,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'burnettk/vim-angular'
 Plug 'cakebaker/scss-syntax.vim'
+Plug 'digitaltoad/vim-pug'
 Plug 'edkolev/tmuxline.vim'
 Plug 'elzr/vim-json'
 Plug 'editorconfig/editorconfig-vim'
@@ -27,7 +28,7 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'scrooloose/syntastic'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'shime/vim-livedown', { 'on': 'LivedownToggle' }
 Plug 'Shougo/neocomplcache.vim'
 Plug 'Shougo/neomru.vim',
@@ -41,9 +42,6 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'justinmk/vim-dirvish'
-" Plug 'dhruvasagar/vim-vinegar'
-" Plug 'SirVer/ultisnips'  " Reference: https://github.com/honza/vim-snippets/tree/master/snippets
-" Plug 'honza/vim-snippets'
 Plug 'morhetz/gruvbox'
 call plug#end()
 filetype plugin indent on
@@ -52,6 +50,8 @@ filetype plugin indent on
 
 " Source vimrc on saving
 autocmd! bufwritepost $MYVIMRC source $MYVIMRC
+" Airline Reinit after that
+autocmd! bufwritepost $MYVIMRC AirlineRefresh
 
 
 "}}}
@@ -163,6 +163,10 @@ vnoremap / /\v
 " Clear match highlighting
 noremap <leader><space> :noh<cr>:call clearmatches()<cr>
 
+" simple clipboardtesting
+" http://tilvim.com/2014/03/18/a-better-paste.html
+map <Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>"
+
 " remove unwanted trailing whitespaces in the whole file
 nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 
@@ -170,8 +174,10 @@ nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
 " wrapped portion. This fixes that.  noremap j gj
 noremap k gk
 
-inoremap {<Tab> {<CR>}<Esc>O<Tab>}
+" Jump to last line of file and center it on screen
+nnoremap G Gzz
 
+inoremap {<Tab> {<CR>}<Esc>O<Tab>}
 "}}}
 " SPLITS"{{{
 " Quick Split View Sizing
@@ -225,8 +231,8 @@ autocmd BufWinEnter *.* silent loadview
 "}}}
 " BUFFERS"{{{
 " Circling buffers
-nnoremap <leader>m :bnext<CR>
-nnoremap <leader>n :bprevious<CR>
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
 
 " Close Buffer, but not window with vim-bbye
 " maps it to leader-q" maps it to leader-q
@@ -297,6 +303,7 @@ nmap <leader>g :GitFiles<cr>
 nmap <leader>h :History<cr>
 nmap <leader>b :Buffer<cr>
 
+" Color Schemes
 nnoremap <silent> <Leader>C :call fzf#run({
 \   'source':
 \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
@@ -306,10 +313,23 @@ nnoremap <silent> <Leader>C :call fzf#run({
 \   'right':    30
 \ })<CR>
 
+" change root to git
 fun! s:fzf_root()
     let path = finddir(".git", expand("%:p:h").";")
     return fnamemodify(substitute(path, ".git", "", ""), ":p:h")
 endfun
+
+" This is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Default fzf layout
+" - down / up / left / right
+" - window (nvim only)
+let g:fzf_layout = { 'down': '~60%' }
+
 "}}}
 " Plugin: GOYO & LIMELIGHT"{{{
 
@@ -323,8 +343,8 @@ let g:limelight_default_coefficient = 0.7
 " Plugin: GUNDO"{{{
 nnoremap <F6> :GundoToggle<CR>
 "}}}
-" Plugin: PEEKABOO
-let g:peekaboo_window = 'vertical botright 50new'
+" Plugin: PEEKABOO"{{{
+let g:peekaboo_window = 'vertical botright 50new'"}}}
 " Plugin: NEOCOMPLETE {{{
 
 let g:neocomplcache_enable_at_startup = 1
@@ -425,13 +445,14 @@ set laststatus=2
 let g:airline#extensions#tabline#enabled = 1
 
 if !exists('g:airline_theme')
-    let g:airline_theme = 'bubblegum'
+    let g:airline_theme = 'badwolf'
 endif
 
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
+let g:airline#extensions#tabline#buffer_nr_show = 1
 
 "}}}
 " Plugin: TMUXLINE"{{{
@@ -499,7 +520,7 @@ if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnom
     set t_Co=256
     set term=screen-256color
 endif
-set gfn=FiraMono
+set gfn=InputMono
 set background=dark
 colorscheme gruvbox
 let g:gruvbox_contrast_dark = 'hard'
