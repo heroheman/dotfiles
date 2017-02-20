@@ -449,7 +449,7 @@ let g:syntastic_html_tidy_ignore_errors = [
             \ ]
 
 "}}}
-" Plugin: UltiSnips"{{{
+" Plugin: ULTISNIPS"{{{
 let g:UltiSnipsExpandTrigger="<c-g>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
@@ -459,7 +459,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:angular_filename_convention = 'camelcased'
 
 "}}}
-"PLUGIN: Vim-Jsx"{{{
+"PLUGIN: VIM-JSX"{{{
 
 " Allow syntax also for js files
 let g:jsx_ext_required = 0
@@ -493,7 +493,7 @@ let g:tmuxline_preset = {
 
 let g:tmuxline_powerline_separators = 0
 "}}}
-" Plugin: Livedown"{{{
+" Plugin: LIVEDOWN"{{{
 
 " should markdown preview get shown automatically upon opening markdown buffer
 let g:livedown_autorun = 0
