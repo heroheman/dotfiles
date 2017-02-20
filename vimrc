@@ -64,34 +64,34 @@ syntax on " Syntax highlighting
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
-set expandtab " use spaces instead of tabs.
-set smarttab " let's tab key insert 'tab stops', and bksp deletes tabs.
-set shiftround " tab / shifting moves to closest tabstop.
-set autoindent " Match indents on new lines.
-" set smartindent " Intellegently dedent / indent new lines based on rules.
+set expandtab       " use spaces instead of tabs.
+set smarttab        " let's tab key insert 'tab stops', and bksp deletes tabs.
+set shiftround      " tab / shifting moves to closest tabstop.
+set autoindent      " Match indents on new lines.
+" set smartindent     " Intellegently dedent / indent new lines based on rules.
 set relativenumber
 set number
 
-set nobackup " We have vcs, we don't need backups.
-set nowritebackup " We have vcs, we don't need backups.
-set noswapfile " They're just annoying. Who likes them?
+set nobackup        " We have vcs, we don't need backups.
+set nowritebackup   " We have vcs, we don't need backups.
+set noswapfile      " They're just annoying. Who likes them?
 
-set splitbelow        " new hoz splits go below
-set splitright        " new vert splits go right
+set splitbelow      " new hoz splits go below
+set splitright      " new vert splits go right
 
 set path=$PWD/**
 
 " don't nag me when hiding buffers"
-set hidden " allow me to have buffers with unsaved changes.
-set autoread " when a file has changed on disk, just load it. Don't ask.
+set hidden          " allow me to have buffers with unsaved changes.
+set autoread        " when a file has changed on disk, just load it. Don't ask.
 
 " Make search more sane"
-set ignorecase " case insensitive search
-set smartcase " If there are uppercase letters, become case-sensitive.
-set incsearch " live incremental searching
-set showmatch " live match highlighting
-set hlsearch " highlight matches
-set gdefault " use the `g` flag by default.
+set ignorecase      " case insensitive search
+set smartcase       " If there are uppercase letters, become case-sensitive.
+set incsearch       " live incremental searching
+set showmatch       " live match highlighting
+set hlsearch        " highlight matches
+set gdefault        " use the `g` flag by default.
 
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
@@ -362,6 +362,15 @@ let g:nv_directories = ['~/Google Drive/nvAlt/wiki', '~/Google Drive/nvAlt/writi
 let g:nv_default_extension = '.md'
 " let g:nv_main_directory = g:nv_directories[0] 
 " default is first in directory list
+
+" Default Shortcuts
+nnoremap <c-s> :NV<CR>
+" c-x: Use search string as filename and open in vertical split
+" c-v: Open in vertical split
+" c-s: Open in horizontal split
+" c-t: Open in new tab
+" <Enter>: Open highlighted search result in current buffer
+
 "}}}
 " Plugin: GUNDO"{{{
 nnoremap <F6> :GundoToggle<CR>
