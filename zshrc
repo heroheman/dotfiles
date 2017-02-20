@@ -11,7 +11,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
-export TERM=xterm-256color
+export TERM=screen-256color
 # number of lines kept in history
 export HISTSIZE=1000
 # number of lines saved in the history after logout
@@ -33,8 +33,16 @@ export FZF_DEFAULT_OPTS='
 --color fg:102,bg:233,hl:65,fg+:15,bg+:234,hl+:108
 --color info:108,prompt:109,spinner:108,pointer:168,marker:168
 '
+# Add RVM to PATH for scripting
+export PATH="$PATH:$HOME/.rvm/bin"
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+# Thefuck
+eval "$(thefuck --alias)"
+
+# Add Composer to PATH
+export PATH="$PATH:$HOME/.composer/vendor/bin" 
+
+source $(brew --prefix nvm)/nvm.sh
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     export PATH="$HOME/.linuxbrew/bin:$PATH"

@@ -6,13 +6,14 @@
 set nocompatible
 filetype off
 call plug#begin('~/.vim/plugged')
-Plug 'ap/vim-css-color'
+" Plug 'ap/vim-css-color'
+Plug 'Alok/notational-fzf-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'burnettk/vim-angular'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'digitaltoad/vim-pug'
-Plug 'edkolev/tmuxline.vim'
+" Plug 'edkolev/tmuxline.vim'
 Plug 'elzr/vim-json'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'rking/ag.vim'
@@ -24,10 +25,12 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-peekaboo'
 Plug 'mattn/emmet-vim'
 Plug 'moll/vim-bbye'
+Plug 'mhinz/vim-signify'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'scrooloose/syntastic'
+Plug 'mxw/vim-jsx'
 " Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'shime/vim-livedown', { 'on': 'LivedownToggle' }
 Plug 'Shougo/neocomplcache.vim'
@@ -43,16 +46,17 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'justinmk/vim-dirvish'
 Plug 'morhetz/gruvbox'
+Plug 'wakatime/vim-wakatime'
+Plug 'wavded/vim-stylus'
 call plug#end()
 filetype plugin indent on
 
 " let g:plug_threads=1
 
 " Source vimrc on saving
+" autocmd! bufwritepost $MYVIMRC 
+" Airline Reienit after that
 autocmd! bufwritepost $MYVIMRC source $MYVIMRC
-" Airline Reinit after that
-autocmd! bufwritepost $MYVIMRC AirlineRefresh
-
 
 "}}}
 " GLOBAL SETTINGS (sets)"{{{
@@ -107,9 +111,9 @@ set linespace=10
 
 
 " Resize splits when the window is resized
-augroup global_autocommands
-    au VimResized * exe "normal! \<c-w>="
-augroup END
+" augroup global_autocommands
+"     au VimResized * exe "normal! \<c-w>="
+" augroup END
 
 " Return to last edit position when opening files"
 autocmd BufReadPost *
@@ -126,6 +130,11 @@ if exists("&undodir")
 endif
 set backupdir=~/.vim/backup//
 set directory=~/.vim/swp//
+
+" Neovim: Pipe Cursor in insert mode
+if has('nvim')
+    let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+endif
 
 "}}}
 " SHORTCUTS"{{{
@@ -178,6 +187,8 @@ noremap k gk
 nnoremap G Gzz
 
 inoremap {<Tab> {<CR>}<Esc>O<Tab>}
+
+nnoremap <leader>k :ls<cr>:b<space>
 "}}}
 " SPLITS"{{{
 " Quick Split View Sizing
@@ -226,7 +237,9 @@ autocmd BufRead,BufEnter .vimrc setlocal foldmethod=marker
 
 " autosaves and loads folding info
 autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
+if has('vim')
+    autocmd BufWinEnter *.* silent loadview
+endif
 
 "}}}
 " BUFFERS"{{{
@@ -299,9 +312,12 @@ set wildignore+=*\\.sass-cache\\**
 "}}}
 " Plugin: FZF"{{{
 nmap <leader>f :Files<cr>
+nmap <leader>c :Commits!<cr>
+nmap <leader>x :BCommits<cr>
 nmap <leader>g :GitFiles<cr>
 nmap <leader>h :History<cr>
 nmap <leader>b :Buffer<cr>
+nmap <leader>l :BLines<cr>
 
 " Color Schemes
 nnoremap <silent> <Leader>C :call fzf#run({
@@ -339,6 +355,13 @@ let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_conceal_guifg = '#777777'
 let g:limelight_default_coefficient = 0.7
 
+"}}}
+" Plugin: NOTATIONAL FZF VIM"{{{
+let g:nv_directories = ['~/Google Drive/nvAlt/wiki', '~/Google Drive/nvAlt/writing', '~/Google Drive/nvAlt/code']
+" Don't forget the dot, unless you don't want one.
+let g:nv_default_extension = '.md'
+" let g:nv_main_directory = g:nv_directories[0] 
+" default is first in directory list
 "}}}
 " Plugin: GUNDO"{{{
 nnoremap <F6> :GundoToggle<CR>
@@ -436,6 +459,11 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:angular_filename_convention = 'camelcased'
 
 "}}}
+"PLUGIN: Vim-Jsx"{{{
+
+" Allow syntax also for js files
+let g:jsx_ext_required = 0
+"}}}
 " Plugin: AIRLINE"{{{
 
 " Vim Airline on single view
@@ -465,6 +493,21 @@ let g:tmuxline_preset = {
 
 let g:tmuxline_powerline_separators = 0
 "}}}
+" Plugin: Livedown"{{{
+
+" should markdown preview get shown automatically upon opening markdown buffer
+let g:livedown_autorun = 0
+
+" should the browser window pop-up upon previewing
+let g:livedown_open = 1 
+
+" the port on which Livedown server will run
+let g:livedown_port = 1337
+
+" the browser to use
+let g:livedown_browser = "chrome"
+
+"}}}
 " Plugin: VIM-COMMENTARY:"{{{
 
 " Map the key for toggling comments with vim-commentary
@@ -493,7 +536,7 @@ autocmd FileType netrw setl bufhidden=wipe
 "}}}
 " Plugin: DIRVISH"{{{
 autocmd FileType dirvish call fugitive#detect(@%)
-"}}}
+"k}
  " Plugin: NERDTREE "{{{
  " #deprecated
 
@@ -518,7 +561,9 @@ autocmd FileType dirvish call fugitive#detect(@%)
 " Layout: COLORSCHEME"{{{
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnome-terminal"
     set t_Co=256
-    set term=screen-256color
+    if has('vim')
+        set term=screen-256color
+    endif
 endif
 set gfn=InputMono
 set background=dark
