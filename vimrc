@@ -35,7 +35,8 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 "}}}
 " PLUGINS: SyntaxChecking"{{{
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 "}}}
 "PLUGINS: Markup"{{{
 Plug 'othree/html5.vim'
@@ -481,37 +482,41 @@ inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
 " }}}
 " Plugin: SYNTASTIC "{{{
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" let g:syntastic_always_populate_loc_list = 0
+" let g:syntastic_auto_loc_list = 0
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
 
-let g:syntastic_scss_checkers = ['scss_lint']
+" let g:syntastic_scss_checkers = ['scss_lint']
 
-" let g:syntastic_html_checkers = ['validator']
-let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_html_tidy_ignore_errors = [
-            \ 'trimming empty <i>',
-            \ 'trimming empty <span>',
-            \ '<input> proprietary attribute \"autocomplete\"',
-            \ 'proprietary attribute \"role\"',
-            \ 'proprietary attribute \"hidden\"',
-            \ 'proprietary attribute \"ng-',
-            \ '<svg> is not recognized!',
-            \ '<use> is not recognized!',
-            \ 'discarding unexpected <use>',
-            \ 'discarding unexpected </use>',
-            \ 'discarding unexpected <svg>',
-            \ 'discarding unexpected </svg>',
-            \ '<rect> is not recognized!',
-            \ 'discarding unexpected <rect>'
-            \ ]
+" " let g:syntastic_html_checkers = ['validator']
+" let g:syntastic_javascript_checkers = ['jshint']
+" let g:syntastic_html_tidy_ignore_errors = [
+"             \ 'trimming empty <i>',
+"             \ 'trimming empty <span>',
+"             \ '<input> proprietary attribute \"autocomplete\"',
+"             \ 'proprietary attribute \"role\"',
+"             \ 'proprietary attribute \"hidden\"',
+"             \ 'proprietary attribute \"ng-',
+"             \ '<svg> is not recognized!',
+"             \ '<use> is not recognized!',
+"             \ 'discarding unexpected <use>',
+"             \ 'discarding unexpected </use>',
+"             \ 'discarding unexpected <svg>',
+"             \ 'discarding unexpected </svg>',
+"             \ '<rect> is not recognized!',
+"             \ 'discarding unexpected <rect>'
+"             \ ]
 
 "}}}
+" Plugin: Ale
+" let g:ale_sign_column_always = 1
+let g:ale_sign_error = '⨉'
+let g:ale_sign_warning = '⚠️'
 " Plugin: ULTISNIPS"{{{
 let g:UltiSnipsExpandTrigger="<c-g>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
