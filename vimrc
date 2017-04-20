@@ -513,10 +513,15 @@ inoremap <expr><C-e>  neocomplcache#cancel_popup()
 "             \ ]
 
 "}}}
-" Plugin: Ale
+" Plugin: Ale"{{{
+let g:ale_linters = {
+\   'javascript': ['tidy','jsonlint','scss-lint','yamllint','eslint'],
+\}
+
 " let g:ale_sign_column_always = 1
 let g:ale_sign_error = '⨉'
 let g:ale_sign_warning = '⚠️'
+"}}}
 " Plugin: ULTISNIPS"{{{
 let g:UltiSnipsExpandTrigger="<c-g>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
