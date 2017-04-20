@@ -33,6 +33,7 @@ Plug 'mattn/emmet-vim'
 Plug 'Townk/vim-autoclose'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'gregsexton/gitv', {'on': ['Gitv']}
 "}}}
 " PLUGINS: SyntaxChecking"{{{
 " Plug 'scrooloose/syntastic'
