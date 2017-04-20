@@ -2,52 +2,79 @@
 " .vimrc / .nvimrc
 " by Florenz Heldermann - florenz.heldermann@gmail.com
 
-" VIM-PLUG PLUGINs"{{{
+" PLUGINS: Vim-Plug"{{{
 set nocompatible
 filetype off
 call plug#begin('~/.vim/plugged')
-" Plug 'ap/vim-css-color'
-Plug 'Alok/notational-fzf-vim'
+
+" PLUGINS: Global"{{{
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'burnettk/vim-angular'
-Plug 'cakebaker/scss-syntax.vim'
-Plug 'digitaltoad/vim-pug'
-" Plug 'edkolev/tmuxline.vim'
-Plug 'elzr/vim-json'
-Plug 'editorconfig/editorconfig-vim'
 Plug 'rking/ag.vim'
-Plug 'JulesWang/css.vim', {'for': ['scss','less','css']}
-Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
-Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-peekaboo'
-Plug 'mattn/emmet-vim'
 Plug 'moll/vim-bbye'
 Plug 'mhinz/vim-signify'
-Plug 'mustache/vim-mustache-handlebars'
-Plug 'othree/html5.vim'
-Plug 'pangloss/vim-javascript'
-Plug 'scrooloose/syntastic'
-Plug 'mxw/vim-jsx'
 " Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'shime/vim-livedown', { 'on': 'LivedownToggle' }
 Plug 'Shougo/neocomplcache.vim'
 Plug 'Shougo/neomru.vim',
 Plug 'sjl/gundo.vim',
 Plug 'sjl/vitality.vim',
-Plug 'Townk/vim-autoclose'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-markdown', {'for': ['md','mdown']}
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'justinmk/vim-dirvish'
 Plug 'morhetz/gruvbox'
-Plug 'wakatime/vim-wakatime'
+"}}}
+" PLUGINS: Dev Global"{{{
+Plug 'editorconfig/editorconfig-vim'
+Plug 'mattn/emmet-vim'
+Plug 'Townk/vim-autoclose'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+"}}}
+" PLUGINS: SyntaxChecking"{{{
+Plug 'scrooloose/syntastic'
+"}}}
+"PLUGINS: Markup"{{{
+Plug 'othree/html5.vim'
+Plug 'digitaltoad/vim-pug'
+Plug 'tpope/vim-markdown', {'for': ['md','mdown']}
+Plug 'mustache/vim-mustache-handlebars'
+"}}}
+"PLUGINS: CSS"{{{
+Plug 'cakebaker/scss-syntax.vim', {'for': ['scss', 'sass']}
+Plug 'JulesWang/css.vim', {'for': ['scss','less','css']}
+Plug 'luishdez/vim-less', {'for': ['less']}
+Plug 'csscomb/vim-csscomb'
 Plug 'wavded/vim-stylus'
+" Plug 'ap/vim-css-color'
+" Plug 'gcorne/vim-sass-lint', {'for': ['scss']}
+"}}}
+"PLUGINS: Javascript"{{{
+Plug 'burnettk/vim-angular'
+Plug 'pangloss/vim-javascript'
+Plug 'elzr/vim-json'
+Plug 'mxw/vim-jsx'
+"}}}
+"PLUGINS: Tools"{{{
+Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
+Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
+Plug 'Alok/notational-fzf-vim'
+Plug 'shime/vim-livedown'
+Plug 'wakatime/vim-wakatime'
+"}}}
+"PLUGINS: Snipmate"{{{
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+"}}}
+"PLUGINS: Snippets:"{{{
+Plug 'honza/vim-snippets'
+Plug 'bentayloruk/vim-react-es6-snippets'
+"}}}
+
 call plug#end()
 filetype plugin indent on
 
@@ -61,9 +88,9 @@ autocmd! bufwritepost $MYVIMRC source $MYVIMRC
 "}}}
 " GLOBAL SETTINGS (sets)"{{{
 syntax on " Syntax highlighting
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
 set expandtab       " use spaces instead of tabs.
 set smarttab        " let's tab key insert 'tab stops', and bksp deletes tabs.
 set shiftround      " tab / shifting moves to closest tabstop.
@@ -346,6 +373,31 @@ let g:fzf_action = {
 " - window (nvim only)
 let g:fzf_layout = { 'down': '~60%' }
 
+" Augmenting Ag command using fzf#vim#with_preview function
+"    * fzf#vim#with_preview([[options], preview window, [toggle keys...]])
+"    * For syntax-highlighting, Ruby and any of the following tools are
+" required:
+"   - Highlight: http://www.andre-simon.de/doku/highlight/en/highlight.php
+"   - CodeRay: http://coderay.rubychan.de/
+"   - Rouge: https://github.com/jneen/rouge
+"   :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
+"   :Ag! - Start fzf in fullscreen and display the preview window above
+command! -bang -nargs=* Ag
+      \ call fzf#vim#ag(<q-args>,
+      \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+      \                         : fzf#vim#with_preview('right:50%:hidden','?'),
+      \                 <bang>0)
+
+" Likewise, Files command with preview window
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+command! -bang -nargs=? -complete=dir GFiles
+    \ call fzf#vim#gfiles(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+"}}}
+" Plugin: EDITORCONFIG"{{{
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 "}}}
 " Plugin: GOYO & LIMELIGHT"{{{
 
@@ -438,6 +490,8 @@ let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
+let g:syntastic_scss_checkers = ['scss_lint']
+
 " let g:syntastic_html_checkers = ['validator']
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_html_tidy_ignore_errors = [
@@ -462,6 +516,11 @@ let g:syntastic_html_tidy_ignore_errors = [
 let g:UltiSnipsExpandTrigger="<c-g>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"}}}
+" Plugin: Snipmate"{{{
+
+imap kk <Plug>snipMateNextOrTrigger
+
 "}}}
 " Plugin: ANGULAR VIM"{{{
 
@@ -491,16 +550,6 @@ let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline#extensions#tabline#buffer_nr_show = 1
 
-"}}}
-" Plugin: TMUXLINE"{{{
-let g:tmuxline_preset = {
-            \'a'    : '#S',
-            \'win'  : ['#I', '#W'],
-            \'cwin' : ['#I', '#W', '#F'],
-            \'y'    : ['%R', '%a', '%Y'],
-            \'z'    : '#H'}
-
-let g:tmuxline_powerline_separators = 0
 "}}}
 " Plugin: LIVEDOWN"{{{
 
@@ -545,27 +594,6 @@ autocmd FileType netrw setl bufhidden=wipe
 "}}}
 " Plugin: DIRVISH"{{{
 autocmd FileType dirvish call fugitive#detect(@%)
-"k}
- " Plugin: NERDTREE "{{{
- " #deprecated
-
- " Open Nerdtree on Startup if no file is open
- " Incompatible with Startify
- " autocmd StdinReadPre * let s:std_in=1
- " autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
- " Map :NERDTreeToggle to CTRL + E
- " map <leader>e :NERDTreeToggle<CR>
- map <C-e> :NERDTreeToggle<CR>
-
- "close vim if nerdtree is the last remaining window
- autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
- " let NERDTreeHijackNetrw = 0
-"}}}
-" Plugin: VIM-REPEAT"{{{
-
-" something to repeat... some day
-
 "}}}
 " Layout: COLORSCHEME"{{{
 if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnome-terminal"
