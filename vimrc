@@ -10,7 +10,8 @@ call plug#begin('~/.vim/plugged')
 " PLUGINS: Global"{{{
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'rking/ag.vim'
+" Plug 'rking/ag.vim'
+Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-peekaboo'
@@ -339,6 +340,12 @@ set wildignore+=*\\node_modules\\**
 set wildignore+=*\\.sass-cache\\**
 
 "}}}
+" Plugin: AG / ACK"{{{
+" the original ag.vim is deprecated. will using ack.vim now
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+"}}}
 " Plugin: FZF"{{{
 nmap <leader>f :Files<cr>
 nmap <leader>c :Commits!<cr>
@@ -516,7 +523,11 @@ inoremap <expr><C-e>  neocomplcache#cancel_popup()
 "}}}
 " Plugin: Ale"{{{
 let g:ale_linters = {
-\   'javascript': ['tidy','jsonlint','scss-lint','yamllint','eslint'],
+\   'javascript': ['jsonlint','eslint'],
+\   'html': ['tidy'],
+\   'yaml': ['yamllint'],
+\   'scss': ['scss-lint'],
+\   'json': ['jsonlint'],
 \}
 
 " let g:ale_sign_column_always = 1
