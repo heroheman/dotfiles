@@ -111,6 +111,7 @@ case `uname` in
   Darwin)
     # commands for OS X go here
     source $(brew --prefix nvm)/nvm.sh
+    # export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home
   ;;
   Linux)
     # commands for Linux go here
@@ -122,5 +123,6 @@ case `uname` in
   ;;
 esac
 
+export PATH=$JAVA_HOME/bin:$PATH
 
 

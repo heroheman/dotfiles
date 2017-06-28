@@ -10,6 +10,7 @@ call plug#begin('~/.vim/plugged')
 " PLUGINS: Global"{{{
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'blueyed/vim-diminactive'
 " Plug 'rking/ag.vim'
 Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
@@ -37,8 +38,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv', {'on': ['Gitv']}
 "}}}
 " PLUGINS: SyntaxChecking"{{{
-" Plug 'scrooloose/syntastic'
-Plug 'w0rp/ale'
+Plug 'scrooloose/syntastic'
+" Plug 'w0rp/ale'
 "}}}
 "PLUGINS: Markup"{{{
 Plug 'othree/html5.vim'
@@ -91,9 +92,9 @@ autocmd! bufwritepost $MYVIMRC source $MYVIMRC
 "}}}
 " GLOBAL SETTINGS (sets)"{{{
 syntax on " Syntax highlighting
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set expandtab       " use spaces instead of tabs.
 set smarttab        " let's tab key insert 'tab stops', and bksp deletes tabs.
 set shiftround      " tab / shifting moves to closest tabstop.
@@ -101,6 +102,8 @@ set autoindent      " Match indents on new lines.
 " set smartindent     " Intellegently dedent / indent new lines based on rules.
 set relativenumber
 set number
+
+set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
 
 set nobackup        " We have vcs, we don't need backups.
 set nowritebackup   " We have vcs, we don't need backups.
@@ -490,49 +493,49 @@ inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
 " }}}
 " Plugin: SYNTASTIC "{{{
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
-" let g:syntastic_always_populate_loc_list = 0
-" let g:syntastic_auto_loc_list = 0
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
-" let g:syntastic_scss_checkers = ['scss_lint']
+let g:syntastic_scss_checkers = ['scss_lint']
 
-" " let g:syntastic_html_checkers = ['validator']
-" let g:syntastic_javascript_checkers = ['jshint']
-" let g:syntastic_html_tidy_ignore_errors = [
-"             \ 'trimming empty <i>',
-"             \ 'trimming empty <span>',
-"             \ '<input> proprietary attribute \"autocomplete\"',
-"             \ 'proprietary attribute \"role\"',
-"             \ 'proprietary attribute \"hidden\"',
-"             \ 'proprietary attribute \"ng-',
-"             \ '<svg> is not recognized!',
-"             \ '<use> is not recognized!',
-"             \ 'discarding unexpected <use>',
-"             \ 'discarding unexpected </use>',
-"             \ 'discarding unexpected <svg>',
-"             \ 'discarding unexpected </svg>',
-"             \ '<rect> is not recognized!',
-"             \ 'discarding unexpected <rect>'
-"             \ ]
+" let g:syntastic_html_checkers = ['validator']
+let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_html_tidy_ignore_errors = [
+            \ 'trimming empty <i>',
+            \ 'trimming empty <span>',
+            \ '<input> proprietary attribute \"autocomplete\"',
+            \ 'proprietary attribute \"role\"',
+            \ 'proprietary attribute \"hidden\"',
+            \ 'proprietary attribute \"ng-',
+            \ '<svg> is not recognized!',
+            \ '<use> is not recognized!',
+            \ 'discarding unexpected <use>',
+            \ 'discarding unexpected </use>',
+            \ 'discarding unexpected <svg>',
+            \ 'discarding unexpected </svg>',
+            \ '<rect> is not recognized!',
+            \ 'discarding unexpected <rect>'
+            \ ]
 
 "}}}
 " Plugin: Ale"{{{
-let g:ale_linters = {
-\   'javascript': ['jsonlint','eslint'],
-\   'html': ['tidy'],
-\   'yaml': ['yamllint'],
-\   'scss': ['scss-lint'],
-\   'json': ['jsonlint'],
-\}
+" let g:ale_linters = {
+" \   'javascript': ['jshint', 'eslint'],
+" \   'html': ['tidy'],
+" \   'yaml': ['yamllint'],
+" \   'scss': ['scss-lint'],
+" \   'json': ['jsonlint'],
+" \}
 
 " let g:ale_sign_column_always = 1
-let g:ale_sign_error = '⨉'
-let g:ale_sign_warning = '⚠️'
+" let g:ale_sign_error = '⨉'
+" let g:ale_sign_warning = '⚠️'
 "}}}
 " Plugin: ULTISNIPS"{{{
 let g:UltiSnipsExpandTrigger="<c-g>"
@@ -561,6 +564,9 @@ set laststatus=2
 
 " Automatically displays all buffers when theres only one tab open
 let g:airline#extensions#tabline#enabled = 1
+
+" Just show the filename (no path) in the tab
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 if !exists('g:airline_theme')
     let g:airline_theme = 'badwolf'
@@ -624,12 +630,12 @@ if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnom
         set term=screen-256color
     endif
 endif
-    if has('vim')
-        set term=screen-256color
-    endif
 set guifont=Input\Mono
+set gfn=Input\Mono
+
 set background=dark
 colorscheme gruvbox
+
 let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_contrast_light = 'hard'
 let g:gruvbox_invert_signs = 1
