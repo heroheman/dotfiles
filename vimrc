@@ -624,7 +624,10 @@ if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM =="gnom
         set term=screen-256color
     endif
 endif
-set gfn=InputMono
+    if has('vim')
+        set term=screen-256color
+    endif
+set guifont=Input\Mono
 set background=dark
 colorscheme gruvbox
 let g:gruvbox_contrast_dark = 'hard'
