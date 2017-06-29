@@ -1,3 +1,6 @@
+# fixes a bug with nice() on WSL
+# unsetopt BG_NICE
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -37,7 +40,7 @@ ZSH_THEME="agnoster"
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -83,6 +86,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+
 source ~/.bash_aliases
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -125,4 +130,14 @@ esac
 
 export PATH=$JAVA_HOME/bin:$PATH
 
+
+# load zgen 
+source "${HOME}/.zgen/zgen.zsh"
+if ! zgen saved; then
+    # specify plugins here
+    zgen load uvaes/fzf-marks
+
+    # generate the init script from plugins above
+    zgen save
+fi
 
