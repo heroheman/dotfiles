@@ -2,10 +2,13 @@
 # This script is my personal setup file - use at own risk
 # only tested on mac osx
 
-########## Variables
-dotfiles=~/dotfiles                    # dotfiles directory
-dotfilesOld=~/dotfiles_old             # old dotfiles backup directory
-files="bashrc bash_aliases vimrc tmux.conf zlogin zlogout zpreztorc zprofile zshenv zshrc"    # list of files/folders to symlink in homedir
+# VARIABLES
+# dotfiles directory
+dotfiles=~/dotfiles         
+# old dotfiles backup directory
+dotfilesOld=~/dotfiles_old             
+# list of files/folders to symlink in homedir
+files="ackrc bashrc bash_aliases vimrc tmux.conf zlogin zlogout zpreztorc zprofile zshenv zshrc"    
 
 ##########
 
@@ -43,7 +46,7 @@ install_dotfiles(){
     # change to the dotfiles directory
     cd $dotfiles
     create_nvimrc
-    # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks 
+    # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks
     for file in $files; do
         e_arrow "Moving $file from ~ to $dotfilesOld"
         mv ~/.$file ~/dotfiles_old/
@@ -55,42 +58,33 @@ install_dotfiles(){
 
 # zsh
 function getZSH() {
+e_header "OH MY ZSH"
 if [ ! -d $HOME/.oh-my-zsh ]; then
-    e_error "oh-my-zsh not found!"
-    e_header "install it automatically..."
+    e_error "oh-my-zsh not found."
+    e_header "Installing OhMyZSH"
     git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git "$HOME/.oh-my-zsh"
     if [ -d $HOME/.oh-my-zsh ]; then
-        e_success "installed oh-my-zsh"
+        e_success "Installed oh-my-zsh"
     fi
+else
+    e_arrow "OhMyZSH already installed"
 fi
 }
 
-function getPrezto() {
-    if [ ! -d $HOME/.zprezto ]; then
-        e_error "prezto not found!"
-        e_header "install it automatically..."
-        git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+function getZSHPlugins(){
+    e_header "ZGEN: Installing ZGen Plugin Manager"
 
-        if [ -d $HOME/.prezto ]; then
-            e_success "Installed Prezto"
-        fi
+    if [ ! -d $HOME/.zgen ]; then
+        e_arrow "ZGEN: Install Zgen Manager"
+        git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+    else
+        e_arrow "ZGEN: Zgen already installed"
     fi
 
-    e_header "create a new zsh configuration by copying the zsh conf files provided"
-    setopt EXTENDED_GLOB
-    for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md; do
-        ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
-    done
-    chsh -s /bin/zsh
-
-    if [ -d $HOME/.prezto ]; then
-        e_header "Checking for Updates"
-        git pull && git submodule update --init --recursive
-        e_success "...done " \n
-    fi
+    e_arrow "ZGEN: You may have to source / restart your shell"
 }
 
-
+# create nvimrc for neovim
 create_nvimrc(){
     e_header "CREATE XDG Config Home for Neovim"
     if [ ! -d ${XDG_CONFIG_HOME:=$HOME/.config} ]; then
@@ -99,63 +93,44 @@ create_nvimrc(){
     fi
     symlink ~/.vim $XDG_CONFIG_HOME/nvim
     symlink ~/.vimrc $XDG_CONFIG_HOME/nvim/init.vim
-    e_success "...done " \n
+    e_success "...done "
 }
 
-# vim vundle
-get_vundle(){
-    e_header "VIM: Checking if Vundle is installed"
-    if [ ! -d ~/.vim/bundle ]; then
-        mkdir -p ~/.vim/bundle
-    fi
-
-    if [ ! -e ~/.vim/bundle/Vundle.vim ]; then
-        e_arrow "Installing Vundle"
-        git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-        e_success "...done " \n
-    fi
-}
-
-# Install Vundle Plugins
-install_vundle(){
-    e_header "Update/Install plugins using vundle"
-    vim +PluginInstall +qall 
-    e_success "...done " \n
-
-}
 
 # vim-plug
 get_vimplug(){
     e_header "VIM: Checking if VimPlug is installed"
 
     if [ ! -d ~/.vim ]; then
+        e_arrow "Create .vim directory"
         mkdir -p ~/.vim
     fi
 
     if [ ! -d ~/.vim/autoload ]; then
+        e_arrow "Create .vim/autoload directory"
         mkdir -p ~/.vim/autoload
     fi
-    e_arrow "Installing vim-plug"
     if [ ! -e ~/.vim/autoload/plug.vim ]; then
+        e_arrow "Installing vim-plug"
         curl -fLo ~/.vim/autoload/plug.vim \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-        e_success "...done " \n
+        e_success "...done "
     fi
 }
 
 # Install vim-plug Plugins
 install_plug(){
     e_header "Update/Install plugins using Vim-Plug"
-    vim +PlugInstall +qall 
-    e_success "...done " \n
+    vim +PlugInstall +qall
+    e_success "...done"
 }
 
-#which bash
-select term in "ZSH" "PREZTO" "SKIP"; do
+#Install OH MY ZSH?
+e_header "Do You want OhMyZSH? (Hint: You want.)"
+select term in "OHMYZSH" "SKIP"; do
     case $term in
-        ZSH ) getZSH; break;;
-        PREZTO ) getPrezto; break;; 
-        SKIP ) e_arrow "okay - thats ok, I guess"; break;; 
+        OHMYZSH ) getZSH; getZSHPlugins; break;;
+        SKIP ) e_arrow "okay - thats ok, I guess"; break;;
     esac
 done
 
@@ -163,7 +138,7 @@ e_header "Backup existing Aliases in $dotfilesOld and create aliases?"
 select yn in "Yes" "No"; do
     case $yn in
         Yes ) install_dotfiles; break;;
-        No ) e_arrow "okay - thats ok, I guess"; break;; 
+        No ) e_arrow "okay - thats ok, I guess"; break;;
     esac
 done
 
@@ -171,11 +146,10 @@ e_header "Install Vim-Plug and get Plugins?"
 select yn in "Yes" "No"; do
     case $yn in
         Yes ) get_vimplug; install_plug; break;;
-        No ) e_arrow "okay - thats ok, I guess"; break; 
+        No ) e_arrow "okay - thats ok, I guess"; break;
     esac
 done
-e_arrow "You might want to install the patched font for webdevIcons and arrows";
-e_arrow "Also, what about ctags? brew install ctags?"
+e_success "Thats all, have a nice day"
 
 
 # install_dotfiles || exit 1
