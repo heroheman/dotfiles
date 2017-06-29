@@ -8,7 +8,7 @@ dotfiles=~/dotfiles
 # old dotfiles backup directory
 dotfilesOld=~/dotfiles_old             
 # list of files/folders to symlink in homedir
-files="ackrc bashrc bash_aliases vimrc tmux.conf zshenv zshrc"    
+files="ackrc bashrc bash_aliases vimrc tmux.conf gitconfig zshenv zshrc"    
 
 ##########
 
@@ -40,7 +40,7 @@ install_dotfiles(){
     if [ ! -d $dotfilesOld ]; then
         e_header "Creating $dotfilesOld for backup of any existing dotfiles in ~"
         mkdir -p $dotfilesOld
-        e_success "...done " \n
+        e_success "...done "
     fi
 
     # change to the dotfiles directory
@@ -52,7 +52,7 @@ install_dotfiles(){
         mv ~/.$file ~/dotfiles_old/
         e_arrow "Creating symlink to $file in home directory. \n"
         symlink $dotfiles/$file ~/.$file
-        e_success "...done " \n
+        e_success "...done  \n"
     done
 }
 
