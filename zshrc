@@ -5,7 +5,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/florenz/.oh-my-zsh
+# export ZSH=/home/florenz/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -54,9 +54,9 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+# plugins=(git)
 
-source $ZSH/oh-my-zsh.sh
+# source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -88,7 +88,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 
-source ~/.bash_aliases
+source ${HOME}/.bash_aliases
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 export EDITOR=vim
@@ -131,13 +131,21 @@ esac
 export PATH=$JAVA_HOME/bin:$PATH
 
 
+source ${HOME}/.zgen/zgen.zsh
 # load zgen 
-source "${HOME}/.zgen/zgen.zsh"
 if ! zgen saved; then
     # specify plugins here
+    zgen oh-my-zsh
+    zgen oh-my-zsh plugins/git
+    zgen oh-my-zsh plugins/tmux
+    zgen oh-my-zsh plugins/vi-mode
+    zgen oh-my-zsh plugins/themes
+
     zgen load uvaes/fzf-marks
+    zgen load b4b4r07/emoji-cli
+    zgen load gko/ssh-connect
+    zgen load MichaelAquilina/zsh-you-should-use
 
     # generate the init script from plugins above
     zgen save
 fi
-

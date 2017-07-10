@@ -127,9 +127,10 @@ install_plug(){
 
 #Install OH MY ZSH?
 e_header "Do You want OhMyZSH? (Hint: You want.)"
-select term in "OHMYZSH" "SKIP"; do
+select term in "OHMYZSH-STANDALONE" "OHMYZSH-ZGEN" "SKIP"; do
     case $term in
-        OHMYZSH ) getZSH; getZSHPlugins; break;;
+        OHMYZSH-STANDALONE ) getZSH; break;;
+        OHMYZSH-ZGEN ) getZSHPlugins; break;;
         SKIP ) e_arrow "okay - thats ok, I guess"; break;;
     esac
 done
