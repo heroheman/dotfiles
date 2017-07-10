@@ -143,6 +143,8 @@ fancy-ctrl-z () {
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
 
+
+# Instant Filesharing with transfer.sh
 transfer() { 
     if [ $# -eq 0 ]; then 
         echo -e "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"; 
@@ -157,4 +159,13 @@ transfer() {
     fi; 
     cat $tmpfile; 
     rm -f $tmpfile; 
+}
+
+
+wttr() {
+    if [ $# -eq 0 ]; then
+        echo -e "No Location specified. Usage: \necho wttr Bremen";
+        return 1;
+    fi
+    curl de.wttr.in/"$1" ; 
 }
