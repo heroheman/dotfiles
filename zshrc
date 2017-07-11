@@ -65,6 +65,7 @@ if ! zgen saved; then
     zgen load uvaes/fzf-marks
     zgen load b4b4r07/emoji-cli
     zgen load gko/ssh-connect
+    zgen load zsh-users/zsh-autosuggestions
     zgen load MichaelAquilina/zsh-you-should-use
 
     # bulk load
