@@ -28,6 +28,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'justinmk/vim-dirvish'
 Plug 'morhetz/gruvbox'
+Plug 'skywind3000/quickmenu.vim'
 "}}}
 " PLUGINS: Dev Global"{{{
 Plug 'editorconfig/editorconfig-vim'
@@ -350,6 +351,42 @@ set wildignore+=*\\public\\**
 set wildignore+=*\\bower_components\\**
 set wildignore+=*\\node_modules\\**
 set wildignore+=*\\.sass-cache\\**
+
+"}}}
+" Plugin: QUICKMENU{{{
+
+" enable cursorline (L) and cmdline help (H)
+let g:quickmenu_options = "HL"
+
+" choose a favorite key to show/hide quickmenu
+noremap <silent><F12> :call quickmenu#toggle(0)<cr>
+
+" GIT
+call g:quickmenu#append('# GIT', '')
+call quickmenu#append("git diff", 'Gvdiff', "use fugitive's Gvdiff on current document")
+call quickmenu#append("git status", 'Gstatus', "use fugitive's Gstatus on current document")
+call quickmenu#append("git commit", 'Gcommit', "use fugitive's Gcommit on current document")
+
+call quickmenu#append("# FZF Tasks", '')
+call quickmenu#append("File Search", 'Files', "Search all project file")
+call quickmenu#append("GitFile Search", 'GitFiles', "Search all committed file")
+call quickmenu#append("Commits Search", 'Commits', "Search all commits")
+call quickmenu#append("Buffer Commits", 'BCommits', "Commits in Current Buffer")
+call quickmenu#append("Buffer", 'Buffer', "Show all open Buffers")
+call quickmenu#append("Buffer Lines", 'BLines', "Search Lines in Buffer")
+call quickmenu#append("Notational Velocity", 'NV', "Open NV Folder")
+
+call quickmenu#append("# Apps", '')
+call quickmenu#append("Goyo", 'Goyo', "Enter Goyo Mode")
+call quickmenu#append("Livedown", 'LivedownToggle', "Enter Livedown (markdown) Mode. Port:1337")
+
+call quickmenu#append("# Misc", '')
+call quickmenu#append("Show VIMRC", 'e $MYVIMRC', "open .vimrc")
+call quickmenu#append("Gundo Toggle", 'GundoToggle', "Toggle Gundo")
+call quickmenu#append("Relative/Absolute Numbers", 'call RelativeNumberToggle', "Switch between relative/absolute/no-numbering")
+call quickmenu#append("Turn paste %{&paste? 'off':'on'}", "set paste!", "enable/disable paste mode (:set paste!)")
+call quickmenu#append("Turn list %{&paste? 'off':'on'}", "set list!", "enable/disable list (:set list!)")
+call quickmenu#append("Turn spell %{&spell? 'off':'on'}", "set spell!", "enable/disable spell check (:set spell!)")
 
 "}}}
 " Plugin: AG / ACK"{{{
