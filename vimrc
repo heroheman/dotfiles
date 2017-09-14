@@ -232,6 +232,8 @@ nnoremap G Gzz
 inoremap {<Tab> {<CR>}<Esc>O<Tab>}
 
 nnoremap <leader>k :ls<cr>:b<space>
+
+cnoreabbrev ag Gcd <bar> Ack!
 "}}}
 " SPLITS"{{{
 " Quick Split View Sizing

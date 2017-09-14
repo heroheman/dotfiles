@@ -14,9 +14,15 @@ COMPLETION_WAITING_DOTS="true"
 # much, much faster.
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+function git_prompt_info() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+    echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$ZSH_THEME_GIT_PROMPT_SUFFIX"
+}
+
 #PATHS
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$JAVA_HOME/bin:$PATH
+export PATH=$HOME/.composer/vendor/bin:$PATH
 
 case `uname` in
   Darwin)
@@ -67,6 +73,7 @@ if ! zgen saved; then
     zgen load gko/ssh-connect
     zgen load zsh-users/zsh-autosuggestions
     zgen load MichaelAquilina/zsh-you-should-use
+    zgen load supercrabtree/k
 
     # bulk load
     zgen loadall <<EOPLUGINS
