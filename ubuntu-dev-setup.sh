@@ -77,6 +77,10 @@ e_arrow 'sudo apt autoremove'
 sudo apt autoremove
 e_success 'Done'
 
+e_header 'Install Gnome Shell Extension Support'
+sudo apt-get install chrome-gnome-shell
+e_success 'Done'
+
 
 # FINAL REBOOT
 while true; do
