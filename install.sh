@@ -8,7 +8,7 @@ dotfiles=~/dotfiles
 # old dotfiles backup directory
 dotfilesOld=~/dotfiles_old             
 # list of files/folders to symlink in homedir
-files="ackrc bashrc bash_aliases vimrc tmux.conf gitconfig zshenv zshrc"    
+files="ackrc bashrc bash_aliases vimrc tmux.conf gitconfig zshenv zshrc spacemacs"    
 
 ##########
 
@@ -125,6 +125,13 @@ install_plug(){
     e_success "...done"
 }
 
+# Install Spacemacs 
+install_spacemacs(){
+    e_header "Install Spacemacs?"
+    git clone https://github.com/syl20bnr/spacemacs "${HOME}/.emacs.d"
+    e_success "...done"
+}
+
 #Install OH MY ZSH?
 e_header "Do You want OhMyZSH? (Hint: You want.)"
 select term in "OHMYZSH-STANDALONE" "OHMYZSH-ZGEN" "SKIP"; do
@@ -150,8 +157,17 @@ select yn in "Yes" "No"; do
         No ) e_arrow "okay - thats ok, I guess"; break;
     esac
 done
+
+e_header "Install Spacemacs for emacs?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) install_spacemacs; break;;
+        No ) e_arrow "Maybe next time"; break;
+    esac
+done
 e_success "Thats all, have a nice day"
 
+e_success "Thats all, have a nice day"
 
 # install_dotfiles || exit 1
 # get_vimplug || exit 1
