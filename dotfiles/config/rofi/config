@@ -1,0 +1,21 @@
+# rofi.theme: /usr/share/rofi/themes/Arc-Dark.rasi
+
+rofi.color-enabled: true
+rofi.font: sans-serif Roboto 32
+rofi.padding:           800
+rofi.hide-scrollbar:    true
+rofi.lines: 15
+rofi.fullscreen: true
+
+# Window           background    border    separator
+rofi.color-window: #ff9800,      #ff9800,  #fff980
+
+# State:           bg       fg       bgalt    hlbg     hlfg
+rofi.color-normal: #ff9800, #ffffff, #ff9800, #ffffff, #ff9800
+rofi.color-active: #ff9800, #ffffff, #ff9800, #ff9800, #ffffff
+rofi.color-urgent: #ff9800, #ffffff, #ff9800, #ff9800, #ffffff
+
+
+
+# white
+# rofi.color-window: #FFFFFF,      #FFFFFF,  #FFFFFF

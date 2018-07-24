@@ -1,0 +1,83 @@
+actions:
+  pre:
+    vim-plug-install: test -e ~/.vim/autoload/plug.vim || (mkdir -p ~/.vim/autoload;
+      curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim)
+  git-spacemacs: git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+  vim-plug: vim +PlugInstall +qall
+config:
+  backup: true
+  banner: true
+  create: true
+  dotpath: dotfiles
+  keepdot: false
+  link_by_default: false
+  longkey: false
+dotfiles:
+  d_bashscripts:
+    dst: ~/.config/bashscripts
+    src: config/bashscripts
+  d_dunst:
+    dst: ~/.config/dunst
+    src: config/dunst
+  d_i3:
+    dst: ~/.config/i3
+    src: config/i3
+  d_polybar:
+    dst: ~/.config/polybar
+    src: config/polybar
+  d_ranger:
+    dst: ~/.config/ranger
+    src: config/ranger
+  d_rofi:
+    dst: ~/.config/rofi
+    src: config/rofi
+  f_ackrc:
+    dst: ~/.ackrc
+    src: ackrc
+  f_bashrc:
+    dst: ~/.bashrc
+    src: bashrc
+  f_gitconfig:
+    dst: ~/.gitconfig
+    src: gitconfig
+  f_spacemacs:
+    dst: ~/.spacemacs
+    src: spacemacs
+    actions:
+    - git-spacemacs
+  f_tmux.conf:
+    dst: ~/.tmux.conf
+    src: tmux.conf
+  f_vimrc:
+    dst: ~/.vimrc
+    src: vimrc
+    actions:
+    - vim-plug-install
+    - vim-plug
+  f_xinitrc:
+    dst: ~/.xinitrc
+    src: xinitrc
+  f_xresources:
+    dst: ~/.Xresources
+    src: Xresources
+  f_zshrc:
+    dst: ~/.zshrc
+    src: zshrc
+profiles:
+  huxley:
+    dotfiles:
+    - f_vimrc
+    - f_zshrc
+    - f_tmux.conf
+    - f_bashrc
+    - f_ackrc
+    - f_gitconfig
+    - f_xinitrc
+    - f_xresources
+    - d_i3
+    - d_dunst
+    - d_ranger
+    - d_rofi
+    - d_polybar
+    - d_bashscripts
+    - f_spacemacs
