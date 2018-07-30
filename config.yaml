@@ -1,8 +1,8 @@
 actions:
+  git-spacemacs: git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
   pre:
     vim-plug-install: test -e ~/.vim/autoload/plug.vim || (mkdir -p ~/.vim/autoload;
       curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim)
-  git-spacemacs: git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
   vim-plug: vim +PlugInstall +qall
 config:
   backup: true
@@ -37,23 +37,32 @@ dotfiles:
   f_bashrc:
     dst: ~/.bashrc
     src: bashrc
+  f_config:
+    dst: ~/.config/i3/config
+    src: config/i3/config
   f_gitconfig:
     dst: ~/.gitconfig
     src: gitconfig
+  f_polybar.sh:
+    dst: ~/.config/i3/polybar.sh
+    src: config/i3/polybar.sh
+  f_rofi-emoji:
+    dst: ~/.config/i3/rofi-emoji
+    src: config/i3/rofi-emoji
   f_spacemacs:
-    dst: ~/.spacemacs
-    src: spacemacs
     actions:
     - git-spacemacs
+    dst: ~/.spacemacs
+    src: spacemacs
   f_tmux.conf:
     dst: ~/.tmux.conf
     src: tmux.conf
   f_vimrc:
-    dst: ~/.vimrc
-    src: vimrc
     actions:
     - vim-plug-install
     - vim-plug
+    dst: ~/.vimrc
+    src: vimrc
   f_xinitrc:
     dst: ~/.xinitrc
     src: xinitrc
@@ -81,3 +90,6 @@ profiles:
     - d_polybar
     - d_bashscripts
     - f_spacemacs
+    - f_polybar.sh
+    - f_config
+    - f_rofi-emoji

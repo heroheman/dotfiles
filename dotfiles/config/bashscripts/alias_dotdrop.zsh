@@ -1,5 +1,5 @@
 # Your dotdrop git repository location
-export DOTREPO="~/dotifles"
+export DOTREPO="~/dotfiles"
 
 alias dotdrop="$DOTREPO/dotdrop.sh"
 alias dotgit="git -C $DOTREPO"
