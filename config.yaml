@@ -37,6 +37,9 @@ dotfiles:
   f_bashrc:
     dst: ~/.bashrc
     src: bashrc
+  f_compton.conf:
+    dst: ~/.config/compton.conf
+    src: config/compton.conf
   f_config:
     dst: ~/.config/i3/config
     src: config/i3/config
@@ -101,3 +104,4 @@ profiles:
     - f_rofi-emoji
     - f_polybar_config
     - f_rofi_config
+    - f_compton.conf

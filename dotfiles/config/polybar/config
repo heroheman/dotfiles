@@ -9,7 +9,7 @@
 
 [colors]
 ;background = ${xrdb:color0:#222}
-background = #5a222222
+background = #cc222222
 background-alt = #444
 ;foreground = ${xrdb:color7:#222}
 foreground = #dfdfdf
@@ -32,7 +32,7 @@ deeporange = #ff5722
 lime = #cddc39
 
 labelFg1 = ${colors.white}
-labelBg1 = ${colors.bluegrey}
+labelBg1 = ${colors.background}
 
 labelFg2 = ${colors.white}
 labelBg2 = ${colors.deeporange}
@@ -44,11 +44,14 @@ labelBg2 = ${colors.deeporange}
 [padding]
 default = 3
 
+[sizes]
+height = 60
+
 [bar/custom]
 dpi = 220
 ;monitor = ${env:MONITOR:HDMI-1}
 width = 100%
-height = 54
+height = ${sizes.height} 
 ;offset-x = 1%
 ;offset-y = 2%
 radius = 6.0
@@ -63,8 +66,8 @@ line-color = #f00
 border-size = 4
 border-color = #00000000
 
-padding-left = 5
-padding-right = 5
+padding-left = 0
+padding-right = 0
 
 module-margin-left = 0
 module-margin-right = 0
@@ -74,13 +77,15 @@ font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
 font-3 = "Font Awesome 5 Free:style=Solid:pixelsize=8;1"
 
-modules-left = bspwm i3
+modules-left = i3
 modules-center = xwindow
-modules-right = volume battery date powermenu 
+modules-right = date
 
 tray-position = right
 tray-padding = 1
+tray-detached = false
 tray-scale = 1.0
+tray-maxsize = 32
 ; tray-transparent = true
 tray-background = ${colors.background}
 
@@ -98,6 +103,40 @@ tray-background = ${colors.background}
 cursor-click = pointer
 cursor-scroll = ns-resize
 
+[bar/bottom]
+dpi = 220
+width = 100%
+height = ${sizes.height} 
+radius = 6.0
+bottom = true
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = #f00
+
+border-size = 4
+border-color = #00000000
+
+padding-left = 0
+padding-right = 0
+
+module-margin-left = 0
+module-margin-right = 0
+
+font-0 = fixed:pixelsize=10;1
+font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-2 = siji:pixelsize=10;1
+font-3 = "Font Awesome 5 Free:style=Solid:pixelsize=8;1"
+
+modules-left = volume 
+modules-center = mpd
+modules-right = filesystem cpu backlight-acpi memory eth temperature battery powermenu 
+
+cursor-click = pointer
+cursor-scroll = ns-resize
 
 [module/xwindow]
 type = internal/xwindow
@@ -110,15 +149,12 @@ blacklist-0 = num lock
 
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
-format-prefix-underline = ${colors.secondary}
 
 label-layout = %layout%
-label-layout-underline = ${colors.secondary}
 
 label-indicator-padding = 2
 label-indicator-margin = 1
 label-indicator-background = ${colors.secondary}
-label-indicator-underline = ${colors.secondary}
 
 
 [module/filesystem]
@@ -127,10 +163,10 @@ interval = 25
 
 mount-0 = /
 
-label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
+label-mounted =   %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
-
+label-mounted-padding = ${padding.default}
 
 [module/bspwm]
 type = internal/bspwm
@@ -193,11 +229,11 @@ label-urgent-padding = ${module/bspwm.label-urgent-padding}
 type = internal/mpd
 format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
 
-icon-prev = 
-icon-stop = 
-icon-play = 
-icon-pause = 
-icon-next = 
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
 
 label-song-maxlen = 25
 label-song-ellipsis = true
@@ -206,7 +242,8 @@ label-song-ellipsis = true
 type = internal/xbacklight
 
 format = <label> <ramp>
-label = BL
+format-padding = ${padding.default}
+label =  
 
 bar-width = 10
 bar-indicator = |
@@ -224,21 +261,22 @@ inherit = module/xbacklight
 type = internal/backlight
 card = intel_backlight
 
+format =  <label>
+label = %percentage%%
+
 [module/cpu]
 type = internal/cpu
 interval = 2
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #f90000
-label = %percentage:2%%
+label =  %percentage:2%%
+label-foreground = ${root.foreground}
+label-padding = ${padding.default}
 
 [module/memory]
 type = internal/memory
 interval = 2
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #4bffdc
-label = %percentage_used%%
+label =  %percentage_used%%
+label-padding = ${padding.default}
+label-foreground = ${root.foreground}
 
 [module/wlan]
 type = internal/network
@@ -246,7 +284,6 @@ interface = net1
 interval = 3.0
 
 format-connected = <ramp-signal> <label-connected>
-format-connected-underline = #9f78e1
 label-connected = %essid%
 
 format-disconnected =
@@ -255,11 +292,11 @@ format-disconnected =
 ;label-disconnected = %ifname% disconnected
 ;label-disconnected-foreground = ${colors.foreground-alt}
 
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+ramp-signal-3 = 
+ramp-signal-4 = 
 ramp-signal-foreground = ${colors.foreground-alt}
 
 [module/eth]
@@ -267,7 +304,6 @@ type = internal/network
 interface = eth1
 interval = 3.0
 
-format-connected-underline = #55aa55
 format-connected-prefix = " "
 format-connected-prefix-foreground = ${colors.foreground-alt}
 label-connected = %local_ip%
@@ -342,9 +378,9 @@ format-discharging = <ramp-capacity> <label-discharging>
 
 format-full-prefix = " "
 
-ramp-capacity-0 = 
+ramp-capacity-0 = 
 ramp-capacity-1 = 
-ramp-capacity-2 = 
+ramp-capacity-2 = 
 ramp-capacity-foreground = ${colors.white}
 
 animation-charging-0 = 
@@ -371,18 +407,19 @@ thermal-zone = 0
 warn-temperature = 60
 
 format = <ramp> <label>
-format-underline = #f50a4d
 format-warn = <ramp> <label-warn>
 format-warn-underline = ${self.format-underline}
 
 label = %temperature%
 label-warn = %temperature%
 label-warn-foreground = ${colors.secondary}
+label-padding = ${padding.default}
+label-foreground = ${root.foreground}
 
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
-ramp-foreground = ${colors.foreground-alt}
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-foreground = ${root.foreground}
 
 [module/powermenu]
 type = custom/menu
