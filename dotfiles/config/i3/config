@@ -35,8 +35,9 @@ font pango:System San Francisco Display 12
 exec --no-startup-id nm-applet
 exec --no-startup-id /usr/lib64/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id dunst --config ~/.config/dunst/dunstrc
-exec --no-startup-id compton -fc --config ~/.config/compton.conf
+# exec --no-startup-id compton -fc --config ~/.config/compton.conf
 exec --no-startup-id /usr/bin/blueman-applet 
+exec --no-startup-id gnome-settings-daemon
 
 ########## Keybindings ##########
 bindsym Mod4+Shift+s exec i3lock # Easier locking
@@ -81,11 +82,11 @@ bindsym Mod4+d exec --no-startup-id i3-dmenu-desktop --dmenu='rofi -width 100 -p
 # alt tab thing
 bindsym Mod4+Tab exec --no-startup-id i3-dmenu-desktop --dmenu='rofi -show window -width 20 -font "Clear Sans Regular 24"'
 
-bindsym Mod4+Shift+d exec --no-startup-id ~/.config/i3/rofi-emoji &
+# bindsym Mod4+Shift+d exec --no-startup-id ~/.config/i3/rofi-emoji &
 
 # bindsym Mod4+v exec rofi -width 100 -padding 800 -show run -font "Roboto 14" -lines 10 -eh 2
 # bindsym Mod4+d exec --no-startup-id i3-dmenu-desktop --dmenu='rofi -width 20 -show -sidebar-mode -lines 0 -matching fuzzy -i -dmenu -font "Clear Sans Regular 18"'
-# bindsym Mod4+q exec "rofi -modi window,drun,run -show drun -terminal termite -color-window '#000000, #000000, #000000' -color-normal '#000000, #b3e774, #000000, #b3e774, #000000' -color-active '#000000, #b3e774, #000000, #b3e774, #000000' -color-urgent '#000000, #b3e774, #000000, #b3e774, #000000'"
+bindsym Mod4+Shift+d exec "rofi -modi window,drun,run -show drun -terminal termite -color-window '#000000, #000000, #000000' -color-normal '#000000, #b3e774, #000000, #b3e774, #000000' -color-active '#000000, #b3e774, #000000, #b3e774, #000000' -color-urgent '#000000, #b3e774, #000000, #b3e774, #000000'"
 
 # change focus
 bindsym Mod4+$left focus left
@@ -233,6 +234,7 @@ exec_always --no-startup-id ~/.config/i3/polybar.sh &
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
+
 # bar {
 #         status_command i3status
 #         position top
@@ -266,7 +268,7 @@ for_window [title="Calculator"] floating enable
 for_window [class="Blueman-manager"] floating enable
 
 smart_borders no_gaps
-# smart_gaps on
+smart_gaps on
 gaps inner 20
 gaps outer 10
 
@@ -276,8 +278,8 @@ exec xrdb -merge ~/.Xresources
 
 # DPI
 # exec  xrandr --output eDP-1 scale 0.5x0.5
-# exec_always export GDK_SCALE=2
-# exec_always export GDK_DPI_SCALE=0.5
+exec_always export GDK_SCALE=2
+exec_always export GDK_DPI_SCALE=0.5
 
 # Touchpad config
 exec --no-startup-id xinput set-prop "$touchpad" "libinput Tapping Enabled" 1

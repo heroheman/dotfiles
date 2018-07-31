@@ -46,9 +46,15 @@ dotfiles:
   f_polybar.sh:
     dst: ~/.config/i3/polybar.sh
     src: config/i3/polybar.sh
+  f_polybar_config:
+    dst: ~/.config/polybar/config
+    src: config/polybar/config
   f_rofi-emoji:
     dst: ~/.config/i3/rofi-emoji
     src: config/i3/rofi-emoji
+  f_rofi_config:
+    dst: ~/.config/rofi/config
+    src: config/rofi/config
   f_spacemacs:
     actions:
     - git-spacemacs
@@ -93,3 +99,5 @@ profiles:
     - f_polybar.sh
     - f_config
     - f_rofi-emoji
+    - f_polybar_config
+    - f_rofi_config
