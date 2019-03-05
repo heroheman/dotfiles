@@ -105,3 +105,17 @@ profiles:
     - f_polybar_config
     - f_rofi_config
     - f_compton.conf
+  sbudgie:
+    dotfiles:
+    - f_vimrc
+    - f_zshrc
+    - f_tmux.conf
+    - f_bashrc
+    - f_ackrc
+    - f_gitconfig
+    - f_xinitrc
+    - f_xresources
+    - d_ranger
+    - d_bashscripts
+    - f_spacemacs
+    - f_config

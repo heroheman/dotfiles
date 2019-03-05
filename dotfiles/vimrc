@@ -235,6 +235,7 @@ nnoremap G Gzz
 
 inoremap {<Tab> {<CR>}<Esc>O<Tab>}
 
+" ls buffer
 nnoremap <leader>k :ls<cr>:b<space>
 
 cnoreabbrev ag Gcd <bar> Ack!
