@@ -37,6 +37,9 @@ dotfiles:
   f_bashrc:
     dst: ~/.bashrc
     src: bashrc
+  f_commonrc:
+    dst: ~/.commonrc
+    src: commonrc
   f_compton.conf:
     dst: ~/.config/compton.conf
     src: config/compton.conf
@@ -82,7 +85,7 @@ dotfiles:
     dst: ~/.zshrc
     src: zshrc
 profiles:
-  huxley:
+  dumbledore:
     dotfiles:
     - f_vimrc
     - f_zshrc
@@ -105,6 +108,7 @@ profiles:
     - f_polybar_config
     - f_rofi_config
     - f_compton.conf
+    - f_commonrc
   sbudgie:
     dotfiles:
     - f_vimrc

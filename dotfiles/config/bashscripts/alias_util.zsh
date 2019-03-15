@@ -1,3 +1,5 @@
+echo 'Loaded Alias Functions'
+
 csscount() {
     cnt=0
         depth=0
@@ -56,10 +58,6 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 
-function dotdrop-import {
-    ~/dotfiles2/dotdrop.sh import "$1"
-}
-
 
 function path(){
     old=$IFS
@@ -68,19 +66,24 @@ function path(){
         IFS=$old
 }
 
+# SHELL SPECIFIC FUNCTIONS
+if [ -n "`$SHELL -c 'echo $ZSH_VERSION'`" ]; then
+    # assume Zsh
+    # fast zwitch between vim and shell
+    # see: https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
+    fancy-ctrl-z () {
+      if [[ $#BUFFER -eq 0 ]]; then
+        BUFFER="fg"
+        zle accept-line
+      else
+        zle push-input
+        zle clear-screen
+      fi
+    }
+    zle -N fancy-ctrl-z
+    bindkey '^Z' fancy-ctrl-z
 
-# fast zwitch between vim and shell
-# see: https://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
-fancy-ctrl-z () {
-  if [[ $#BUFFER -eq 0 ]]; then
-    BUFFER="fg"
-    zle accept-line
-  else
-    zle push-input
-    zle clear-screen
-  fi
-}
-zle -N fancy-ctrl-z
-bindkey '^Z' fancy-ctrl-z
-
+    # elif [ -n "`$SHELL -c 'echo $BASH_VERSION'`" ]; then
+    # else
+fi
 

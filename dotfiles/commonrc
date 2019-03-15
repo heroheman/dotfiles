@@ -1,18 +1,16 @@
-export PS1="\[\e[00;34m\]\u\[\e[0m\]\[\e[00;37m\]@\[\e[0m\]\[\e[00;33m\]\h\[\e[0m\]\[\e[00;37m\][\[\e[0m\]\[\e[00;32m\]\W\[\e[0m\]\[\e[00;37m\]]\n\\$\[\e[0m\]"
-
+echo "LOAD COMMON MODULES"
 # GLOBAL
 export EDITOR=vim
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 
-#PATHS
+# PATHS
 export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$JAVA_HOME/bin:$PATH
 export PATH=$HOME/.composer/vendor/bin:$PATH
 
+[[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
 
-# Thefuck
+# THEFUCK
 eval "$(thefuck --alias)"
-
 
 # FZF Configuration
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -25,15 +23,7 @@ export FZF_DEFAULT_OPTS='
 '
 
 # CONFIGURATION FILES
-for file in ~/.config/bashscripts/*.zsh; do
-	source $file
-done
-
-#if running in terminal...
-# if test -t 1; then
-#     # ...start zsh
-#     exec zsh
-# fi
-
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# FUNCTIONS / ALIASES
+source $HOME/.config/bashscripts/alias_dotdrop.zsh
+source $HOME/.config/bashscripts/alias_util.zsh
+source $HOME/.config/bashscripts/alias_webapi.zsh

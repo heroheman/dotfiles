@@ -1,7 +1,4 @@
-# GLOBAL
-export EDITOR=vim
-export SSH_KEY_PATH="~/.ssh/rsa_id"
-
+source $HOME/.commonrc
 
 # ZSH
 ZSH_THEME="cloud"
@@ -19,11 +16,6 @@ function git_prompt_info() {
     echo "$ZSH_THEME_GIT_PROMPT_PREFIX${ref#refs/heads/}$ZSH_THEME_GIT_PROMPT_SUFFIX"
 }
 
-#PATHS
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$JAVA_HOME/bin:$PATH
-export PATH=$HOME/.composer/vendor/bin:$PATH
-
 case `uname` in
   Darwin)
     # commands for OS X go here
@@ -37,26 +29,6 @@ case `uname` in
   ;;
 esac
 
-# Thefuck
-eval "$(thefuck --alias)"
-
-
-# FZF Configuration
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# ag -l -g "" | fzf
-# export FZF_DEFAULT_COMMAND='ag -l -g ""'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DEFAULT_OPTS='
---color fg:102,bg:233,hl:65,fg+:15,bg+:234,hl+:108
---color info:108,prompt:109,spinner:108,pointer:168,marker:168
-'
-
-
-
-# CONFIGURATION FILES
-for file in ~/.config/bashscripts/*.zsh; do
-	source $file
-done
 
 #ZGEN
 source ${HOME}/.zgen/zgen.zsh

@@ -1,3 +1,5 @@
+echo 'Loaded FZF Functions'
+
 # fbr - checkout git branch (including remote branches)
 fbr() {
   local branches branch
@@ -30,7 +32,6 @@ fshow() {
   done
 }
 
-
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)
@@ -39,8 +40,6 @@ fe() {
   local declare files=($(fzf-tmux --query="$1" --select-1 --exit-0))
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 }
-
-
 
 # Modified version where you can press
 #   - CTRL-O to open with `open` command,
@@ -55,9 +54,6 @@ fo() {
   fi
 }
 
-
-
-
 # fkill - kill process
 fkill() {
   pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
@@ -67,3 +63,4 @@ fkill() {
     kill -${1:-9} $pid
   fi
 }
+

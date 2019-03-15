@@ -1,3 +1,5 @@
+echo 'Loaded Webapi Functions'
+
 # Instant Filesharing with transfer.sh
 transfer() { 
     if [ $# -eq 0 ]; then 
