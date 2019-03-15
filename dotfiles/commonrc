@@ -7,7 +7,7 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.composer/vendor/bin:$PATH
 
-[[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
+# [[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
 
 # THEFUCK
 eval "$(thefuck --alias)"
@@ -27,3 +27,4 @@ export FZF_DEFAULT_OPTS='
 source $HOME/.config/bashscripts/alias_dotdrop.zsh
 source $HOME/.config/bashscripts/alias_util.zsh
 source $HOME/.config/bashscripts/alias_webapi.zsh
+source $HOME/.config/bashscripts/alias_fzf.zsh

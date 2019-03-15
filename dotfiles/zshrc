@@ -55,3 +55,8 @@ EOPLUGINS
     # generate the init script from plugins above
     zgen save
 fi
+
+
+[[ -e "$HOME/.fzf-extras/fzf-extras.zsh" ]] \
+  && source "$HOME/.fzf-extras/fzf-extras.zsh" \
+  && source "$HOME/.fzf-extras/fzf-extras.sh"
