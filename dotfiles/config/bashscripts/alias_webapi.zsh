@@ -1,7 +1,7 @@
 echo 'Loaded Webapi Functions'
 
 # Instant Filesharing with transfer.sh
-transfer() { 
+share () { 
     if [ $# -eq 0 ]; then 
         echo -e "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"; 
         return 1; 
