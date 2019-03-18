@@ -1,4 +1,7 @@
+#!/usr/sh
+
 echo "LOAD COMMON MODULES"
+
 # GLOBAL
 export EDITOR=vim
 export SSH_KEY_PATH="~/.ssh/rsa_id"
@@ -18,9 +21,11 @@ eval "$(thefuck --alias)"
 # export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS='
---color fg:102,bg:233,hl:65,fg+:15,bg+:234,hl+:108
---color info:108,prompt:109,spinner:108,pointer:168,marker:168
+--color dark,hl:33,hl+:37,fg+:235,bg+:136,fg+:254
+--color info:254,prompt:37,spinner:108,pointer:235,marker:235
 '
+# --color fg:102,bg:233,hl:65,fg+:15,bg+:234,hl+:108
+# --color info:108,prompt:109,spinner:108,pointer:168,marker:168
 
 # CONFIGURATION FILES
 # FUNCTIONS / ALIASES
