@@ -123,3 +123,13 @@ profiles:
     - d_bashscripts
     - f_spacemacs
     - f_config
+  macos:
+    dotfiles:
+    - f_ackrc
+    - f_commonrc
+    - f_gitconfig
+    - f_spacemacs
+    - f_tmux.conf
+    - f_vimrc
+    - f_zshrc
+   
