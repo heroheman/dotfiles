@@ -132,4 +132,5 @@ profiles:
     - f_tmux.conf
     - f_vimrc
     - f_zshrc
+    - d_bashscripts
    
