@@ -37,6 +37,12 @@ dotfiles:
   f_bashrc:
     dst: ~/.bashrc
     src: bashrc
+  f_coc-settings.js:
+    dst: ~/.config/nvim/coc-settings.js
+    src: config/nvim/coc-settings.js
+  f_coc-settings.json:
+    dst: ~/.config/nvim/coc-settings.json
+    src: config/nvim/coc-settings.json
   f_commonrc:
     dst: ~/.commonrc
     src: commonrc
@@ -49,6 +55,9 @@ dotfiles:
   f_gitconfig:
     dst: ~/.gitconfig
     src: gitconfig
+  f_init.vim:
+    dst: ~/.config/nvim/init.vim
+    src: config/nvim/init.vim
   f_polybar.sh:
     dst: ~/.config/i3/polybar.sh
     src: config/i3/polybar.sh
@@ -85,6 +94,11 @@ dotfiles:
     dst: ~/.zshrc
     src: zshrc
 profiles:
+  Florenzs-MBP.fritz.box:
+    dotfiles:
+    - f_init.vim
+    - f_coc-settings.js
+    - f_coc-settings.json
   dumbledore:
     dotfiles:
     - f_vimrc
@@ -109,6 +123,16 @@ profiles:
     - f_rofi_config
     - f_compton.conf
     - f_commonrc
+  macos:
+    dotfiles:
+    - f_ackrc
+    - f_commonrc
+    - f_gitconfig
+    - f_spacemacs
+    - f_tmux.conf
+    - f_vimrc
+    - f_zshrc
+    - d_bashscripts
   sbudgie:
     dotfiles:
     - f_vimrc
@@ -123,14 +147,3 @@ profiles:
     - d_bashscripts
     - f_spacemacs
     - f_config
-  macos:
-    dotfiles:
-    - f_ackrc
-    - f_commonrc
-    - f_gitconfig
-    - f_spacemacs
-    - f_tmux.conf
-    - f_vimrc
-    - f_zshrc
-    - d_bashscripts
-   
